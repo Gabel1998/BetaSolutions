@@ -1,10 +1,11 @@
 # -----------------------------------------------------------------------------
 # GitHub Actions Workflow for Java Project with Maven
-# Project: Eksamensprojekt F2025 - KEA
+# Project: BetaSolutions - Eksamensprojekt F2025 - KEA
 #
 # Purpose:
 # - Build Java project with Maven
 # - Run unit tests
+# - Generate and upload Maven dependency graph (optional, continue on error)
 # - Cache Maven dependencies for faster builds
 # 
 # Triggers:
@@ -27,7 +28,7 @@ on:
 
 jobs:
   build-and-test:
-    name: Build and Test Project
+    name: Build, Test and Generate Dependency Graph
     runs-on: ubuntu-latest
 
     steps:
@@ -43,7 +44,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    # Step 3: Build the project
+    # Step 3: Build the project (compile code)
     - name: Compile the project
       run: mvn clean compile
 
@@ -51,10 +52,16 @@ jobs:
     - name: Run unit tests
       run: mvn test
 
-    # Step 5: Package the application
+    # Step 5: Package the application (optional step to build JAR)
     - name: Package the application
       run: mvn package
 
-    # Step 6: (Optional) Update Maven dependency graph
+    # Step 6: Try to generate Maven dependency graph (optional)
+    - name: Generate Maven dependency graph
+      run: mvn com.github.ferstl:depgraph-maven-plugin:aggregate
+      continue-on-error: true
+
+    # Step 7: Try to upload Maven dependency graph to GitHub (optional)
     - name: Upload Maven dependency graph
       uses: advanced-security/maven-dependency-submission-action@v4
+      continue-on-error: true
