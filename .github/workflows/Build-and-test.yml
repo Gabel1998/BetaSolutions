@@ -1,0 +1,60 @@
+# -----------------------------------------------------------------------------
+# GitHub Actions Workflow for Java Project with Maven
+# Project: Eksamensprojekt F2025 - KEA
+#
+# Purpose:
+# - Build Java project with Maven
+# - Run unit tests
+# - Cache Maven dependencies for faster builds
+# 
+# Triggers:
+# - Push to 'develop' branch
+# - Pull Request targeting 'develop' branch
+#
+# Notes:
+# - No deployment to Azure yet (handled in a later task)
+# -----------------------------------------------------------------------------
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: 
+      - develop
+  pull_request:
+    branches: 
+      - develop
+
+jobs:
+  build-and-test:
+    name: Build and Test Project
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout code from GitHub
+    - name: Checkout source code
+      uses: actions/checkout@v4
+
+    # Step 2: Set up Java JDK 21
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    # Step 3: Build the project
+    - name: Compile the project
+      run: mvn clean compile
+
+    # Step 4: Run unit tests
+    - name: Run unit tests
+      run: mvn test
+
+    # Step 5: Package the application
+    - name: Package the application
+      run: mvn package
+
+    # Step 6: (Optional) Update Maven dependency graph
+    - name: Upload Maven dependency graph
+      uses: advanced-security/maven-dependency-submission-action@v4
