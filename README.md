@@ -5,10 +5,10 @@
 ## Om projektet
 Dette projekt er udviklet som en del af Eksamensprojektet på 2. semester (Datamatiker, KEA).
 
-BetaSolutions er et projektkalkulationsværktøj, som skal:
-- Hjælpe med nedbrydning af projekter i opgaver og delopgaver.
-- Beregne og opsummere tidsforbrug på projekter.
-- Understøtte planlægning ift. deadlines og arbejdsbelastning.
+BetaSolutions er et projektkalkulationsværktøj, som:
+- Hjælper med at nedbryde projekter i delprojekter, opgaver og deadlines.
+- Giver overblik over tidsforbrug på opgaver og projekter.
+- Understøtter planlægning af arbejdstid, så projekter kan afsluttes til tiden.
 
 Projektet anvender:
 - **Java 21**
@@ -21,13 +21,12 @@ Projektet anvender:
 Denne repository anvender **GitHub Actions** til automatiseret build og test.
 
 **Build Workflow:**
-- Triggeres ved push og pull requests til `develop` branch.
+- Triggeres ved push og pull request til `develop` branch.
 - Kompilerer Java-koden.
 - Kører alle unit tests.
 - Pakker applikationen.
-- Genererer og uploader Maven dependency graph.
 
-> Hvis badgen øverst på siden er grøn ✅, betyder det at projektets seneste build og tests på `develop` branch er succesfulde.
+> Hvis badgen øverst på siden er grøn ✅, betyder det, at projektets seneste build og tests på `develop` branch er succesfulde.
 
 ## Versionskrav
 - IntelliJ IDEA 2024.1 eller nyere (anbefalet)
