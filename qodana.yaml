@@ -5,7 +5,7 @@ profile:
 
 include:
   - name: CheckDependencyLicenses
-    path: .
+
 
 exclude:
   - name: Spring MVC View Resolution Inspection
