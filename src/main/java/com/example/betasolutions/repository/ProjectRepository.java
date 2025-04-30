@@ -1,6 +1,7 @@
 package com.example.betasolutions.repository;
 
 import com.example.betasolutions.model.Project;
+import com.example.betasolutions.rowmapper.ProjectRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
