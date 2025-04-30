@@ -2,5 +2,14 @@ version: "1.0"
 linter: jetbrains/qodana-jvm:2024.3
 profile:
   name: qodana.recommended
+
 include:
   - name: CheckDependencyLicenses
+
+
+exclude:
+  - name: Spring MVC View Resolution Inspection
+  - name: Cannot resolve MVC view
+  - name: Unresolved view
+  - name: Cannot resolve symbol
+  - name: Unresolved reference
