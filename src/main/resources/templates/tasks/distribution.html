@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Daily Distribution</title>
+</head>
+<body>
+<div th:insert="~{header :: header}"></div>
+
+<h2>Distribution of hours per workday</h2>
+<p><strong>Total allocated per day:</strong> <span th:text="${dailyHours}"></span> hours</p>
+
+<a href="/tasks/list">← Back to tasks</a>
+
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

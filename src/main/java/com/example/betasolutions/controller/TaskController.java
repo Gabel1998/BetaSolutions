@@ -84,6 +84,14 @@ public class TaskController {
         model.addAttribute("dagrate", dagrate);
         model.addAttribute("status", timer_d >= dagrate ? "OK" : "⚠Under dagrate");
 
-        return "tasks/task-overview";
+        return "tasks/list";
     }
+
+    @GetMapping("/task/{id}/distribution")
+    public String getDailyDistribution(@PathVariable("id") Long taskId, Model model) {
+        double dailyHours = taskService.getTotalDailyHoursForTask(taskId);
+        model.addAttribute("dailyHours", dailyHours);
+        return "tasks/distribution"; /// ja, eller hvad det nu skal være, nu har jeg lavet en midlertidig
+    }
+
 }
