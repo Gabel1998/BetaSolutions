@@ -4,8 +4,10 @@ import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.TaskService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -40,12 +42,20 @@ public class TaskController {
         return "tasks/create";
     }
 
+
     @PostMapping("/create")
-    public String createTask(@ModelAttribute Task task, HttpSession session) {
+    public String createTask(@ModelAttribute @Valid Task task, BindingResult result, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        if (result.hasErrors()) {
+            model.addAttribute("task", task);
+            return "tasks/create";
+        }
+
         taskService.createTask(task);
         return "redirect:/tasks";
     }
+
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
