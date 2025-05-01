@@ -1,10 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
 <body>
 
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="content">
+    <h2>Rediger task</h2>
+
+    <!-- Form: sender ændringer til /tasks/update/{id} -->
+    <form th:action="@{'/tasks/update/' + ${task.id}}" th:object="${task}" method="post" class="form-container">
+
+        <!-- Skjult felt: ID på det subprojekt tasken hører til -->
+        <input type="hidden" th:field="*{subProjectId}"/>
+
+        <!-- Navn på task -->
+        <label for="name">Navn</label>
+        <input type="text" id="name" th:field="*{name}" required>
+
+        <!-- Beskrivelse af opgaven -->
+        <label for="description">Beskrivelse</label>
+        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+
+        <!-- Estimat af hvor mange timer opgaven burde tage -->
+        <label for="estimatedHours">Estimerede timer</label>
+        <input type="number" step="0.1" id="estimatedHours" th:field="*{estimatedHours}" required>
+
+        <!-- Reelt tidsforbrug -->
+        <label for="actualHours">Faktiske timer</label>
+        <input type="number" step="0.1" id="actualHours" th:field="*{actualHours}">
+
+        <!-- Tidsstempler i bunden -->
+        <div class="form-footer">
+            <!-- Hvornår tasken blev oprettet -->
+            <span class="created-at" th:text="'Oprettet: ' + ${task.createdAt}"></span>
+
+            <!-- Hvornår den sidst blev redigeret -->
+            <span class="updated-at" th:text="'Opdateret: ' + ${task.updatedAt}"></span>
+        </div>
+
+        <!-- Gem-knap -->
+        <button type="submit" class="button">Gem ændringer</button>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

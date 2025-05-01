@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}">
+
 </head>
 <body>
 
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="content">
+
+    <h2>Projekter</h2>
+
+    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+
+    <section class="item-list">
+        <a th:each="project : ${projects}"
+           th:href="@{'/subprojects?projectId=' + ${project.id}}"
+           class="item-card">
+
+            <h3 th:text="${project.name}">Projektnavn</h3>
+            <p th:text="${project.description}">Beskrivelse</p>
+            <p>Start: <span th:text="${project.startDate}"></span></p>
+            <p>Slut: <span th:text="${project.endDate}"></span></p>
+
+        </a>
+    </section>
+
+    <div class="create-button-container">
+        <a class="button" th:href="@{/projects/create}">+ Opret nyt projekt</a>
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

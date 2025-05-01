@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
 <body>
 
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="content">
+    <h2>Rediger subprojekt</h2>
+
+    <!-- Form: sender ændringer til /subprojects/update/{id} -->
+    <form th:action="@{'/subprojects/update/' + ${subProject.id}}" th:object="${subProject}" method="post" class="form-container">
+
+        <!-- Skjult felt: ID på det overordnede projekt -->
+        <input type="hidden" th:field="*{projectId}"/>
+
+        <!-- Subprojektnavn -->
+        <label for="name">Navn</label>
+        <input type="text" id="name" th:field="*{name}" required>
+
+        <!-- Beskrivelse af subprojektet -->
+        <label for="description">Beskrivelse</label>
+        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+
+        <!-- Startdato for subprojekt -->
+        <label for="startDate">Startdato</label>
+        <input type="date" id="startDate" th:field="*{startDate}" required>
+
+        <!-- Slutdato for subprojekt -->
+        <label for="endDate">Slutdato</label>
+        <input type="date" id="endDate" th:field="*{endDate}">
+
+        <!-- Gem-knap -->
+        <button type="submit" class="button">Gem ændringer</button>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

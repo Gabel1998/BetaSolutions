@@ -14,6 +14,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String ShowLoginForm(Model model) {
+        model.addAttribute("pageTitle", "Login");
         return "login"; //henviser til login.html
     }
 

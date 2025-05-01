@@ -27,6 +27,7 @@ public class TaskController {
     @GetMapping
     public String listTasks(Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        model.addAttribute("pageTitle", "Tasks");
         model.addAttribute("tasks", taskService.getAllTasks());
         return "tasks/list";
     }
@@ -34,6 +35,7 @@ public class TaskController {
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        model.addAttribute("pageTitle", "Opret task");
         model.addAttribute("task", new Task());
         return "tasks/create";
     }
@@ -48,6 +50,7 @@ public class TaskController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        model.addAttribute("pageTitle", "Rediger task");
         Task task = taskService.getTaskById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
         model.addAttribute("task", task);
