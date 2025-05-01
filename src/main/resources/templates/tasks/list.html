@@ -1,20 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <title>Task Overview</title>
-    <link rel="stylesheet" href="/static/css/styles.css" />
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}"></head>
+
 <body>
-<div th:insert="~{header :: header}"></div>
 
-<h2>Task Overview</h2>
+<div th:replace="~{fragments/header :: header}"></div>
 
-<p><strong>Total hours worked:</strong> <span th:text="${timer_d}"></span></p>
-<p><strong>Required dagrate:</strong> <span th:text="${dagrate}"></span></p>
-<p><strong>Status:</strong> <span th:text="${status != null ? status : 'N/A'}"></span></p> <!-- lille fallback texts til status -->
+<main class="content">
 
-<a href="/tasks/list">← Back to all tasks</a>
+    <div class="top-bar">
+        <h2 th:text="'Tasks for ' + ${subProject.name}">Subprojektets navn</h2>
+        <a class="button" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Rediger subprojekt</a>
+    </div>
 
-<div th:insert="~{footer :: footer}"></div>
+    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+
+    <section class="item-list">
+        <a th:each="task : ${tasks}"
+           th:href="@{'/tasks/edit/' + ${task.id}}"
+           class="item-card">
+
+            <h3 th:text="${task.name}">Tasknavn</h3>
+            <p th:text="${task.description}">Beskrivelse</p>
+            <p>Estimerede timer: <span th:text="${task.estimatedHours}">0.0</span></p>
+            <p>Faktiske timer: <span th:text="${task.actualHours}">0.0</span></p>
+
+        </a>
+    </section>
+
+    <div class="create-button-container">
+        <a class="button" th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">+ Opret ny task</a>
+    </div>
+
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

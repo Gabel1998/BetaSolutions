@@ -28,6 +28,7 @@ public class ProjectController {
             return "redirect:/auth/login";
         }
 
+        model.addAttribute("pageTitle", "Alle projekter");
         model.addAttribute("projects", projectService.getAllProjects());
 
         //hvis der er en succes i session
@@ -44,6 +45,7 @@ public class ProjectController {
         if (!isLoggedIn(session)){
             return "redirect:/auth/login";
         }
+        model.addAttribute("pageTitle", "Opret projekt");
         model.addAttribute("project", new Project());
         return "projects/create"; //peger på create.html i projects-directory
     }
@@ -64,7 +66,7 @@ public class ProjectController {
         if (!isLoggedIn(session)){
             return "redirect:/auth/login";
         }
-
+        model.addAttribute("pageTitle", "Rediger projekt");
         Project project = projectService.getProjectById(id)
                 .orElseThrow(()-> new RuntimeException("Project not found"));
         model.addAttribute("project", project);

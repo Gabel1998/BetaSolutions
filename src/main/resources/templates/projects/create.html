@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
 <body>
 
+<!-- Fælles header -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="content">
+    <h2>Opret nyt projekt</h2>
+
+    <!-- Formular bundet til Project-objekt -->
+    <form th:action="@{/projects/create}" th:object="${project}" method="post" class="form-container">
+
+        <!-- Projektnavn: kort tekst -->
+        <label for="name">Navn</label>
+        <input type="text" id="name" th:field="*{name}" required>
+
+        <!-- Projektbeskrivelse: længere fritekst -->
+        <label for="description">Beskrivelse</label>
+        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+
+        <!-- Startdato: hvornår projektet begynder -->
+        <label for="startDate">Startdato</label>
+        <input type="date" id="startDate" th:field="*{startDate}" required>
+
+        <!-- Slutdato: hvornår projektet forventes afsluttet -->
+        <label for="endDate">Slutdato</label>
+        <input type="date" id="endDate" th:field="*{endDate}">
+
+        <!-- Submit-knap -->
+        <button type="submit" class="button">Opret</button>
+    </form>
+</main>
+
+<!-- Fælles footer -->
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

@@ -24,6 +24,7 @@ public class SubProjectController {
     @GetMapping
     public String listSubProjects(Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        model.addAttribute("pageTitle", "Sub Projects");
         model.addAttribute("subProjects", subProjectService.getAllSubProjects());
         return "subprojects/list";
     }
@@ -31,6 +32,7 @@ public class SubProjectController {
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        model.addAttribute("pageTitle", "Opret subprojekt");
         model.addAttribute("subProject", new SubProject());
         return "subprojects/create";
     }
@@ -45,6 +47,7 @@ public class SubProjectController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        model.addAttribute("pageTitle", "Rediger subprojekt");
         SubProject subProject = subProjectService.getSubProjectById(id)
                 .orElseThrow(() -> new RuntimeException("SubProject not found"));
         model.addAttribute("subProject", subProject);
