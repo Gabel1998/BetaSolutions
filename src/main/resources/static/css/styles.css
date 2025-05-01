@@ -1,0 +1,343 @@
+/*STYLING ER PRÆCIS DET SAMME SOM WISHLIST, SKAL RETTES*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* ===================== Root Colors ===================== */
+:root {
+    --primary-color: #4CAF50;
+    --secondary-color: #dff4e3;            /* super soft Celadon-like tone */
+    --background-color: #1d2e26;           /* deep, muted green-black */
+    --text-color: #e8f5e9;                 /* soft off-white */
+    --button-color: #2a6e3f;               /* Elegant dark green */
+    --container-color: #2e4432;            /* nice dark container green */
+}
+
+/* ===================== Global ===================== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 70px; /* splitter til header */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.content-wrapper {
+    margin-top: 70px;
+    padding-top: 20px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* ned med footer */
+.page-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* == Header & Footer == */
+header, footer {
+    font-size: 0.9em;
+}
+
+header {
+    position: fixed; /* absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(6px);
+    padding: 10px 0;
+    height: 70px;
+}
+
+footer {
+    background-color: #1a2720;
+    text-align: center;
+    margin-top: auto;
+    flex-shrink: 0;
+    padding: 5px 0;
+}
+
+
+
+
+/* ===================== Header Components ===================== */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 4vw;
+    height: 100%;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    height: 100%;
+}
+
+.nav-logo {
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo h1 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 70px;
+    align-items: center;
+    height: 100%;
+}
+
+.main-nav {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu a {
+    font-weight: 500;
+    transition: color 0.2s ease;
+    color: var(--text-color);
+}
+
+.nav-menu a:hover {
+    color: #ddd;
+}
+
+.login-opret-bruger,
+.user-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.nav-button {
+    padding: 6px 12px;
+    border: 1px solid var(--text-color);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: background 0.2s ease;
+}
+
+.nav-button:hover {
+    background: var(--text-color);
+    color: black;
+}
+
+.user-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    white-space: nowrap;
+}
+
+
+
+/* ===================== Footer Components ===================== */
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #ddd;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #99D19C;
+}
+
+.back-to-top {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: #999;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.back-to-top:hover {
+    color: #fff;
+}
+
+/* ===================== Index Components ===================== */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header, footer {
+    background-color: #eee;
+    padding: 1em;
+    text-align: center;
+}
+
+.banner {
+    background-color: #ccc;
+    padding: 2em;
+    text-align: center;
+}
+
+.login-prompt {
+    text-align: center;
+    margin: 2em 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Skjul login prompt og vis projekter hvis logget ind */
+.projects {
+    display: none; /* Sæt til block når logget ind */
+    padding: 1em;
+}
+
+.project-list {
+    display: flex;
+    gap: 1em;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.project-card {
+    background-color: #f2f2f2;
+    padding: 1em;
+    border: 1px solid #ccc;
+    width: 120px;
+    text-align: center;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* ===================== Login Handler Components ===================== */
+
+/* == Global == */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0;
+}
+
+/* == Login Container == */
+.login-container, .register-container{
+    background-color: var(--container-color);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 450px;
+    margin: 10vh auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+    align-items: center;
+    justify-content: center;
+}
+
+/* == Heading == */
+h1 {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* == Form Elements == */
+input {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 2px solid #4CAF50;
+    background-color: #fff;
+    color: #333;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* == Register Link == */
+.register-link {
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.register-link:hover {
+    color: #388e3c;
+    text-decoration: underline;
+}

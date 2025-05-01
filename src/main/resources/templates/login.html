@@ -1,10 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
 </head>
-<body>
 
+<body>
+<!-- ======== HEADER TEMPLATE ======== -->
+<div th:replace="~{header :: header}"></div>
+
+<!-- ======== MAIN CONTENT ======== -->
+<div class="page-container">
+    <div class="login-container">
+        <h1>Login</h1>
+
+        <!-- ======== ERROR HANDLER ======== -->
+        <div th:if="${errorMessage != null}">
+            <p style="color: red;" th:text="${errorMessage}"></p>
+        </div>
+
+        <!-- ======== LOGIN FORM ======== -->
+        <form th:action="@{/login}" method="post">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="Indtast e-mailadresse" maxlength="50"
+                   pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+                   title="Indtast en gyldig e-mailadresse (skal indeholde @ og .)">
+
+            <label for="password">Adgangskode</label>
+            <input type="password" id="password" name="password" required placeholder="Indtast adgangskode" minlength="8"
+                   pattern="^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$"
+                   title="Adgangskoden skal være mindst 8 tegn lang og indeholde en blanding af store og små bogstaver samt tal.">
+
+            <button type="submit" class="btn">Login</button>
+        </form>
+
+        <p>Har du ikke en konto? <a href="/register" class="register-link">Opret en her</a></p>
+    </div>
+</div>
+
+<!-- ======== FOOTER ======== -->
+<div th:replace="~{footer :: footer}"></div>
 </body>
 </html>

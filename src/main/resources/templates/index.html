@@ -1,10 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
 </head>
 <body>
+<!-- ======== HEADER TEMPLATE ======== -->
+<div th:replace="~{header :: header}"></div>
+
+<div class="page">
+    <header>
+        <h1>Alpha Solution Projects</h1>
+    </header>
+
+    <section class="banner">
+        <h2>BANNER</h2>
+    </section>
+
+    <!-- Uden login -->
+    <section class="login-prompt">
+        <p>Log ind for at se projekter</p>
+    </section>
+
+    <!-- Med login -->
+    <section class="projects">
+        <h2>Seneste opdateret Projekter</h2>
+        <div class="project-list">
+            <div class="project-card">P-Kort</div>
+            <div class="project-card">Projekt 2</div>
+            <div class="project-card">Projekt 3</div>
+            <!-- Du kan tilføje flere kort her -->
+        </div>
+    </section>
+
+    <footer>
+        <p>Footer</p>
+    </footer>
+</div>
 
 </body>
 </html>
