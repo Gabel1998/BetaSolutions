@@ -42,7 +42,7 @@ public class ProjectRepository {
     }
 
     public void update(Project project) {
-        String sql = "UPDATE tb_projects SET p_name = ?, p_description = ?, p_start_date = ?, p_end_date = ?, WHERE p_id = ?";
+        String sql = "UPDATE tb_projects SET p_name = ?, p_description = ?, p_start_date = ?, p_end_date = ? WHERE p_id = ?";
         jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate(), project.getId());
     }
 }
