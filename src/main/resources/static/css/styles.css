@@ -341,3 +341,72 @@ input {
     color: #388e3c;
     text-decoration: underline;
 }
+
+/* ===================== CRUD Layout Components ===================== */
+
+.content {
+    padding: 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.button {
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #3e8e41;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.item-card {
+    display: block;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    background-color: var(--container-color);
+    color: inherit;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.item-card:hover {
+    background-color: #3b5244;
+}
+
+.create-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #ccc;
+    margin-top: 1rem;
+}
