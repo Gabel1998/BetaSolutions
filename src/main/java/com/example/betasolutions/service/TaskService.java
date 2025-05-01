@@ -1,6 +1,8 @@
 package com.example.betasolutions.service;
 
 import com.example.betasolutions.model.Task;
+import com.example.betasolutions.model.TaskEmployee;
+import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +14,11 @@ import java.util.Optional;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final TaskEmployeeRepository taskEmployeeRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository) {
         this.taskRepository = taskRepository;
+        this.taskEmployeeRepository = taskEmployeeRepository;
     }
 
     public void createTask(Task task) {
@@ -35,5 +39,12 @@ public class TaskService {
 
     public void deleteTask(Long id) {
         taskRepository.delete(id);
+    }
+
+    public double getTotalHoursForTask(Long taskId) {
+        List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
+        return employees.stream()
+                .mapToDouble(TaskEmployee::getHoursWorked)
+                .sum();
     }
 }

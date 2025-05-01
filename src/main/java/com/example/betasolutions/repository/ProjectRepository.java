@@ -29,7 +29,7 @@ public class ProjectRepository {
     }
 
 //    Optional betyder: "Der kan være noget. Men der kan også være ingenting." Hjælper med nullPointerExceptions
-    public Optional<Project> findById(int id) {
+    public Optional<Project> findById(long id) {
         String sql = "SELECT * FROM tb_projects WHERE p_id = ?";
         return jdbcTemplate.query(sql, new ProjectRowMapper(), id)
                 .stream()

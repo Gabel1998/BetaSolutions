@@ -8,6 +8,7 @@ public class Project {
     private Integer id;
     private String name;
     private String description;
+    private double estimatedHours; // = H_total
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDateTime createdAt;
@@ -68,5 +69,13 @@ public class Project {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public double getEstimatedHours() {
+        return estimatedHours;
+    }
+
+    public void setEstimatedHours(double estimatedHours) {
+        this.estimatedHours = estimatedHours;
     }
 }
