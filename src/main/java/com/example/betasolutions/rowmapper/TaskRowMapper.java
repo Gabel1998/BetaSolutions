@@ -13,6 +13,7 @@ public class TaskRowMapper implements RowMapper<Task> {
         Task task = new Task();
         task.setId(rs.getLong("ts_id")); //ID fra databasen
         task.setSubProjectId(rs.getInt("ts_sp_id")); //Reference til subProject
+        task.setProjectId(rs.getLong("ts_pj_id")); //Reference til project
         task.setName(rs.getString("ts_name"));
         task.setDescription(rs.getString("ts_description"));
         task.setEstimatedHours(rs.getDouble("ts_estimated_hours"));

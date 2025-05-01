@@ -1,6 +1,7 @@
 package com.example.betasolutions.controller;
 
 import com.example.betasolutions.model.Task;
+import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.TaskService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class TaskController {
 
     private final TaskService taskService;
+    private final ProjectService projectService;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, ProjectService projectService) {
         this.taskService = taskService;
+        this.projectService = projectService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -64,5 +67,20 @@ public class TaskController {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         taskService.deleteTask(id);
         return "redirect:/tasks";
+    }
+
+    @GetMapping("/task/{id}/hours")
+    public String getTaskHours(@PathVariable("id") Long taskId, Model model) {
+       Task task = taskService.getTaskById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        double timer_d = taskService.getTotalHoursForTask(taskId);
+        double dagrate = projectService.calculateDagRate(task.getProjectId());
+
+        model.addAttribute("timer_d", timer_d);
+        model.addAttribute("dagrate", dagrate);
+        model.addAttribute("status", timer_d >= dagrate ? "OK" : "⚠Under dagrate");
+
+        return "tasks/task-overview";
     }
 }

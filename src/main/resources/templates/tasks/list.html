@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Task Overview</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
 <body>
+<div th:insert="~{header :: header}"></div>
 
+<h2>Task Overview</h2>
+
+<p><strong>Total hours worked:</strong> <span th:text="${timer_d}"></span></p>
+<p><strong>Required dagrate:</strong> <span th:text="${dagrate}"></span></p>
+<p><strong>Status:</strong> <span th:text="${status != null ? status : 'N/A'}"></span></p> <!-- lille fallback texts til status -->
+
+<a href="/tasks/list">← Back to all tasks</a>
+
+<div th:insert="~{footer :: footer}"></div>
 </body>
 </html>

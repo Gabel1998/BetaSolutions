@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class Task {
     private Long id; //Primary Key
+    private Long projectId; //foreign key til projects
     private Integer subProjectId; //foreign key til subProjects
     private String name;
     private String description;
@@ -75,5 +76,13 @@ public class Task {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
     }
 }
