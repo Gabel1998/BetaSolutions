@@ -4,6 +4,7 @@ import com.example.betasolutions.model.Task;
 import com.example.betasolutions.model.TaskEmployee;
 import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
+import com.example.betasolutions.utils.DateUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +46,19 @@ public class TaskService {
         List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
         return employees.stream()
                 .mapToDouble(TaskEmployee::getHoursWorked)
+                .sum();
+    }
+
+    public double calculateDailyHours(TaskEmployee employee) {
+        long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
+        if (workdays == 0) return 0;
+        return (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
+    }
+
+    public double getTotalDailyHoursForTask(Long taskId) {
+        List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
+        return employees.stream()
+                .mapToDouble(this::calculateDailyHours)
                 .sum();
     }
 }
