@@ -1,0 +1,22 @@
+<footer th:fragment="footer" class="footer">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <div class="footer-container">
+        <p>&copy; 2025 BETA Solutions</p>
+
+        <nav class="footer-links">
+            <a th:href="@{/about}">Om os</a>
+            <a th:href="@{/cookies}">Cookiepolitik</a>
+            <a th:href="@{/privacy}">Datapolitik</a>
+        </nav>
+
+        <a href="#" class="back-to-top">↑ back to top</a>
+    </div>
+</footer>
+
+<!-- ======== !!!OPTIONAL!!! (back-to-top button) ======== -->
+<script>
+    document.querySelector('.back-to-top')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
