@@ -1,10 +1,16 @@
 package com.example.betasolutions.model;
 
+import java.time.LocalDate;
+
 public class TaskEmployee {
     private Long tseId; //Primary Key
     private Long taskId; //foreign key til Task
     private String employeeId; //foreign key til Employee
     private double hoursWorked;
+    private double allocatedHours; // = H_allocated
+    private double allocationPercentage; // = H_allocated / H_total * 100
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     public Long getTseId() {
         return tseId;
@@ -36,5 +42,37 @@ public class TaskEmployee {
 
     public void setHoursWorked(double hoursWorked) {
         this.hoursWorked = hoursWorked;
+    }
+
+    public double getAllocatedHours() {
+        return allocatedHours;
+    }
+
+    public void setAllocatedHours(double allocatedHours) {
+        this.allocatedHours = allocatedHours;
+    }
+
+    public double getAllocationPercentage() {
+        return allocationPercentage;
+    }
+
+    public void setAllocationPercentage(double allocationPercentage) {
+        this.allocationPercentage = allocationPercentage;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 }
