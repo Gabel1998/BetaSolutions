@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
@@ -28,9 +30,15 @@ public class TaskController {
 
     @GetMapping
     public String listTasks(Model model, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-        model.addAttribute("pageTitle", "Tasks");
-        model.addAttribute("tasks", taskService.getAllTasks());
+        if (!isLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+        List<Task> tasks = taskService.getAllTasks();
+        model.addAttribute("tasks", tasks);
+
+        boolean overLimit = taskService.isDailyHoursExceeded(tasks, 8.0); // 8 timer er bare et eksempel. Ved ikke hvad det skal være
+        model.addAttribute("overLimit", overLimit);
+
         return "tasks/list";
     }
 

@@ -13,6 +13,9 @@
         <a class="button" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Rediger subprojekt</a>
     </div>
 
+    <div th:if="${overLimit}" class="alert alert-danger" role="alert">
+        Advarsel: Det samlede daglige timetal overstiger kapaciteten!
+    </div>
     <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
 
     <section class="item-list">

@@ -61,4 +61,15 @@ public class TaskService {
                 .mapToDouble(this::calculateDailyHours)
                 .sum();
     }
+
+    public boolean isDailyHoursExceeded(List<Task> tasks, double dailyLimit) {
+        double totalHours = 0;
+        for (Task task : tasks) {
+            if (task.getActualHours() != null) {
+                totalHours += task.getActualHours();
+            }
+        }
+        return totalHours > dailyLimit;
+    }
+
 }
