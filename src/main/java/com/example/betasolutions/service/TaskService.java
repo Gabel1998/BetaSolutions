@@ -72,4 +72,7 @@ public class TaskService {
         return totalHours > dailyLimit;
     }
 
+    public List<Task> getTasksBySubProjectId(int subProjectId) {
+        return taskRepository.findBySubProjectId(subProjectId);
+    }
 }

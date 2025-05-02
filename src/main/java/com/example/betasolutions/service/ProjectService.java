@@ -57,5 +57,8 @@ public class ProjectService {
                 .count();
     }
 
-
+    public Object findSubProjectById(int subProjectId) {
+        return projectRepository.findById(subProjectId)
+                .orElseThrow(() -> new IllegalArgumentException("SubProject not found with id: " + subProjectId));
+    }
 }

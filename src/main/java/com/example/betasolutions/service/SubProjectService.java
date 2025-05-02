@@ -36,4 +36,8 @@ public class SubProjectService {
     public void deleteSubProject(Integer id) {
         subProjectRepository.delete(id);
     }
+
+    public Optional<SubProject> findSubProjectById(int subProjectId) {
+        return subProjectRepository.findById(subProjectId);
+    }
 }
