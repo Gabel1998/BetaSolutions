@@ -143,7 +143,7 @@ public class TaskController {
 
         double dagrate = workdays > 0 ? totalEstimated / workdays : 0;
 
-        String status = totalActual >= dagrate ? "OK" : "⚠ Under dagrate";
+        String status = totalActual >= dagrate ? "OK" : "⚠ Under dagrate ⚠";
 
         model.addAttribute("tasks", tasks);
         model.addAttribute("subProject", subProject);
