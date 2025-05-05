@@ -7,8 +7,16 @@
 
 <main class="content">
 
+    <div th:if="${project != null}">
+        <p th:text="'Subprojekter for: ' + ${project.name}">Fallback tekst</p>
+    </div>
+    <div th:if="${project == null}">
+        <p style="color: red;">⚠️ Projekt ikke sat korrekt i modellen!</p>
+    </div>
+
     <div class="top-bar">
-        <h2 th:text="'Subprojekter for ' + ${project.name}">Projektets navn</h2>
+        <h2 th:text="${project != null} ? ${project.name} : 'Ukendt projekt'">Projektets navn</h2>
+
         <a class="button" th:href="@{'/projects/edit/' + ${project.id}}">Rediger projekt</a>
     </div>
 

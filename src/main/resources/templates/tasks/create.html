@@ -5,9 +5,6 @@
     <title>Create Task</title>
 </head>
 <body>
-<div th:insert="~{fragments/header :: header}"></div>
-
-<h2>Create New Task</h2>
 
 <!-- Fælles header -->
 <div th:replace="~{fragments/header :: header}"></div>
@@ -28,6 +25,12 @@
         <!-- Task beskrivelse: længere fritekst -->
         <label for="description">Beskrivelse</label>
         <textarea id="description" th:field="*{description}" rows="4"></textarea>
+
+        <label for="startDate">Startdato</label>
+        <input type="date" id="startDate" th:field="*{spStartDate}">
+
+        <label for="endDate">Slutdato</label>
+        <input type="date" id="endDate" th:field="*{spEndDate}">
 
         <!-- Estimeret timer for Tasks -->
         <label for="estimatedHours">Estimerede timer</label>

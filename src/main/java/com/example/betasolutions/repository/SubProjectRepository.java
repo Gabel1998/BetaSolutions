@@ -57,4 +57,9 @@ public class SubProjectRepository {
                 .stream()
                 .findFirst();
     }
+
+    public List<SubProject> findAllByProjectId(Integer projectId) {
+        String sql = "SELECT * FROM tb_subprojects WHERE sp_p_id = ?";
+        return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
+    }
 }

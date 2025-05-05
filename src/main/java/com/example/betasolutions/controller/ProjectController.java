@@ -9,6 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/projects")
 public class ProjectController {
@@ -100,5 +104,22 @@ public class ProjectController {
         session.setAttribute("successMessage", "Projekt er blevet slettet");
         return "redirect:/projects";
     }
+
+    @GetMapping("/summary")
+    public String showProjectSummary(Model model) {
+        List<Project> projects = projectService.getAllProjects();
+
+        Map<Integer, Double> projectHoursMap = new HashMap<>();
+        for (Project p : projects) {
+            double totalHours = projectService.getTotalActualHoursForProject(p.getId());
+            projectHoursMap.put(p.getId(), totalHours);
+        }
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("projectHoursMap", projectHoursMap);
+        return "projects/summary";
+    }
+
+
 
 }

@@ -4,6 +4,15 @@
     <title>Daily Hour Distribution</title>
 </head>
 <body>
+
+<div class="container">
+    <h2 class="text-center">Daily Hour Distribution</h2>
+
+    <div class="card">
+        <p><strong>Total allocated per day:</strong>
+            <span th:text="${dailyHours} + ' hours'"></span>
+        </p>
+
 <div th:insert="~{fragments/header :: header}"></div>
 
 <div class="container">

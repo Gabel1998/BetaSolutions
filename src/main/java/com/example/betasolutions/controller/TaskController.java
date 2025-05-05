@@ -5,7 +5,6 @@ import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.service.TaskService;
-import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -14,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/tasks")
@@ -34,30 +34,58 @@ public class TaskController {
     }
 
     @GetMapping
-    public String listTasks(Model model, HttpSession session) {
+    public String listTasks(@RequestParam(value = "subProjectId", required = false) Integer subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
-        List<Task> tasks = taskService.getAllTasks();
-        model.addAttribute("tasks", tasks);
 
-        boolean overLimit = taskService.isDailyHoursExceeded(tasks, 8.0); // 8 timer er bare et eksempel. Ved ikke hvad det skal være
+        SubProject subProject = subProjectService.getSubProjectById(subProjectId)
+                .orElseThrow(() -> new RuntimeException("Subprojekt ikke fundet")); //skal have runtime exception, ellers virker prjektet ikke.
+
+        List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("subProject", subProject);
+
+        boolean overLimit = taskService.isDailyHoursExceeded(tasks, 8.0);
         model.addAttribute("overLimit", overLimit);
 
         return "tasks/list";
     }
 
+
     @GetMapping("/create")
-    public String showCreateForm(Model model, HttpSession session) {
+    public String showCreateForm(@RequestParam("subProjectId") Integer subProjectId,
+                                     Model model,
+                                     HttpSession session) {
+
         if (!isLoggedIn(session)) return "redirect:/auth/login";
-        model.addAttribute("pageTitle", "Opret task");
-        model.addAttribute("task", new Task());
+
+        // Find delprojektet (valgfrit, fx til visning af navn)
+        Optional<SubProject> subProjectOpt = subProjectService.getSubProjectById(subProjectId);
+        if (subProjectOpt.isEmpty()) {
+            model.addAttribute("error", "Delprojektet blev ikke fundet.");
+            return "redirect:/subprojects/list"; // fallback hvis ID er forkert
+        }
+
+        // Klargør ny task med korrekt FK sat
+        Task task = new Task();
+        task.setSubProjectId(subProjectId);
+
+        model.addAttribute("task", task);
+        model.addAttribute("subProject", subProjectOpt.get());
+
         return "tasks/create";
     }
 
 
     @PostMapping("/create")
-    public String createTask(@ModelAttribute @Valid Task task, BindingResult result, Model model, HttpSession session) {
+    public String createTask(@ModelAttribute @Valid Task task,
+                             BindingResult result,
+                             Model model,
+                             HttpSession session) {
+
+        System.out.println("createTask: " + task.getName());
+
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         if (result.hasErrors()) {
@@ -65,10 +93,25 @@ public class TaskController {
             return "tasks/create";
         }
 
-        taskService.createTask(task);
-        return "redirect:/tasks";
-    }
+        Integer subProjectId = task.getSubProjectId();
 
+        // Hent tilhørende projekt via subproject
+        Optional<SubProject> subProjectOpt = subProjectService.getSubProjectById(subProjectId);
+        if (subProjectOpt.isEmpty()) {
+            model.addAttribute("error", "Ugyldigt SubProject – projekt kunne ikke findes.");
+            return "tasks/create";
+        }
+
+        // Sæt projektID i tasken
+        Integer projectId = subProjectOpt.get().getProjectId();
+        task.setProjectId(Long.valueOf(projectId));
+
+        // Gem tasken
+        taskService.createTask(task);
+
+        // Redirect tilbage til opgavelisten for dette delprojekt
+        return "redirect:/tasks/list?subProjectId=" + subProjectId;
+    }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {

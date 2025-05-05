@@ -1,14 +1,18 @@
-/*STYLING ER PRÆCIS DET SAMME SOM WISHLIST, SKAL RETTES*/
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
 /* ===================== Root Colors ===================== */
 :root {
-    --primary-color: #4CAF50;
-    --secondary-color: #dff4e3;            /* super soft Celadon-like tone */
-    --background-color: #1d2e26;           /* deep, muted green-black */
-    --text-color: #e8f5e9;                 /* soft off-white */
-    --button-color: #2a6e3f;               /* Elegant dark green */
-    --container-color: #2e4432;            /* nice dark container green */
+    --black: #000000;
+    --white: #ffffff;
+    --blue: #0000EE;
+    --grey-light: #dedede;
+    --grey-soft: #bdcfd8;
+    --pink: #ff325a;
+
+    --primary-color: var(--pink);
+    --secondary-color: var(--grey-soft);
+    --background-color: var(--white);
+    --text-color: var(--black);
+    --button-color: var(--blue);
+    --container-color: var(--grey-light);
 }
 
 /* ===================== Global ===================== */
@@ -26,7 +30,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding-top: 70px; /* splitter til header */
+    padding-top: 70px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -48,13 +52,11 @@ a {
     z-index: 1;
 }
 
-/* ned med footer */
 .page-container {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
-
 
 /* == Header & Footer == */
 header, footer {
@@ -62,28 +64,26 @@ header, footer {
 }
 
 header {
-    position: fixed; /* absolute */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 10;
-    background: transparent;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--grey-light);
+    border-bottom: 1px solid var(--grey-soft);
     backdrop-filter: blur(6px);
     padding: 10px 0;
     height: 70px;
 }
 
 footer {
-    background-color: #1a2720;
+    background-color: var(--grey-light);
     text-align: center;
     margin-top: auto;
     flex-shrink: 0;
     padding: 5px 0;
+    color: var(--text-color);
 }
-
-
-
 
 /* ===================== Header Components ===================== */
 .header-container {
@@ -141,7 +141,7 @@ footer {
 }
 
 .nav-menu a:hover {
-    color: #ddd;
+    color: var(--primary-color);
 }
 
 .login-opret-bruger,
@@ -164,20 +164,10 @@ footer {
 
 .nav-button:hover {
     background: var(--text-color);
-    color: black;
+    color: var(--background-color);
 }
-
-.user-info {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    white-space: nowrap;
-}
-
-
 
 /* ===================== Footer Components ===================== */
-
 .footer-links {
     display: flex;
     justify-content: center;
@@ -187,50 +177,37 @@ footer {
 }
 
 .footer-links a {
-    color: #ddd;
+    color: var(--text-color);
     font-size: 0.95rem;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .footer-links a:hover {
-    color: #99D19C;
+    color: var(--primary-color);
 }
 
 .back-to-top {
     display: inline-block;
     font-size: 0.9rem;
-    color: #999;
+    color: var(--grey-soft);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .back-to-top:hover {
-    color: #fff;
+    color: var(--text-color);
 }
 
 /* ===================== Index Components ===================== */
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-
 .page {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-header, footer {
-    background-color: #eee;
-    padding: 1em;
-    text-align: center;
-}
-
 .banner {
-    background-color: #ccc;
+    background-color: var(--grey-soft);
     padding: 2em;
     text-align: center;
 }
@@ -239,61 +216,35 @@ header, footer {
     text-align: center;
     margin: 2em 0;
     font-size: 1.2em;
-    color: #333;
-}
-
-/* Skjul login prompt og vis projekter hvis logget ind */
-.projects {
-    display: none; /* Sæt til block når logget ind */
-    padding: 1em;
+    color: var(--text-color);
 }
 
 .project-list {
     display: flex;
-    gap: 1em;
-    justify-content: center;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5em;
+    max-width: 960px;
+    margin: auto;
 }
 
 .project-card {
-    background-color: #f2f2f2;
-    padding: 1em;
-    border: 1px solid #ccc;
-    width: 120px;
+    width: 280px;
+    padding: 1.5em;
     text-align: center;
-}
-
-footer {
-    margin-top: auto;
+    background: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s;
 }
 
 /* ===================== Login Handler Components ===================== */
-
-/* == Global == */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.page-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 50px 0;
-}
-
-/* == Login Container == */
-.login-container, .register-container{
+.login-container, .register-container {
     background-color: var(--container-color);
     padding: 40px;
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 450px;
     margin: 10vh auto;
@@ -306,7 +257,6 @@ body {
     justify-content: center;
 }
 
-/* == Heading == */
 h1 {
     color: var(--text-color);
     font-size: 2.5rem;
@@ -314,21 +264,19 @@ h1 {
     margin-bottom: 20px;
 }
 
-/* == Form Elements == */
 input {
     width: 100%;
     padding: 14px;
     border-radius: 12px;
     margin-bottom: 20px;
-    border: 2px solid #4CAF50;
-    background-color: #fff;
-    color: #333;
+    border: 2px solid var(--primary-color);
+    background-color: var(--white);
+    color: var(--text-color);
     font-size: 1rem;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
 }
 
-/* == Register Link == */
 .register-link {
     color: var(--text-color);
     font-size: 1rem;
@@ -338,12 +286,11 @@ input {
 }
 
 .register-link:hover {
-    color: #388e3c;
+    color: var(--primary-color);
     text-decoration: underline;
 }
 
 /* ===================== CRUD Layout Components ===================== */
-
 .content {
     padding: 2rem;
     max-width: 900px;
@@ -358,16 +305,17 @@ input {
 
 .button {
     background-color: var(--button-color);
-    color: white;
+    color: var(--white);
     border: none;
     padding: 10px 16px;
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .button:hover {
-    background-color: #3e8e41;
+    background-color: var(--primary-color);
 }
 
 .top-bar {
@@ -386,15 +334,15 @@ input {
 .item-card {
     display: block;
     padding: 1rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--grey-soft);
     background-color: var(--container-color);
-    color: inherit;
+    color: var(--text-color);
     border-radius: 6px;
     transition: background 0.2s ease;
 }
 
 .item-card:hover {
-    background-color: #3b5244;
+    background-color: var(--grey-soft);
 }
 
 .create-button-container {
@@ -407,6 +355,6 @@ input {
     display: flex;
     justify-content: space-between;
     font-size: 0.85rem;
-    color: #ccc;
+    color: var(--grey-soft);
     margin-top: 1rem;
 }

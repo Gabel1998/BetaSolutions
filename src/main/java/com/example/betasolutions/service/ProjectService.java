@@ -2,6 +2,7 @@ package com.example.betasolutions.service;
 
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.repository.ProjectRepository;
+import com.example.betasolutions.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
 //    Constructor
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
         this.projectRepository = projectRepository;
+        this.taskRepository = taskRepository;
     }
 
     public void createProject(Project project) {
@@ -61,4 +64,13 @@ public class ProjectService {
         return projectRepository.findById(subProjectId)
                 .orElseThrow(() -> new IllegalArgumentException("SubProject not found with id: " + subProjectId));
     }
+
+    public double getTotalActualHoursForProject(int projectId) {
+        return taskRepository.findAll().stream()
+                .filter(task -> task.getProjectId() != null && task.getProjectId().equals((long) projectId))
+                .mapToDouble(task -> task.getActualHours() != null ? task.getActualHours() : 0)
+                .sum();
+    }
+
+
 }

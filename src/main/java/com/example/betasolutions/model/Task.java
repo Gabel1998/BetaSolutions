@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Task {
@@ -28,9 +29,28 @@ public class Task {
     @PositiveOrZero(message = "Actual hours must be 0 or more")
     private Double actualHours;
 
+    private LocalDate startDate; // ny
+    private LocalDate endDate;   // ny
+
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+
+    public LocalDate getSpStartDate() {
+        return startDate;
+    }
+
+    public void setSpStartDate(LocalDate spStartDate) {
+        this.startDate = spStartDate;
+    }
+
+    public LocalDate getSpEndDate() {
+        return endDate;
+    }
+
+    public void setSpEndDate(LocalDate spEndDate) {
+        this.endDate = spEndDate;
+    }
 
     public Long getId() {
         return id;
