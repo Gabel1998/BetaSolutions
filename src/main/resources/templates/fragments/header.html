@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title th:text ="${pageTitle}">Projektstyring</title> <!-- Skal vi måske fjerne denne '<title>', da IDE'et klager over alle andre
                                                                HTML sider, når vi replacer header, uden at have '<title>' med?
-                                                               == Fjerne <title> her i skapalon -> implementer i alle klasser, efter navn -->
+                                                               == Fjerne <title> her i skabalon -> implementer i alle klasser, efter navn -->
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/base.css}">
     <link rel="stylesheet" th:href="@{/css/componements.css}">
@@ -23,6 +23,7 @@
             <ul class="nav-menu">
                 <li><a th:href="@{/}">Hjem</a></li>
                 <li><a th:href="@{/projects/list}">Projects</a></li>
+                <li><a th:href="@{/projects/summary}">Projektsummering</a></li>
                 <li><a th:href="@{/subprojects}">Subprojects</a></li>
                 <li><a th:href="@{/tasks}">Tasks</a> </li>
             </ul>
