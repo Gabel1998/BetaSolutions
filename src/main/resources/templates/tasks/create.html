@@ -15,32 +15,35 @@
 
     <form th:action="@{/tasks/create}" th:object="${task}" method="post" class="form-container">
 
-        <!-- FK til subproject (også hidden)-->
+        <!-- FK til subproject (og projekt) -->
         <input type="hidden" th:field="*{subProjectId}"/>
+        <input type="hidden" th:field="*{projectId}"/>
 
-        <!-- Task navn: kort tekst -->
+        <!-- Navn -->
         <label for="name">Navn</label>
         <input type="text" id="name" th:field="*{name}" required>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
-        <!-- Task beskrivelse: længere fritekst -->
+        <!-- Beskrivelse -->
         <label for="description">Beskrivelse</label>
         <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
+        <!-- Datoer -->
         <label for="startDate">Startdato</label>
         <input type="date" id="startDate" th:field="*{spStartDate}">
 
         <label for="endDate">Slutdato</label>
         <input type="date" id="endDate" th:field="*{spEndDate}">
 
-        <!-- Estimeret timer for Tasks -->
+        <!-- Timer -->
         <label for="estimatedHours">Estimerede timer</label>
         <input type="number" step="0.1" id="estimatedHours" th:field="*{estimatedHours}" required>
+        <div th:if="${#fields.hasErrors('estimatedHours')}" th:errors="*{estimatedHours}"></div>
 
-        <!-- Aktuelle timer en task har taget-->
         <label for="actualHours">Faktiske timer</label>
         <input type="number" step="0.1" id="actualHours" th:field="*{actualHours}">
 
-        <!-- Submit-knap -->
+        <!-- Submit -->
         <button type="submit" class="button">Opret</button>
     </form>
 
