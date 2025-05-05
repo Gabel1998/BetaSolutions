@@ -20,9 +20,31 @@ public class TaskRepository {
 
     // Gemmer en ny Task i databasen
     public void save(Task task) {
-        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, task.getSubProjectId(), task.getName(), task.getDescription(), task.getEstimatedHours(), task.getActualHours());
+        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, sp_start_date, sp_end_date) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+                task.getSubProjectId(),
+                task.getName(),
+                task.getDescription(),
+                task.getEstimatedHours(),
+                task.getActualHours(),
+                task.getSpStartDate(),
+                task.getSpEndDate());
     }
+
+    public void update(Task task) {
+        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, sp_start_date = ?, sp_end_date = ? WHERE ts_id = ?";
+        jdbcTemplate.update(sql,
+                task.getSubProjectId(),
+                task.getName(),
+                task.getDescription(),
+                task.getEstimatedHours(),
+                task.getActualHours(),
+                task.getSpStartDate(),
+                task.getSpEndDate(),
+                task.getId());
+    }
+
 
     // Henter alle Tasks
     public List<Task> findAll() {
@@ -36,12 +58,6 @@ public class TaskRepository {
         return jdbcTemplate.query(sql, new TaskRowMapper(), id)
                 .stream()
                 .findFirst();
-    }
-
-    // Opdaterer en Task
-    public void update(Task task) {
-        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ? WHERE ts_id = ?";
-        jdbcTemplate.update(sql, task.getSubProjectId(), task.getName(), task.getDescription(), task.getEstimatedHours(), task.getActualHours(), task.getId());
     }
 
     // Sletter en Task

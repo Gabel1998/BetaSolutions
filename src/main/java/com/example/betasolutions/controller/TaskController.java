@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/tasks")
@@ -53,27 +54,38 @@ public class TaskController {
 
 
     @GetMapping("/create")
-    public String showCreateForm(@RequestParam(value = "subProjectId", required = false) Integer subProjectId, Model model, HttpSession session) {
+    public String showCreateForm(@RequestParam("subProjectId") Integer subProjectId,
+                                     Model model,
+                                     HttpSession session) {
+
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
-        if (subProjectId == null) return "redirect:/projects";
+        // Find delprojektet (valgfrit, fx til visning af navn)
+        Optional<SubProject> subProjectOpt = subProjectService.getSubProjectById(subProjectId);
+        if (subProjectOpt.isEmpty()) {
+            model.addAttribute("error", "Delprojektet blev ikke fundet.");
+            return "redirect:/subprojects/list"; // fallback hvis ID er forkert
+        }
 
+        // Klargør ny task med korrekt FK sat
         Task task = new Task();
         task.setSubProjectId(subProjectId);
 
-        SubProject subProject = subProjectService.getSubProjectById(subProjectId)
-                .orElseThrow(() -> new RuntimeException("Subproject not found"));
-
-        model.addAttribute("pageTitle", "Opret task");
         model.addAttribute("task", task);
-        model.addAttribute("project", subProject.getProjectId());
+        model.addAttribute("subProject", subProjectOpt.get());
 
-        return "/tasks/create";
+        return "tasks/create";
     }
 
 
     @PostMapping("/create")
-    public String createTask(@ModelAttribute @Valid Task task, BindingResult result, Model model, HttpSession session) {
+    public String createTask(@ModelAttribute @Valid Task task,
+                             BindingResult result,
+                             Model model,
+                             HttpSession session) {
+
+        System.out.println("createTask: " + task.getName());
+
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         if (result.hasErrors()) {
@@ -81,10 +93,25 @@ public class TaskController {
             return "tasks/create";
         }
 
-        taskService.createTask(task);
-        return "redirect:/tasks";
-    }
+        Integer subProjectId = task.getSubProjectId();
 
+        // Hent tilhørende projekt via subproject
+        Optional<SubProject> subProjectOpt = subProjectService.getSubProjectById(subProjectId);
+        if (subProjectOpt.isEmpty()) {
+            model.addAttribute("error", "Ugyldigt SubProject – projekt kunne ikke findes.");
+            return "tasks/create";
+        }
+
+        // Sæt projektID i tasken
+        Integer projectId = subProjectOpt.get().getProjectId();
+        task.setProjectId(Long.valueOf(projectId));
+
+        // Gem tasken
+        taskService.createTask(task);
+
+        // Redirect tilbage til opgavelisten for dette delprojekt
+        return "redirect:/tasks/list?subProjectId=" + subProjectId;
+    }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {

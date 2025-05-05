@@ -36,7 +36,7 @@ public class SubProjectController {
                                   Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
-        if (projectId == null) return "redirect:/projects"; // eller en fejl-side
+        if (projectId == null) return "redirect:/projects";
 
         model.addAttribute("subProjects", subProjectService.getAllSubProjectsByProjectId(projectId));
         model.addAttribute("project", projectService.getProjectById(projectId)
@@ -67,7 +67,7 @@ public class SubProjectController {
 
         subProjectService.createSubProject(subProject);
         session.setAttribute("successMessage", "Projekt er blevet oprettet");
-        return "redirect:/subprojects?projectId=" + subProject.getProjectId(); //redirects til list.html efter oprettelse
+        return "redirect:/subprojects?projectId=" + subProject.getProjectId();
     }
 
     @GetMapping("/edit/{id}")
