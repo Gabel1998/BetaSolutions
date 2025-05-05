@@ -1,14 +1,23 @@
 package com.example.betasolutions.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Project {
-
     private Integer id;
+
+    @NotBlank(message = "Name is required")
     private String name;
+
+    @Size(max = 500, message = "Description can't be longer than 500 characters")
     private String description;
     private double estimatedHours; // = H_total
+
+    @NotNull(message = "Start date is required")
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDateTime createdAt;

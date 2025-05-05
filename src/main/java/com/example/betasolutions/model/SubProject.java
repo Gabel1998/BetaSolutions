@@ -1,14 +1,27 @@
 package com.example.betasolutions.model;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class SubProject {
     private Integer id; //Primary Key
+
+    @NotNull(message = "Project ID must be provided.")
     private Integer projectId; //Foreign Key til "Project"
+
+    @NotBlank(message = "Name is required.")
     private String name;
     private String description;
+
+    @NotNull(message = "Start date is required.")
+    @FutureOrPresent(message = "Start date must be today or in the future.")
     private LocalDate startDate;
+
+    @NotNull(message = "End date is required.")
     private LocalDate endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
