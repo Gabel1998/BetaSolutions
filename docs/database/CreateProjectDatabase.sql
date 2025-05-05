@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS db_projects;
 CREATE DATABASE db_projects;
 USE db_projects;
 

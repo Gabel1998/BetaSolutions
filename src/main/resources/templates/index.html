@@ -4,35 +4,40 @@
     <title>Alpha Solutions</title></head>
 <body>
 <!-- ======== HEADER TEMPLATE ======== -->
-<div th:replace="~{header :: header}"></div>
+<div th:replace="~{fragments/header :: header}"></div>
+
+</body>
 
 <div class="page">
-    <header>
-        <h1>Alpha Solution Projects</h1>
-    </header>
-
     <section class="banner">
-        <h2>BANNER</h2>
+        <h2>Alpha Solutions</h2>
     </section>
 
     <!-- Uden login -->
     <section class="login-prompt">
         <p>Log ind for at se projekter</p>
+        <a th:href="@{/auth/login}" class="nav-button">Login</a>
     </section>
 
     <!-- Med login -->
     <section class="projects">
         <h2>Seneste opdateret Projekter</h2>
         <div class="project-list">
-            <div class="project-card">P-Kort</div>
-            <div class="project-card">Projekt 2</div>
-            <div class="project-card">Projekt 3</div>
-            <!-- Du kan tilføje flere kort her -->
+            <a th:each="project : ${projects}"
+               th:href="@{'/subprojects?projectId=' + ${project.id}}"
+               class="project-card">
+
+                <h3 th:text="${project.name}">Projektnavn</h3>
+                <p th:text="${project.description}">Beskrivelse</p>
+                <p>Start: <span th:text="${project.startDate}"></span></p>
+                <p>Slut: <span th:text="${project.endDate}"></span></p>
+
+            </a>
         </div>
     </section>
 
     <footer>
-        <p>Footer</p>
+        <div th:replace="~{fragments/footer :: footer}"></div>
     </footer>
 </div>
 
