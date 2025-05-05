@@ -1,16 +1,12 @@
 package com.example.betasolutions.controller;
 
 import com.example.betasolutions.model.SubProject;
-import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.SubProjectService;
-import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
