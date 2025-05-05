@@ -49,4 +49,12 @@ public class SubProjectRepository {
         String sql = "DELETE FROM tb_subprojects WHERE sp_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    // Henter alle SubProjects for et givet Project ID
+    public Optional<SubProject> findById(int subProjectId) {
+        String sql = "SELECT * FROM tb_subprojects WHERE sp_id = ?";
+        return jdbcTemplate.query(sql, new SubProjectRowMapper(), subProjectId)
+                .stream()
+                .findFirst();
+    }
 }

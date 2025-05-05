@@ -49,4 +49,10 @@ public class TaskRepository {
         String sql = "DELETE FROM tb_tasks WHERE ts_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    // Henter alle Tasks for et givet SubProject ID
+    public List<Task> findBySubProjectId(int subProjectId) {
+        String sql = "SELECT * FROM tb_tasks WHERE ts_sp_id = ?";
+        return jdbcTemplate.query(sql, new TaskRowMapper(), subProjectId);
+    }
 }

@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <title>Daily Distribution</title>
+<head th:replace="~{fragments/header :: header}">
+    <title>Daily Hour Distribution</title>
 </head>
 <body>
-<div th:insert="~{header :: header}"></div>
+<div th:insert="~{fragments/header :: header}"></div>
 
-<h2>Distribution of hours per workday</h2>
-<p><strong>Total allocated per day:</strong> <span th:text="${dailyHours}"></span> hours</p>
+<div class="container">
+    <h2 class="text-center">Daily Hour Distribution</h2>
 
-<a href="/tasks/list">← Back to tasks</a>
+    <div class="card">
+        <p><strong>Total allocated per day:</strong>
+            <span th:text="${dailyHours} + ' hours'"></span>
+        </p>
 
-<div th:insert="~{footer :: footer}"></div>
+        <div class="bar-container">
+            <div class="bar" th:style="'width: ' + (${dailyHours} * 10) + '%'"></div>
+        </div>
+
+        <a href="/tasks" class="button">← Back to Tasks</a>
+    </div>
+</div>
+
+<div th:insert="~{fragments/footer :: footer}"></div>
 </body>
 </html>

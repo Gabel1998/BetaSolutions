@@ -1,12 +1,19 @@
 package com.example.betasolutions.controller;
 
+import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.ProjectService;
+import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.service.TaskService;
+import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/tasks")
@@ -14,10 +21,12 @@ public class TaskController {
 
     private final TaskService taskService;
     private final ProjectService projectService;
+    private final SubProjectService subProjectService;
 
-    public TaskController(TaskService taskService, ProjectService projectService) {
+    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService) {
         this.taskService = taskService;
         this.projectService = projectService;
+        this.subProjectService = subProjectService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -26,9 +35,15 @@ public class TaskController {
 
     @GetMapping
     public String listTasks(Model model, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-        model.addAttribute("pageTitle", "Tasks");
-        model.addAttribute("tasks", taskService.getAllTasks());
+        if (!isLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+        List<Task> tasks = taskService.getAllTasks();
+        model.addAttribute("tasks", tasks);
+
+        boolean overLimit = taskService.isDailyHoursExceeded(tasks, 8.0); // 8 timer er bare et eksempel. Ved ikke hvad det skal være
+        model.addAttribute("overLimit", overLimit);
+
         return "tasks/list";
     }
 
@@ -40,12 +55,20 @@ public class TaskController {
         return "tasks/create";
     }
 
+
     @PostMapping("/create")
-    public String createTask(@ModelAttribute Task task, HttpSession session) {
+    public String createTask(@ModelAttribute @Valid Task task, BindingResult result, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        if (result.hasErrors()) {
+            model.addAttribute("task", task);
+            return "tasks/create";
+        }
+
         taskService.createTask(task);
         return "redirect:/tasks";
     }
+
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
@@ -82,7 +105,7 @@ public class TaskController {
 
         model.addAttribute("timer_d", timer_d);
         model.addAttribute("dagrate", dagrate);
-        model.addAttribute("status", timer_d >= dagrate ? "OK" : "⚠Under dagrate");
+        model.addAttribute("status", timer_d >= dagrate ? "OK" : "⚠ Under dagrate: (" + dagrate + ") ⚠");
 
         return "tasks/list";
     }
