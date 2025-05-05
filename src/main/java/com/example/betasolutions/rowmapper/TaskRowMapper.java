@@ -3,6 +3,7 @@ package com.example.betasolutions.rowmapper;
 import com.example.betasolutions.model.Task;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -17,8 +18,17 @@ public class TaskRowMapper implements RowMapper<Task> {
         task.setDescription(rs.getString("ts_description"));
         task.setEstimatedHours(rs.getDouble("ts_estimated_hours"));
         task.setActualHours(rs.getDouble("ts_actual_hours"));
-        task.setSpStartDate(rs.getDate("sp_start_date").toLocalDate());
-        task.setSpEndDate(rs.getDate("sp_end_date").toLocalDate());
+
+        Date startDate = rs.getDate("sp_start_date");
+        if (startDate != null) {
+            task.setSpStartDate(startDate.toLocalDate());
+        }
+
+        Date endDate = rs.getDate("sp_end_date");
+        if (endDate != null) {
+            task.setSpEndDate(endDate.toLocalDate());
+        }
+
         task.setCreatedAt(rs.getTimestamp("ts_created_at").toLocalDateTime());
         task.setUpdatedAt(rs.getTimestamp("ts_updated_at").toLocalDateTime());
         return task;
