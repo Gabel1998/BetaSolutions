@@ -1,22 +1,30 @@
 package com.example.betasolutions.controller;
 
+import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
+import com.example.betasolutions.model.Task;
+import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
+import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/subprojects")
 public class SubProjectController {
 
-    private final SubProjectService subProjectService;
+    private final ProjectService projectService;
+    protected final SubProjectService subProjectService;
 
-    public SubProjectController(SubProjectService subProjectService) {
+    public SubProjectController(SubProjectService subProjectService, ProjectService projectService) {
         this.subProjectService = subProjectService;
+        this.projectService = projectService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -24,26 +32,42 @@ public class SubProjectController {
     }
 
     @GetMapping
-    public String listSubProjects(Model model, HttpSession session) {
+    public String listSubProjects(@RequestParam(value = "projectId", required = false) Integer projectId,
+                                  Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
-        model.addAttribute("pageTitle", "Sub Projects");
-        model.addAttribute("subProjects", subProjectService.getAllSubProjects());
+
+        if (projectId == null) return "redirect:/projects"; // eller en fejl-side
+
+        model.addAttribute("subProjects", subProjectService.getAllSubProjectsByProjectId(projectId));
+        model.addAttribute("project", projectService.getProjectById(projectId)
+                .orElseThrow(() -> new RuntimeException("Projekt ikke fundet")));
+        model.addAttribute("pageTitle", "Subprojekter for projekt");
         return "subprojects/list";
     }
 
+
     @GetMapping("/create")
-    public String showCreateForm(Model model, HttpSession session) {
+    public String showCreateForm(@RequestParam("subProjectId") Integer subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
-        model.addAttribute("pageTitle", "Opret subprojekt");
-        model.addAttribute("subProject", new SubProject());
-        return "subprojects/create";
+
+        Task task = new Task();
+        task.setSubProjectId(subProjectId);
+
+        model.addAttribute("pageTitle", "Opret task");
+        model.addAttribute("task", task);
+
+        return "tasks/create";
     }
 
-    @PostMapping("/create")
+    @PostMapping ("/create")
     public String createSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (!isLoggedIn(session)){
+            return "redirect:/auth/login";
+        }
+
         subProjectService.createSubProject(subProject);
-        return "redirect:/subprojects";
+        session.setAttribute("successMessage", "Projekt er blevet oprettet");
+        return "redirect:/subprojects?projectId=" + subProject.getProjectId(); //redirects til list.html efter oprettelse
     }
 
     @GetMapping("/edit/{id}")

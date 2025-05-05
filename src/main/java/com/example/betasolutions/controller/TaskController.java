@@ -33,25 +33,42 @@ public class TaskController {
     }
 
     @GetMapping
-    public String listTasks(Model model, HttpSession session) {
+    public String listTasks(@RequestParam(value = "subProjectId", required = false) Integer subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
-        List<Task> tasks = taskService.getAllTasks();
-        model.addAttribute("tasks", tasks);
 
-        boolean overLimit = taskService.isDailyHoursExceeded(tasks, 8.0); // 8 timer er bare et eksempel. Ved ikke hvad det skal være
+        SubProject subProject = subProjectService.getSubProjectById(subProjectId)
+                .orElseThrow(() -> new RuntimeException("Subprojekt ikke fundet")); //skal have runtime exception, ellers virker prjektet ikke.
+
+        List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("subProject", subProject);
+
+        boolean overLimit = taskService.isDailyHoursExceeded(tasks, 8.0);
         model.addAttribute("overLimit", overLimit);
 
         return "tasks/list";
     }
 
+
     @GetMapping("/create")
-    public String showCreateForm(Model model, HttpSession session) {
+    public String showCreateForm(@RequestParam(value = "subProjectId", required = false) Integer subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        if (subProjectId == null) return "redirect:/projects";
+
+        Task task = new Task();
+        task.setSubProjectId(subProjectId);
+
+        SubProject subProject = subProjectService.getSubProjectById(subProjectId)
+                .orElseThrow(() -> new RuntimeException("Subproject not found"));
+
         model.addAttribute("pageTitle", "Opret task");
-        model.addAttribute("task", new Task());
-        return "tasks/create";
+        model.addAttribute("task", task);
+        model.addAttribute("project", subProject.getProjectId());
+
+        return "/tasks/create";
     }
 
 

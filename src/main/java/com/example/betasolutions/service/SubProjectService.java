@@ -76,4 +76,8 @@ public class SubProjectService {
 
         return result;
     }
+
+    public List<SubProject> getAllSubProjectsByProjectId(Integer projectId) {
+        return subProjectRepository.findAllByProjectId(projectId);
+    }
 }
