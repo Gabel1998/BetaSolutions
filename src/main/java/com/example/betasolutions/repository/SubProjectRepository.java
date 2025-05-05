@@ -31,9 +31,9 @@ public class SubProjectRepository {
     }
 
     // Finder et SubProject på ID
-    public Optional<SubProject> findById(Integer id) {
+    public Optional<SubProject> findById(Integer subProjectId) {
         String sql = "SELECT * FROM tb_subprojects WHERE sp_id = ?";
-        return jdbcTemplate.query(sql, new SubProjectRowMapper(), id)
+        return jdbcTemplate.query(sql, new SubProjectRowMapper(), subProjectId)
                 .stream()
                 .findFirst();
     }
@@ -50,11 +50,5 @@ public class SubProjectRepository {
         jdbcTemplate.update(sql, id);
     }
 
-    // Henter alle SubProjects for et givet Project ID
-    public Optional<SubProject> findById(int subProjectId) {
-        String sql = "SELECT * FROM tb_subprojects WHERE sp_id = ?";
-        return jdbcTemplate.query(sql, new SubProjectRowMapper(), subProjectId)
-                .stream()
-                .findFirst();
-    }
+
 }
