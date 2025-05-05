@@ -5,8 +5,10 @@ import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -44,8 +46,9 @@ public class SubProjectController {
     }
 
     @PostMapping("/create")
-    public String createSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
+    public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (result.hasErrors()) return "subprojects/create";
         subProjectService.createSubProject(subProject);
         return "redirect:/subprojects";
     }

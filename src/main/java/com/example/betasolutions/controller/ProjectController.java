@@ -3,8 +3,10 @@ package com.example.betasolutions.controller;
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.service.ProjectService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -50,15 +52,18 @@ public class ProjectController {
         return "projects/create"; //peger på create.html i projects-directory
     }
 
-    @PostMapping ("/create")
-    public String createProject(@ModelAttribute Project project, HttpSession session) {
-        if (!isLoggedIn(session)){
-            return "redirect:/auth/login";
+    @PostMapping("/create")
+    public String createProject(@ModelAttribute @Valid Project project, BindingResult result, HttpSession session, Model model) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Create Project");
+            return "projects/create";
         }
 
         projectService.createProject(project);
-        session.setAttribute("successMessage", "Projekt er blevet oprettet");
-        return "redirect:/projects"; //redirects til list.html efter oprettelse
+        session.setAttribute("successMessage", "Project created successfully");
+        return "redirect:/projects"; //Redirects til lists efter oprettelse
     }
 
     @GetMapping ("edit/{id}")

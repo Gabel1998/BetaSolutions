@@ -7,31 +7,41 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
-    <h2>Opret nyt projekt</h2>
+    <h2>Create New Project</h2>
 
     <!-- Formular bundet til Project-objekt -->
-    <form th:action="@{/projects/create}" th:object="${project}" method="post" class="form-container">
+    <form th:action="@{/projects/create}" th:object="${project}" method="post" class="form-container card">
+
+        <!-- Fejlmeddelelser vises her -->
+        <div th:if="${#fields.hasErrors()}" class="status-warning">
+            Please fix the highlighted errors.
+        </div>
 
         <!-- Projektnavn: kort tekst -->
-        <label for="name">Navn</label>
+        <label for="name">Project Name</label>
         <input type="text" id="name" th:field="*{name}" required>
+        <div class="status-warning" th:errors="*{name}"></div>
 
         <!-- Projektbeskrivelse: længere fritekst -->
-        <label for="description">Beskrivelse</label>
+        <label for="description">Description</label>
         <textarea id="description" th:field="*{description}" rows="4"></textarea>
+        <div class="status-warning" th:errors="*{description}"></div>
 
         <!-- Startdato: hvornår projektet begynder -->
-        <label for="startDate">Startdato</label>
+        <label for="startDate">Start Date</label>
         <input type="date" id="startDate" th:field="*{startDate}" required>
+        <div class="status-warning" th:errors="*{startDate}"></div>
 
         <!-- Slutdato: hvornår projektet forventes afsluttet -->
-        <label for="endDate">Slutdato</label>
+        <label for="endDate">End Date</label>
         <input type="date" id="endDate" th:field="*{endDate}">
+        <div class="status-warning" th:errors="*{endDate}"></div>
 
         <!-- Submit-knap -->
-        <button type="submit" class="button">Opret</button>
+        <button type="submit" class="button">Create</button>
     </form>
 </main>
+
 
 <!-- Fælles footer -->
 <div th:replace="~{fragments/footer :: footer}"></div>
