@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/header :: head}">
-    <title>Login</title></head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
 
 <body>
 <!-- ======== HEADER TEMPLATE ======== -->
-<div th:replace="~{header :: header}"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <!-- ======== MAIN CONTENT ======== -->
 <div class="page-container">
@@ -18,16 +20,15 @@
         </div>
 
         <!-- ======== LOGIN FORM ======== -->
-        <form th:action="@{/login}" method="post">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required placeholder="Indtast e-mailadresse" maxlength="50"
-                   pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
-                   title="Indtast en gyldig e-mailadresse (skal indeholde @ og .)">
+        <form th:action="@{/auth/login}" method="post">
+            <label for="username">Brugernavn</label>
+            <input type="text" id="username" name="username" required placeholder="Indtast brugernavn" maxlength="50"
+                   title="Indtast dit brugernavn">
 
             <label for="password">Adgangskode</label>
             <input type="password" id="password" name="password" required placeholder="Indtast adgangskode" minlength="8"
                    pattern="^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$"
-                   title="Adgangskoden skal være mindst 8 tegn lang og indeholde en blanding af store og små bogstaver samt tal.">
+                   title="Adgangskoden skal være mindst 8 tegn og indeholde både bogstaver og tal.">
 
             <button type="submit" class="btn">Login</button>
         </form>
@@ -37,6 +38,6 @@
 </div>
 
 <!-- ======== FOOTER ======== -->
-<div th:replace="~{footer :: footer}"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
