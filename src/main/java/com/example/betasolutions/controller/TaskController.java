@@ -117,41 +117,4 @@ public class TaskController {
         return "tasks/distribution"; /// ja, eller hvad det nu skal være, nu har jeg lavet en midlertidig
     }
 
-
-    @GetMapping("/subproject/{subProjectId}")
-    public String listTasksBySubProject(@PathVariable int subProjectId, Model model, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-
-        List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId);
-
-        double totalEstimated = tasks.stream()
-                .mapToDouble(t -> t.getEstimatedHours() != null ? t.getEstimatedHours() : 0)
-                .sum();
-
-        double totalActual = tasks.stream()
-                .mapToDouble(t -> t.getActualHours() != null ? t.getActualHours() : 0)
-                .sum();
-
-        SubProject subProject = subProjectService.findSubProjectById(subProjectId)
-                .orElseThrow(() -> new RuntimeException("SubProject not found"));
-
-
-        long workdays = DateUtils.countWorkdays(
-                subProject.getStartDate(),
-                subProject.getEndDate()
-        );
-
-        double dagrate = workdays > 0 ? totalEstimated / workdays : 0;
-
-        String status = totalActual >= dagrate ? "OK" : "⚠ Under dagrate";
-
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("subProject", subProject);
-        model.addAttribute("totalEstimated", totalEstimated);
-        model.addAttribute("totalActual", totalActual);
-        model.addAttribute("dagrate", dagrate);
-        model.addAttribute("status", status);
-
-        return "tasks/list";
-    }
 }

@@ -1,0 +1,42 @@
+/* ════════════════════════════════════════ */
+/*      GLOBAL VARIABLES + ROOT COLORS      */
+/* ════════════════════════════════════════ */
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --blue: #0000EE;
+    --grey-light: #dedede;
+    --grey-soft: #bdcfd8;
+    --pink: #ff325a;
+
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --radius: 8px;
+}
+
+/* ════════════════════════════════════════ */
+/*      BASE TYPOGRAPHY & HTML RESET        */
+/* ════════════════════════════════════════ */
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--black);
+    background-color: var(--white);
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: var(--blue);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+h1, h2, h3 {
+    font-weight: 800;
+    color: var(--black);
+}
