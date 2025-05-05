@@ -16,7 +16,7 @@ public class TaskEmployeeRepository {
     }
 
     public List<TaskEmployee> findByTaskId(Long taskId) {
-        String sql = "SELECT * FROM tb_task_employee WHERE tse_ts_id = ?";
+        String sql = "SELECT * FROM tb_task_employees WHERE tse_ts_id = ?";
         return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), taskId);
     }
 }
