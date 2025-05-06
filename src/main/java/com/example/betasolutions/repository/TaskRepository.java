@@ -20,7 +20,7 @@ public class TaskRepository {
 
     // Gemmer en ny Task i databasen
     public void save(Task task) {
-        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, sp_start_date, sp_end_date) " +
+        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 task.getSubProjectId(),
@@ -28,20 +28,20 @@ public class TaskRepository {
                 task.getDescription(),
                 task.getEstimatedHours(),
                 task.getActualHours(),
-                task.getSpStartDate(),
-                task.getSpEndDate());
+                task.getStartDate(),
+                task.getEndDate());
     }
 
     public void update(Task task) {
-        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, sp_start_date = ?, sp_end_date = ? WHERE ts_id = ?";
+        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, start_date = ?, end_date = ? WHERE ts_id = ?";
         jdbcTemplate.update(sql,
                 task.getSubProjectId(),
                 task.getName(),
                 task.getDescription(),
                 task.getEstimatedHours(),
                 task.getActualHours(),
-                task.getSpStartDate(),
-                task.getSpEndDate(),
+                task.getStartDate(),
+                task.getEndDate(),
                 task.getId());
     }
 

@@ -19,14 +19,14 @@ public class TaskRowMapper implements RowMapper<Task> {
         task.setEstimatedHours(rs.getDouble("ts_estimated_hours"));
         task.setActualHours(rs.getDouble("ts_actual_hours"));
 
-        Date startDate = rs.getDate("sp_start_date");
+        Date startDate = rs.getDate("start_date");
         if (startDate != null) {
-            task.setSpStartDate(startDate.toLocalDate());
+            task.setStartDate(startDate.toLocalDate());
         }
 
-        Date endDate = rs.getDate("sp_end_date");
+        Date endDate = rs.getDate("end_date");
         if (endDate != null) {
-            task.setSpEndDate(endDate.toLocalDate());
+            task.setEndDate(endDate.toLocalDate());
         }
 
         task.setCreatedAt(rs.getTimestamp("ts_created_at").toLocalDateTime());

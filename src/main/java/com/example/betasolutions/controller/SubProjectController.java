@@ -7,8 +7,10 @@ import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -59,12 +61,10 @@ public class SubProjectController {
         return "tasks/create";
     }
 
-    @PostMapping ("/create")
-    public String createSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
-        if (!isLoggedIn(session)){
-            return "redirect:/auth/login";
-        }
-
+    @PostMapping("/create")
+    public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (result.hasErrors()) return "subprojects/create";
         subProjectService.createSubProject(subProject);
         session.setAttribute("successMessage", "Projekt er blevet oprettet");
         return "redirect:/subprojects?projectId=" + subProject.getProjectId();

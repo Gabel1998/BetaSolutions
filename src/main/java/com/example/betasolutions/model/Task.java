@@ -24,10 +24,10 @@ public class Task {
 
     @NotNull(message = "Estimated hours is required")
     @PositiveOrZero(message = "Estimated hours must be 0 or more")
-    private Double estimatedHours;
+    private double estimatedHours;
 
     @PositiveOrZero(message = "Actual hours must be 0 or more")
-    private Double actualHours;
+    private double actualHours;
 
     private LocalDate startDate; // ny
     private LocalDate endDate;   // ny
@@ -36,20 +36,20 @@ public class Task {
     private LocalDateTime updatedAt;
 
 
-    public LocalDate getSpStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setSpStartDate(LocalDate spStartDate) {
-        this.startDate = spStartDate;
+    public void setStartDate(LocalDate StartDate) {
+        this.startDate = StartDate;
     }
 
-    public LocalDate getSpEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setSpEndDate(LocalDate spEndDate) {
-        this.endDate = spEndDate;
+    public void setEndDate(LocalDate EndDate) {
+        this.endDate = EndDate;
     }
 
     public Long getId() {
@@ -84,19 +84,19 @@ public class Task {
         this.description = description;
     }
 
-    public Double getEstimatedHours() {
+    public double getEstimatedHours() {
         return estimatedHours;
     }
 
-    public void setEstimatedHours(Double estimatedHours) {
+    public void setEstimatedHours(double estimatedHours) {
         this.estimatedHours = estimatedHours;
     }
 
-    public Double getActualHours() {
+    public double getActualHours() {
         return actualHours;
     }
 
-    public void setActualHours(Double actualHours) {
+    public void setActualHours(double actualHours) {
         this.actualHours = actualHours;
     }
 
