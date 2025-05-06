@@ -55,28 +55,25 @@ public class TaskController {
 
     @GetMapping("/create")
     public String showCreateForm(@RequestParam("subProjectId") Integer subProjectId,
-                                     Model model,
-                                     HttpSession session) {
+                                 Model model,
+                                 HttpSession session) {
 
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-
-        // Find delprojektet (valgfrit, fx til visning af navn)
-        Optional<SubProject> subProjectOpt = subProjectService.getSubProjectById(subProjectId);
-        if (subProjectOpt.isEmpty()) {
-            model.addAttribute("error", "Delprojektet blev ikke fundet.");
-            return "redirect:/subprojects/list"; // fallback hvis ID er forkert
+        if (!isLoggedIn(session)) {
+            return "redirect:/auth/login";
         }
 
-        // Klargør ny task med korrekt FK sat
+        SubProject subProject = subProjectService.getSubProjectById(subProjectId)
+                .orElseThrow(() -> new RuntimeException("Delprojektet blev ikke fundet."));
+
         Task task = new Task();
         task.setSubProjectId(subProjectId);
+        task.setProjectId(Long.valueOf(subProject.getProjectId()));
 
         model.addAttribute("task", task);
-        model.addAttribute("subProject", subProjectOpt.get());
+        model.addAttribute("subProject", subProject);
 
         return "tasks/create";
     }
-
 
     @PostMapping("/create")
     public String createTask(@ModelAttribute @Valid Task task,
@@ -84,51 +81,72 @@ public class TaskController {
                              Model model,
                              HttpSession session) {
 
-        System.out.println("createTask: " + task.getName());
-
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (!isLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
 
         if (result.hasErrors()) {
             model.addAttribute("task", task);
             return "tasks/create";
         }
 
-        Integer subProjectId = task.getSubProjectId();
+        SubProject subProject = subProjectService.getSubProjectById(task.getSubProjectId())
+                .orElseThrow(() -> new RuntimeException("Ugyldigt delprojekt – kunne ikke findes."));
 
-        // Hent tilhørende projekt via subproject
-        Optional<SubProject> subProjectOpt = subProjectService.getSubProjectById(subProjectId);
-        if (subProjectOpt.isEmpty()) {
-            model.addAttribute("error", "Ugyldigt SubProject – projekt kunne ikke findes.");
-            return "tasks/create";
-        }
-
-        // Sæt projektID i tasken
-        Integer projectId = subProjectOpt.get().getProjectId();
-        task.setProjectId(Long.valueOf(projectId));
-
-        // Gem tasken
+        task.setProjectId(Long.valueOf(subProject.getProjectId()));
         taskService.createTask(task);
 
-        // Redirect tilbage til opgavelisten for dette delprojekt
-        return "redirect:/tasks/list?subProjectId=" + subProjectId;
+        return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-        model.addAttribute("pageTitle", "Rediger task");
+        if (!isLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         Task task = taskService.getTaskById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        SubProject subProject = subProjectService.getSubProjectById(task.getSubProjectId())
+                .orElseThrow(() -> new RuntimeException("Subproject not found"));
+
+        task.setProjectId(Long.valueOf(subProject.getProjectId()));
+
         model.addAttribute("task", task);
+        model.addAttribute("subProject", subProject);
+
         return "tasks/edit";
     }
 
     @PostMapping("/update/{id}")
-    public String updateTask(@PathVariable Long id, @ModelAttribute Task task, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
+    public String updateTask(@PathVariable Long id,
+                             @ModelAttribute @Valid Task task,
+                             BindingResult result,
+                             Model model,
+                             HttpSession session) {
+
+        if (!isLoggedIn(session)) {
+            return "redirect:/auth/login";
+        }
+
         task.setId(id);
+
+        SubProject subProject = subProjectService.getSubProjectById(task.getSubProjectId())
+                .orElseThrow(() -> new RuntimeException("Subproject not found"));
+
+        // Sørg for at projectId ALTID er sat
+        task.setProjectId(Long.valueOf(subProject.getProjectId()));
+
+        if (result.hasErrors()) {
+            System.out.println(">>> VALIDATION ERRORS");
+            model.addAttribute("task", task);
+            model.addAttribute("subProject", subProject);
+            return "tasks/edit";
+        }
+
         taskService.updateTask(task);
-        return "redirect:/tasks";
+        return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
 
     @GetMapping("/delete/{id}")
