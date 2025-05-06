@@ -111,6 +111,8 @@ public class TaskController {
         SubProject subProject = subProjectService.getSubProjectById(task.getSubProjectId())
                 .orElseThrow(() -> new RuntimeException("Subproject not found"));
 
+        task.setProjectId(Long.valueOf(subProject.getProjectId()));
+
         model.addAttribute("task", task);
         model.addAttribute("subProject", subProject);
 
@@ -137,6 +139,7 @@ public class TaskController {
         task.setProjectId(Long.valueOf(subProject.getProjectId()));
 
         if (result.hasErrors()) {
+            System.out.println(">>> VALIDATION ERRORS");
             model.addAttribute("task", task);
             model.addAttribute("subProject", subProject);
             return "tasks/edit";
