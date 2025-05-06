@@ -61,10 +61,12 @@ public class SubProjectController {
         return "tasks/create";
     }
 
+
     @PostMapping("/create")
     public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         if (result.hasErrors()) return "subprojects/create";
+
         subProjectService.createSubProject(subProject);
         session.setAttribute("successMessage", "Projekt er blevet oprettet");
         return "redirect:/subprojects?projectId=" + subProject.getProjectId();
