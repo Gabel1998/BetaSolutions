@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}">
+    <title>Alpha Solutions</title></head>
+
 <body>
+<!-- ======== HEADER TEMPLATE ======== -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="page">
+    <section class="banner">
+        <h2>Alpha Solutions</h2>
+    </section>
+
+    <!-- Uden login -->
+    <section class="login-prompt">
+        <p>Log ind for at se projekter</p>
+        <a th:href="@{/auth/login}" class="nav-button">Login</a>
+    </section>
+
+    <!-- Med login -->
+    <section class="projects">
+        <h2>Seneste opdateret Projekter</h2>
+        <div class="project-list">
+            <a th:each="project : ${projects}"
+               th:href="@{'/subprojects?projectId=' + ${project.id}}"
+               class="project-card">
+                <h3 th:text="${project.name}">Projektnavn</h3>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </footer>
+</div>
 
 </body>
 </html>

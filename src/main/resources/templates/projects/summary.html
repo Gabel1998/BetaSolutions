@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head th:replace="~{fragments/header :: head}">
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="content">
+    <h1>Summeret tidsforbrug per projekt</h1>
+
+    <section class="project-list">
+        <div class="project-card" th:each="project : ${projects}">
+            <h2 th:text="${project.name}">Projekt Navn</h2>
+            <p th:text="'Total est. timer: ' + ${projectEstimatedMap[project.id]} + ' timer'">0 timer</p>
+            <p th:text="'Total timer brugt: ' + ${projectHoursMap[project.id]} + ' timer'">0 timer</p>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
