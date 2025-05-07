@@ -14,12 +14,14 @@ import java.util.Optional;
 @Service
 public class ProjectService {
 
+    private SubProjectService subProjectService;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
 //    Constructor
-    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
+    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository, SubProjectService subProjectService) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
+        this.subProjectService = subProjectService;
     }
 
     public void createProject(Project project) {
@@ -68,10 +70,28 @@ public class ProjectService {
 
     public double getTotalActualHoursForProject(int projectId) {
         return taskRepository.findAll().stream()
-                .filter(task -> task.getProjectId() != null && task.getProjectId().equals((long) projectId))
+                .filter(task ->
+                        (task.getProjectId() != null && task.getProjectId().equals((long) projectId)) ||
+                                (task.getSubProjectId() != null &&
+                                        subProjectService.getSubProjectById(task.getSubProjectId())
+                                                .map(sp -> sp.getProjectId().equals(projectId))
+                                                .orElse(false))
+                )
                 .mapToDouble(Task::getActualHours)
                 .sum();
     }
 
 
+    public double getTotalEstimatedHoursForProject(Integer id) {
+        return taskRepository.findAll().stream()
+                .filter(task ->
+                        (task.getProjectId() != null && task.getProjectId().equals((long) id)) ||
+                                (task.getSubProjectId() != null &&
+                                        subProjectService.getSubProjectById(task.getSubProjectId())
+                                                .map(sp -> sp.getProjectId().equals(id))
+                                                .orElse(false))
+                )
+                .mapToDouble(Task::getEstimatedHours)
+                .sum();
+    }
 }
