@@ -11,6 +11,7 @@
     <section class="project-list">
         <div class="project-card" th:each="project : ${projects}">
             <h2 th:text="${project.name}">Projekt Navn</h2>
+            <p th:text="'Total est. timer: ' + ${projectEstimatedMap[project.id]} + ' timer'">0 timer</p>
             <p th:text="'Total timer brugt: ' + ${projectHoursMap[project.id]} + ' timer'">0 timer</p>
         </div>
     </section>

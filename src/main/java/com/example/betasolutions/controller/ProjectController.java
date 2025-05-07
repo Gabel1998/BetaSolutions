@@ -109,14 +109,19 @@ public class ProjectController {
     public String showProjectSummary(Model model) {
         List<Project> projects = projectService.getAllProjects();
 
-        Map<Integer, Double> projectHoursMap = new HashMap<>();
+        Map<Integer, Double> projectActualHoursMap = new HashMap<>();
+        Map<Integer, Double> projectEstimatedHoursMap = new HashMap<>();
+
         for (Project p : projects) {
-            double totalHours = projectService.getTotalActualHoursForProject(p.getId());
-            projectHoursMap.put(p.getId(), totalHours);
+            double actual = projectService.getTotalActualHoursForProject(p.getId());
+            double estimated = projectService.getTotalEstimatedHoursForProject(p.getId());
+            projectActualHoursMap.put(p.getId(), actual);
+            projectEstimatedHoursMap.put(p.getId(), estimated);
         }
 
         model.addAttribute("projects", projects);
-        model.addAttribute("projectHoursMap", projectHoursMap);
+        model.addAttribute("projectHoursMap", projectActualHoursMap);
+        model.addAttribute("projectEstimatedMap", projectEstimatedHoursMap);
         return "projects/summary";
     }
 
