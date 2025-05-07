@@ -1,5 +1,4 @@
 package com.example.betasolutions.controller;
-/// TESTESTES
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.ProjectService;
@@ -13,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/tasks")
@@ -75,7 +73,7 @@ public class TaskController {
         return "tasks/create";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/create-task")
     public String createTask(@ModelAttribute @Valid Task task,
                              BindingResult result,
                              Model model,

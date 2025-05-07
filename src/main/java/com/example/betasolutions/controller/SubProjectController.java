@@ -48,17 +48,16 @@ public class SubProjectController {
     }
 
 
+    // Vis create form for subproject
     @GetMapping("/create")
-    public String showCreateForm(@RequestParam("subProjectId") Integer subProjectId, Model model, HttpSession session) {
+    public String showCreateSubProjectForm(@RequestParam("projectId") Integer projectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
-        Task task = new Task();
-        task.setSubProjectId(subProjectId);
+        SubProject subProject = new SubProject();
+        subProject.setProjectId(projectId);
+        model.addAttribute("subProject", subProject);
 
-        model.addAttribute("pageTitle", "Opret task");
-        model.addAttribute("task", task);
-
-        return "tasks/create";
+        return "subprojects/create";
     }
 
 
