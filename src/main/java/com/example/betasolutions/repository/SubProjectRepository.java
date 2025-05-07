@@ -20,7 +20,7 @@ public class SubProjectRepository {
 
     // Gemmer et nyt SubProject i databasen
     public void save(SubProject subProject) {
-        String sql = "INSERT INTO tb_subprojects (sp_p_id, sp_name, sp_description, sp_start_date, sp_end_date) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tb_subprojects (sp_p_id, sp_name, sp_description, start_date, end_date) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql, subProject.getProjectId(), subProject.getName(), subProject.getDescription(), subProject.getStartDate(), subProject.getEndDate());
     }
 
@@ -40,7 +40,7 @@ public class SubProjectRepository {
 
     // Opdaterer et SubProject
     public void update(SubProject subProject) {
-        String sql = "UPDATE tb_subprojects SET sp_p_id = ?, sp_name = ?, sp_description = ?, sp_start_date = ?, sp_end_date = ? WHERE sp_id = ?";
+        String sql = "UPDATE tb_subprojects SET sp_p_id = ?, sp_name = ?, sp_description = ?, start_date = ?, end_date = ? WHERE sp_id = ?";
         jdbcTemplate.update(sql, subProject.getProjectId(), subProject.getName(), subProject.getDescription(), subProject.getStartDate(), subProject.getEndDate(), subProject.getId());
     }
 

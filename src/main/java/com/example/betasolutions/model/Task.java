@@ -36,20 +36,20 @@ public class Task {
     private LocalDateTime updatedAt;
 
 
-    public LocalDate getSpStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setSpStartDate(LocalDate spStartDate) {
-        this.startDate = spStartDate;
+    public void setStartDate(LocalDate StartDate) {
+        this.startDate = StartDate;
     }
 
-    public LocalDate getSpEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setSpEndDate(LocalDate spEndDate) {
-        this.endDate = spEndDate;
+    public void setEndDate(LocalDate EndDate) {
+        this.endDate = EndDate;
     }
 
     public Long getId() {

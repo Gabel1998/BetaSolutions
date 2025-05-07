@@ -125,8 +125,8 @@ class IntegrationTest {
         task.setDescription("Integration test task");
         task.setEstimatedHours(50.0);
         task.setActualHours(45.0);
-        task.setSpStartDate(LocalDate.of(2024, 1, 1));
-        task.setSpEndDate(LocalDate.of(2024, 1, 31));
+        task.setStartDate(LocalDate.of(2024, 1, 1));
+        task.setEndDate(LocalDate.of(2024, 1, 31));
         taskRepository.save(task);
 
         List<Task> allTasks = taskRepository.findAll();
@@ -140,8 +140,8 @@ class IntegrationTest {
         assertThat(foundTask).isNotNull();
 
         // ✅ Assert start og slutdato
-        assertThat(foundTask.getSpStartDate()).isEqualTo(LocalDate.of(2024, 1, 1));
-        assertThat(foundTask.getSpEndDate()).isEqualTo(LocalDate.of(2024, 1, 31));
+        assertThat(foundTask.getStartDate()).isEqualTo(LocalDate.of(2024, 1, 1));
+        assertThat(foundTask.getEndDate()).isEqualTo(LocalDate.of(2024, 1, 31));
 
         // Update
         foundTask.setName("Updated Task");
