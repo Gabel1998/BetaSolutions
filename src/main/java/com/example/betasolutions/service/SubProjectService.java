@@ -52,11 +52,11 @@ public class SubProjectService {
         List<Task> tasks = taskRepository.findBySubProjectId(subProjectId);
 
         double totalEstimated = tasks.stream()
-                .mapToDouble(t -> t.getEstimatedHours() != null ? t.getEstimatedHours() : 0)
+                .mapToDouble(Task::getEstimatedHours)
                 .sum();
 
         double totalActual = tasks.stream()
-                .mapToDouble(t -> t.getActualHours() != null ? t.getActualHours() : 0)
+                .mapToDouble(Task::getActualHours)
                 .sum();
 
         SubProject subProject = subProjectRepository.findById(subProjectId)

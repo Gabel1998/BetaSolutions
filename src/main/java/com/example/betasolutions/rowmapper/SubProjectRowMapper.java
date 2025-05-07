@@ -16,8 +16,8 @@ public class SubProjectRowMapper implements RowMapper<SubProject> {
         sp.setProjectId(rs.getInt("sp_p_id"));
         sp.setName(rs.getString("sp_name"));
         sp.setDescription(rs.getString("sp_description"));
-        sp.setStartDate(rs.getDate("sp_start_date").toLocalDate());
-        sp.setEndDate(rs.getDate("sp_end_date").toLocalDate());
+        sp.setStartDate(rs.getDate("start_date").toLocalDate());
+        sp.setEndDate(rs.getDate("end_date").toLocalDate());
         sp.setCreatedAt(rs.getTimestamp("sp_created_at").toLocalDateTime());
         sp.setUpdatedAt(rs.getTimestamp("sp_updated_at").toLocalDateTime());
 

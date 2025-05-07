@@ -14,6 +14,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -125,6 +126,8 @@ class IntegrationTest {
         task.setDescription("Integration test task");
         task.setEstimatedHours(50.0);
         task.setActualHours(45.0);
+        task.setStartDate(LocalDate.of(2024, 1, 1));
+        task.setEndDate(LocalDate.of(2024, 1, 31));
         taskRepository.save(task);
 
         List<Task> allTasks = taskRepository.findAll();
@@ -136,6 +139,10 @@ class IntegrationTest {
                 .findFirst()
                 .orElseThrow();
         assertThat(foundTask).isNotNull();
+
+        // ✅ Assert start og slutdato
+        assertThat(foundTask.getStartDate()).isEqualTo(LocalDate.of(2024, 1, 1));
+        assertThat(foundTask.getEndDate()).isEqualTo(LocalDate.of(2024, 1, 31));
 
         // Update
         foundTask.setName("Updated Task");

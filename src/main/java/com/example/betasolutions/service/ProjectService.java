@@ -1,6 +1,7 @@
 package com.example.betasolutions.service;
 
 import com.example.betasolutions.model.Project;
+import com.example.betasolutions.model.Task;
 import com.example.betasolutions.repository.ProjectRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class ProjectService {
     public double getTotalActualHoursForProject(int projectId) {
         return taskRepository.findAll().stream()
                 .filter(task -> task.getProjectId() != null && task.getProjectId().equals((long) projectId))
-                .mapToDouble(task -> task.getActualHours() != null ? task.getActualHours() : 0)
+                .mapToDouble(Task::getActualHours)
                 .sum();
     }
 

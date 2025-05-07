@@ -7,8 +7,10 @@ import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -36,7 +38,7 @@ public class SubProjectController {
                                   Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
-        if (projectId == null) return "redirect:/projects"; // eller en fejl-side
+        if (projectId == null) return "redirect:/projects";
 
         model.addAttribute("subProjects", subProjectService.getAllSubProjectsByProjectId(projectId));
         model.addAttribute("project", projectService.getProjectById(projectId)
@@ -46,28 +48,27 @@ public class SubProjectController {
     }
 
 
+    // Vis create form for subproject
     @GetMapping("/create")
-    public String showCreateForm(@RequestParam("subProjectId") Integer subProjectId, Model model, HttpSession session) {
+    public String showCreateSubProjectForm(@RequestParam("projectId") Integer projectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
-        Task task = new Task();
-        task.setSubProjectId(subProjectId);
+        SubProject subProject = new SubProject();
+        subProject.setProjectId(projectId);
+        model.addAttribute("subProject", subProject);
 
-        model.addAttribute("pageTitle", "Opret task");
-        model.addAttribute("task", task);
-
-        return "tasks/create";
+        return "subprojects/create";
     }
 
-    @PostMapping ("/create")
-    public String createSubProject(@ModelAttribute SubProject subProject, HttpSession session) {
-        if (!isLoggedIn(session)){
-            return "redirect:/auth/login";
-        }
+
+    @PostMapping("/create")
+    public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (result.hasErrors()) return "subprojects/create";
 
         subProjectService.createSubProject(subProject);
         session.setAttribute("successMessage", "Projekt er blevet oprettet");
-        return "redirect:/subprojects?projectId=" + subProject.getProjectId(); //redirects til list.html efter oprettelse
+        return "redirect:/subprojects?projectId=" + subProject.getProjectId();
     }
 
     @GetMapping("/edit/{id}")
