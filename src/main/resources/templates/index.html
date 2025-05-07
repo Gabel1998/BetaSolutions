@@ -25,12 +25,7 @@
             <a th:each="project : ${projects}"
                th:href="@{'/subprojects?projectId=' + ${project.id}}"
                class="project-card">
-
                 <h3 th:text="${project.name}">Projektnavn</h3>
-                <p th:text="${project.description}">Beskrivelse</p>
-                <p>Start: <span th:text="${project.startDate}"></span></p>
-                <p>Slut: <span th:text="${project.endDate}"></span></p>
-
             </a>
         </div>
     </section>
