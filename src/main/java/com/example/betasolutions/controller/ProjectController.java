@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/projects")
@@ -35,8 +36,18 @@ public class ProjectController {
             return "redirect:/auth/login";
         }
 
+        List<Project> projects = projectService.getAllProjects();
+
+        // Beregning af total timer af tasks for projekter
+        List<Integer> projectIds = projects.stream()
+                .map(Project::getId)
+                .collect(Collectors.toList());
+        Map<Integer, Map<String, Double>> projectHours =
+                projectService.calculateProjectHoursByProjectIds(projectIds);
+
         model.addAttribute("pageTitle", "Alle projekter");
-        model.addAttribute("projects", projectService.getAllProjects());
+        model.addAttribute("projects", projects);
+        model.addAttribute("projectHours", projectHours);
 
         //hvis der er en succes i session
         String succesMessage = (String)session.getAttribute("successMessage");
@@ -44,7 +55,7 @@ public class ProjectController {
             model.addAttribute("successMessage", succesMessage);
             session.removeAttribute("successMessage");
         }
-        return "projects/list"; //henviser til en list.html fil i templates/projects
+        return "projects/list";
     }
 
     @GetMapping("/create")

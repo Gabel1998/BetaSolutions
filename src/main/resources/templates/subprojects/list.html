@@ -32,6 +32,13 @@
             <p>Start: <span th:text="${sub.startDate}"></span></p>
             <p>Slut: <span th:text="${sub.endDate}"></span></p>
 
+            <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">
+                Estimerede timer: <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('estimatedHours'), 1, 1)}">0.0</span>
+            </p>
+            <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">
+                Faktiske timer: <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('actualHours'), 1, 1)}">0.0</span>
+            </p>
+
         </a>
     </section>
 

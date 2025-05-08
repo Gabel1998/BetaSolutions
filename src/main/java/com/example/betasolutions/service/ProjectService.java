@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Service
@@ -93,5 +95,23 @@ public class ProjectService {
                 )
                 .mapToDouble(Task::getEstimatedHours)
                 .sum();
+    }
+
+    /// Vi nester Map<> i Map<> til at nemt kunne trække og beregne 2x key value pairs (est. og actual) i én metode
+    public Map<Integer, Map<String, Double>> calculateProjectHoursByProjectIds(List<Integer> projectIds) {
+        Map<Integer, Map<String, Double>> result = new HashMap<>();
+
+        for (Integer projectId : projectIds) {
+            double totalEstimatedHours = getTotalEstimatedHoursForProject(projectId);
+            double totalActualHours = getTotalActualHoursForProject(projectId);
+
+            Map<String, Double> hours = new HashMap<>();
+            hours.put("estimatedHours", totalEstimatedHours);
+            hours.put("actualHours", totalActualHours);
+
+            result.put(projectId, hours);
+        }
+
+        return result;
     }
 }

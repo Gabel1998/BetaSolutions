@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/subprojects")
@@ -42,10 +43,20 @@ public class SubProjectController {
 
         if (projectId == null) return "redirect:/projects";
 
+        List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId);
+
+        // Beregning af total timer af tasks for subprojekter
+        List<Integer> subProjectIds = subProjects.stream()
+                .map(SubProject::getId)
+                .collect(Collectors.toList());
+        Map<Integer, Map<String, Double>> subProjectHours = subProjectService.calculateTaskHoursBySubProjectIds(subProjectIds);
+
+
         model.addAttribute("subProjects", subProjectService.getAllSubProjectsByProjectId(projectId));
         model.addAttribute("project", projectService.getProjectById(projectId)
                 .orElseThrow(() -> new RuntimeException("Projekt ikke fundet")));
         model.addAttribute("pageTitle", "Subprojekter for projekt");
+        model.addAttribute("subProjectHours", subProjectHours);
         return "subprojects/list";
     }
 

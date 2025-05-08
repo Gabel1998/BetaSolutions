@@ -18,10 +18,12 @@ public class SubProjectService {
 
     private final SubProjectRepository subProjectRepository;
     private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    public SubProjectService(SubProjectRepository subProjectRepository, TaskRepository taskRepository) {
+    public SubProjectService(SubProjectRepository subProjectRepository, TaskRepository taskRepository, TaskService taskService) {
         this.subProjectRepository = subProjectRepository;
         this.taskRepository = taskRepository;
+        this.taskService = taskService;
     }
 
     public void createSubProject(SubProject subProject) {
@@ -79,5 +81,28 @@ public class SubProjectService {
 
     public List<SubProject> getAllSubProjectsByProjectId(Integer projectId) {
         return subProjectRepository.findAllByProjectId(projectId);
+    }
+
+    /// Beregn timer for tasks i subprojekter
+    public Map<Integer, Map<String, Double>> calculateTaskHoursBySubProjectIds(List<Integer> subProjectIds) {
+        Map<Integer, Map<String, Double>> result = new HashMap<>();
+
+        for(Integer subProjectId : subProjectIds) {
+            double totalEstimatedHours = 0;
+            double totalActualHours = 0;
+
+            List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId);
+            for (Task task : tasks) {
+                totalEstimatedHours += task.getEstimatedHours();
+                totalActualHours += task.getActualHours();
+            }
+
+            Map<String, Double> hours = new HashMap<>();
+            hours.put("estimatedHours", totalEstimatedHours);
+            hours.put("actualHours", totalActualHours);
+
+            result.put(subProjectId, hours);
+        }
+        return result;
     }
 }
