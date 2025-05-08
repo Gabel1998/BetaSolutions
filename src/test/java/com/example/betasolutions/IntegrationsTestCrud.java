@@ -1,5 +1,24 @@
 package com.example.betasolutions;
 
+
+
+///  OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS
+///                                                  OBS
+///                                                  OBS
+///          HER BAD ALEKSANDER (PO) OS OM AT        OBS
+///          DELE METODERNE OP I TESTKLASSER         OBS
+///          OG FIND BEDRE NAVNGIVNING               OBS
+///                                                  OBS
+///          DET HAR VI GJORT UNDER:                 OBS
+///          "/test/java/com.example.betasolutions/  OBS
+///            crud_tests/"                          OBS
+///                                                  OBS
+///                                                  OBS
+///  OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS
+
+
+
+
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;

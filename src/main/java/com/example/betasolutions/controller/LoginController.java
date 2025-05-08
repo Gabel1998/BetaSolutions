@@ -12,10 +12,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/auth")
 public class LoginController {
 
+
+    /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
     @GetMapping("/login")
     public String ShowLoginForm(Model model) {
         model.addAttribute("pageTitle", "Login");
         return "login"; //henviser til login.html
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/auth/login";
     }
 
     @PostMapping("/login")
@@ -30,9 +38,4 @@ public class LoginController {
         }
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "redirect:/auth/login";
-    }
 }

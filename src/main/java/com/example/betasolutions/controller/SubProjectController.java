@@ -33,6 +33,8 @@ public class SubProjectController {
         return session.getAttribute("username") != null;
     }
 
+
+    /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
     @GetMapping
     public String listSubProjects(@RequestParam(value = "projectId", required = false) Integer projectId,
                                   Model model, HttpSession session) {
@@ -60,35 +62,6 @@ public class SubProjectController {
         return "subprojects/create";
     }
 
-
-    @PostMapping("/create")
-    public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-        if (result.hasErrors()) return "subprojects/create";
-
-        subProjectService.createSubProject(subProject);
-        session.setAttribute("successMessage", "Projekt er blevet oprettet");
-        return "redirect:/subprojects?projectId=" + subProject.getProjectId();
-    }
-
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-        model.addAttribute("pageTitle", "Rediger subprojekt");
-        SubProject subProject = subProjectService.getSubProjectById(id)
-                .orElseThrow(() -> new RuntimeException("SubProject not found"));
-        model.addAttribute("subProject", subProject);
-        return "subprojects/edit";
-    }
-
-    @PostMapping("/update/{id}")
-    public String updateSubProject(@PathVariable Integer id, @ModelAttribute SubProject subProject, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-        subProject.setId(id);
-        subProjectService.updateSubProject(subProject);
-        return "redirect:/subprojects";
-    }
-
     @GetMapping("/delete/{id}")
     public String deleteSubProject(@PathVariable Integer id, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -104,5 +77,35 @@ public class SubProjectController {
         model.addAllAttributes(overview);
         return "subprojects/overview";
     }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        model.addAttribute("pageTitle", "Rediger subprojekt");
+        SubProject subProject = subProjectService.getSubProjectById(id)
+                .orElseThrow(() -> new RuntimeException("SubProject not found"));
+        model.addAttribute("subProject", subProject);
+        return "subprojects/edit";
+    }
+
+
+    @PostMapping("/create")
+    public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (result.hasErrors()) return "subprojects/create";
+
+        subProjectService.createSubProject(subProject);
+        session.setAttribute("successMessage", "Projekt er blevet oprettet");
+        return "redirect:/subprojects?projectId=" + subProject.getProjectId();
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateSubProject(@PathVariable Integer id, @ModelAttribute SubProject subProject, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        subProject.setId(id);
+        subProjectService.updateSubProject(subProject);
+        return "redirect:/subprojects";
+    }
+
 
 }
