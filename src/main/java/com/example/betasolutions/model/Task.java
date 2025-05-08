@@ -123,4 +123,13 @@ public class Task {
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
     }
+
+    public int getPercentComplete() {
+        return (int) ((actualHours / estimatedHours) * 100);
+    }
+
+    public String getAssignedTo() {
+        /// Mangler logik til at assigne employee(s) til task
+        return "Assigned to employee"; // placeholder
+    }
 }
