@@ -28,6 +28,7 @@ public class ProjectController {
         return session.getAttribute("username") != null;
     }
 
+    /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
     @GetMapping
     public String listProjects(Model model, HttpSession session) {
         if (!isLoggedIn(session)){
@@ -56,55 +57,6 @@ public class ProjectController {
         return "projects/create"; //peger på create.html i projects-directory
     }
 
-    @PostMapping("/create")
-    public String createProject(@ModelAttribute @Valid Project project, BindingResult result, HttpSession session, Model model) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-
-        if (result.hasErrors()) {
-            model.addAttribute("pageTitle", "Create Project");
-            return "projects/create";
-        }
-
-        projectService.createProject(project);
-        session.setAttribute("successMessage", "Project created successfully");
-        return "redirect:/projects"; //Redirects til lists efter oprettelse
-    }
-
-    @GetMapping ("edit/{id}")
-    public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
-            return "redirect:/auth/login";
-        }
-        model.addAttribute("pageTitle", "Rediger projekt");
-        Project project = projectService.getProjectById(id)
-                .orElseThrow(()-> new RuntimeException("Project not found"));
-        model.addAttribute("project", project);
-        return "projects/edit"; //henviser på edit.html i projects directory
-    }
-
-    @PostMapping("/update/{id}")
-    public String updateProject(@PathVariable Integer id, @ModelAttribute Project project, HttpSession session) {
-        if (!isLoggedIn(session)){
-            return "redirect:/auth/login";
-        }
-
-        project.setId(id);
-        projectService.updateProject(project);
-        session.setAttribute("successMessage", "Projekt er blevet opdateret");
-        return "redirect:/projects";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteProject(@PathVariable Integer id, HttpSession session) {
-        if (!isLoggedIn(session)){
-            return "redirect:/auth/login";
-        }
-
-        projectService.deleteProject(id);
-        session.setAttribute("successMessage", "Projekt er blevet slettet");
-        return "redirect:/projects";
-    }
-
     @GetMapping("/summary")
     public String showProjectSummary(Model model) {
         List<Project> projects = projectService.getAllProjects();
@@ -125,6 +77,54 @@ public class ProjectController {
         return "projects/summary";
     }
 
+    @GetMapping ("edit/{id}")
+    public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/auth/login";
+        }
+        model.addAttribute("pageTitle", "Rediger projekt");
+        Project project = projectService.getProjectById(id)
+                .orElseThrow(()-> new RuntimeException("Project not found"));
+        model.addAttribute("project", project);
+        return "projects/edit"; //henviser på edit.html i projects directory
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteProject(@PathVariable Integer id, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/auth/login";
+        }
+
+        projectService.deleteProject(id);
+        session.setAttribute("successMessage", "Projekt er blevet slettet");
+        return "redirect:/projects";
+    }
+
+    @PostMapping("/create")
+    public String createProject(@ModelAttribute @Valid Project project, BindingResult result, HttpSession session, Model model) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        if (result.hasErrors()) {
+            model.addAttribute("pageTitle", "Create Project");
+            return "projects/create";
+        }
+
+        projectService.createProject(project);
+        session.setAttribute("successMessage", "Project created successfully");
+        return "redirect:/projects"; //Redirects til lists efter oprettelse
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateProject(@PathVariable Integer id, @ModelAttribute Project project, HttpSession session) {
+        if (!isLoggedIn(session)){
+            return "redirect:/auth/login";
+        }
+
+        project.setId(id);
+        projectService.updateProject(project);
+        session.setAttribute("successMessage", "Projekt er blevet opdateret");
+        return "redirect:/projects";
+    }
 
 
 }
