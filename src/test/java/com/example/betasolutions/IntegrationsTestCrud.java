@@ -1,5 +1,24 @@
 package com.example.betasolutions;
 
+
+
+///  OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS
+///                                                  OBS
+///                                                  OBS
+///          HER BAD ALEKSANDER (PO) OS OM AT        OBS
+///          DELE METODERNE OP I TESTKLASSER         OBS
+///          OG FIND BEDRE NAVNGIVNING               OBS
+///                                                  OBS
+///          DET HAR VI GJORT UNDER:                 OBS
+///          "/test/java/com.example.betasolutions/  OBS
+///            crud_tests/"                          OBS
+///                                                  OBS
+///                                                  OBS
+///  OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS OBS
+
+
+
+
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
@@ -14,6 +33,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +50,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 // Og at transaktionen bliver rullet tilbage efter testen (så data forbliver ren til næste test)
 @Rollback(true)
-class CrudTest {
+class IntegrationTest {
 
     @Autowired
     private ProjectRepository projectRepository;

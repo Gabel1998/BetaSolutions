@@ -3,12 +3,9 @@ package com.example.betasolutions.controller;
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
-import com.example.betasolutions.service.PlantUmlGanttService;
 import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
-import com.example.betasolutions.service.TaskService;
 import com.example.betasolutions.utils.DateUtils;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -16,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,14 +24,10 @@ public class SubProjectController {
 
     private final ProjectService projectService;
     protected final SubProjectService subProjectService;
-    private final TaskService taskService;
-    private final PlantUmlGanttService ganttService;
 
-    public SubProjectController(SubProjectService subProjectService, ProjectService projectService, TaskService taskService, PlantUmlGanttService ganttService) {
+    public SubProjectController(SubProjectService subProjectService, ProjectService projectService) {
         this.subProjectService = subProjectService;
         this.projectService = projectService;
-        this.taskService = taskService;
-        this.ganttService = ganttService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -106,21 +97,6 @@ public class SubProjectController {
                 .orElseThrow(() -> new RuntimeException("SubProject not found"));
         model.addAttribute("subProject", subProject);
         return "subprojects/edit";
-    }
-
-    @GetMapping("/{id}/gantt")
-    public void generateGanttDiagram(@PathVariable Integer id, HttpServletResponse response) throws IOException {
-        SubProject subProject = subProjectService.getSubProjectById(id)
-                .orElseThrow(() -> new RuntimeException("Subproject not found"));
-
-        List<Task> tasks = taskService.getTasksBySubProjectId(id);
-        byte[] imageBytes = ganttService.generateGantt(subProject, tasks); /// PlantUML Skal have byte[] for at generere PNG billedet
-
-        String fileName = "gantt_" + subProject.getName().replaceAll("\\s+", "_") + "_" + id + "_" + LocalDate.now() + ".png"; /// filnavn ved generering
-
-        response.setContentType("image/png"); /// sætter content type til PNG
-        response.setHeader("Content-Disposition", "attachment; filename=" + fileName); /// sætter header til at downloade billedet
-        response.getOutputStream().write(imageBytes); /// skriver billedet til output stream
     }
 
 
