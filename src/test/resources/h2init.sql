@@ -29,8 +29,8 @@ CREATE TABLE tb_tasks (
                           ts_description VARCHAR(1000),
                           ts_estimated_hours DECIMAL(5,2),
                           ts_actual_hours DECIMAL(5,2),
-                          sp_start_date DATE,
-                          sp_end_date DATE,
+                          start_date DATE,
+                          end_date DATE,
                           ts_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           ts_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
