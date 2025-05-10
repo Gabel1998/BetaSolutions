@@ -55,19 +55,29 @@ public class TaskService {
         return (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
     }
 
+    // Calculate total daily hours for a specific task
     public double getTotalDailyHoursForTask(Long taskId) {
         List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
-        return employees.stream()
-                .mapToDouble(this::calculateDailyHours)
-                .sum();
+
+        double totalDailyHours = 0.0;
+        for (TaskEmployee employee : employees) {
+            long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
+            if(workdays > 0) {
+            double dailyHours = (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
+            totalDailyHours += dailyHours;
+            }
+        }
+
+        return totalDailyHours;
     }
 
+    // Check if the total daily hours for a list of tasks exceed a given limit
     public boolean isDailyHoursExceeded(List<Task> tasks, double dailyLimit) {
-        double totalHours = 0;
+        double totalDailyHours = 0;
         for (Task task : tasks) {
-            totalHours += task.getActualHours();
+            totalDailyHours += getTotalDailyHoursForTask(task.getId());
         }
-        return totalHours > dailyLimit;
+        return totalDailyHours > dailyLimit;
     }
 
     public List<Task> getTasksBySubProjectId(int subProjectId) {

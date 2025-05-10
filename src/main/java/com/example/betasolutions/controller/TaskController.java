@@ -123,7 +123,7 @@ public class TaskController {
         return "tasks/distribution"; /// ja, eller hvad det nu skal være, nu har jeg lavet en midlertidig
     }
 
-    @PostMapping("/create-task")
+    @PostMapping("/create")
     public String createTask(@ModelAttribute @Valid Task task,
                              BindingResult result,
                              Model model,
