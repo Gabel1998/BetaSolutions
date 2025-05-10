@@ -73,4 +73,8 @@ public class TaskService {
     public List<Task> getTasksBySubProjectId(int subProjectId) {
         return taskRepository.findBySubProjectId(subProjectId);
     }
+
+    public List<String> getAssignedEmployeeNames (Integer taskId) {
+        return taskEmployeeRepository.findAssignedEmployeeNamesByTaskId(taskId);
+    }
 }
