@@ -3,10 +3,7 @@ package com.example.betasolutions.controller;
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
-import com.example.betasolutions.service.PlantUmlGanttService;
-import com.example.betasolutions.service.ProjectService;
-import com.example.betasolutions.service.SubProjectService;
-import com.example.betasolutions.service.TaskService;
+import com.example.betasolutions.service.*;
 import com.example.betasolutions.utils.DateUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -121,6 +118,35 @@ public class SubProjectController {
         response.setContentType("image/png"); /// sætter content type til PNG
         response.setHeader("Content-Disposition", "attachment; filename=" + fileName); /// sætter header til at downloade billedet
         response.getOutputStream().write(imageBytes); /// skriver billedet til output stream
+    }
+
+    // Gantt data til frontend [JSON]
+    @GetMapping("/api/subprojects/{id}/ganttdata")
+    @ResponseBody
+    public Map<String, Object> getGanttData(@PathVariable Integer id) {
+        SubProject subProject = subProjectService.getSubProjectById(id)
+                .orElseThrow(() -> new RuntimeException("Subproject not found"));
+
+        List<Task> tasks = taskService.getTasksBySubProjectId(id);
+
+        List<Map<String, Object>> taskData = tasks.stream().map(task -> {
+            Map<String, Object> taskMap = new HashMap<>();
+            taskMap.put("id", task.getId());
+            taskMap.put("name", task.getName());
+            taskMap.put("startDate", DateUtils.formatDate(task.getStartDate()));
+            taskMap.put("endDate", DateUtils.formatDate(task.getEndDate()));
+
+            taskMap.put("assignedEmployees", taskService.getAssignedEmployeeNames(task.getId().intValue()));
+            return taskMap;
+        }).toList();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("subProjectName", subProject.getName());
+        response.put("startDate", subProject.getStartDate());
+        response.put("endDate", subProject.getEndDate());
+        response.put("tasks", taskData);
+
+        return response;
     }
 
 
