@@ -125,6 +125,9 @@ public class Task {
     }
 
     public int getPercentComplete() {
+        if (estimatedHours == 0) {
+            return 0; // Avoid division by zero
+        }
         return (int) ((actualHours / estimatedHours) * 100);
     }
 

@@ -2,20 +2,20 @@
 USE db_projects;
 
 -- Projekter
-INSERT INTO tb_projects (p_name, p_description, p_start_date, p_end_date)
+INSERT INTO tb_projects (p_name, p_description, start_date, end_date)
 VALUES
     ('Grøn Energi', 'Projekt om grøn omstilling', '2025-01-01', '2025-06-30'),
     ('Byg Nyt HQ', 'Nyt hovedkontor i Aarhus', '2025-03-01', '2025-12-31');
 
 -- Delprojekter
-INSERT INTO tb_subprojects (sp_p_id, sp_name, sp_description, sp_start_date, sp_end_date)
+INSERT INTO tb_subprojects (sp_p_id, sp_name, sp_description, start_date, end_date)
 VALUES
     (1000, 'Solcelleanlæg', 'Opsætning af solceller', '2025-01-10', '2025-03-01'),
     (1000, 'Elbil ladepunkter', 'Installation af ladestandere', '2025-03-05', '2025-04-15'),
     (1001, 'Arkitekturplan', 'Design af bygning', '2025-03-10', '2025-05-20');
 
 -- Opgaver
-INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, sp_start_date, sp_end_date)
+INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date)
 VALUES
     (2000, 'Montering af solpaneler', 'Installer 100 paneler', 80.00, 85.50, '2025-01-10', '2025-03-01'),
     (2001, 'Trækning af kabler', 'El-installation', 60.00, 58.25, '2025-03-05', '2025-04-15'),
@@ -41,3 +41,5 @@ VALUES
     (100000, 7000, 42.00), -- Emil
     (100001, 7001, 38.00), -- Sofie
     (100002, 7002, 90.00); -- Mads
+
+ALTER TABLE tb_tasks ADD COLUMN project_id BIGINT;
