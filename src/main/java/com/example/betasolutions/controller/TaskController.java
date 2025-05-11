@@ -45,7 +45,7 @@ public class TaskController {
         model.addAttribute("tasks", tasks);
         model.addAttribute("subProject", subProject);
 
-        boolean overLimit = taskService.isDailyHoursExceeded(tasks, 8.0);
+        boolean overLimit = taskService.isEmployeeOverbooked(tasks);
         model.addAttribute("overLimit", overLimit);
 
         return "tasks/list";

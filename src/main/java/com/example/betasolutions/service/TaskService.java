@@ -1,5 +1,6 @@
 package com.example.betasolutions.service;
 
+import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.model.TaskEmployee;
 import com.example.betasolutions.repository.TaskEmployeeRepository;
@@ -7,7 +8,9 @@ import com.example.betasolutions.repository.TaskRepository;
 import com.example.betasolutions.utils.DateUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 // Service-lag for Task – håndterer logik mellem controller og repository
@@ -16,10 +19,12 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskEmployeeRepository taskEmployeeRepository;
+    private final EmployeeService employeeService;
 
-    public TaskService(TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository) {
+    public TaskService(TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository, EmployeeService employeeService) {
         this.taskRepository = taskRepository;
         this.taskEmployeeRepository = taskEmployeeRepository;
+        this.employeeService = employeeService;
     }
 
     public void createTask(Task task) {
@@ -63,8 +68,8 @@ public class TaskService {
         for (TaskEmployee employee : employees) {
             long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
             if(workdays > 0) {
-            double dailyHours = (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
-            totalDailyHours += dailyHours;
+                double dailyHours = (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
+                totalDailyHours += dailyHours;
             }
         }
 
@@ -86,5 +91,43 @@ public class TaskService {
 
     public List<String> getAssignedEmployeeNames (Integer taskId) {
         return taskEmployeeRepository.findAssignedEmployeeNamesByTaskId(taskId);
+    }
+
+    public boolean isEmployeeOverbooked(List<Task> tasks) {
+        Map<Long, Double> employeeTotalHours = new HashMap<>();
+
+        // Loop through each task and its assigned employees
+        for (Task task : tasks) {
+            List<TaskEmployee> taskEmployees = taskEmployeeRepository.findByTaskId(task.getId());
+
+            // Loop through each employee assigned to task
+            // Try-catch to handle employeeID parsing (string -> long)
+            for (TaskEmployee te : taskEmployees) {
+                long numericEmployeeId;
+                try {
+                    numericEmployeeId = Long.parseLong(te.getEmployeeId());
+                    double currentTotal = employeeTotalHours.getOrDefault(numericEmployeeId, 0.0);
+                    employeeTotalHours.put(numericEmployeeId, currentTotal + te.getAllocatedHours());
+                } catch (NumberFormatException e) {
+                    System.err.println("Invalid employee ID format: " + te.getEmployeeId());
+                    continue; // Skip invalid entries
+                }
+                                                ///HVORFOR ER EMPLOYEE ID VARCHAR??? DET GIVER INGEN MENING.
+                                                ///Det skal jo helst være long (bigint)? - "worst case" int(som man heller ikke skal gøre).
+                                                ///Så hvorfor, og hvordan blev det besluttet at bruge varchar? Det giver problemer og LAANG metode.
+            }
+        }
+        // Check if any employee has total hours exceeding limit
+        for (Map.Entry<Long, Double> entry : employeeTotalHours.entrySet()) {
+            long employeeId = entry.getKey();
+            double totalHours = entry.getValue();
+            Employees employee = employeeService.getEmployeeById((int)employeeId);
+            double maxAllowedHours = (employee != null) ? employee.getMaxWeeklyHours() : 40.0; // Default to 40 hours if not set
+
+            if(totalHours > maxAllowedHours) {
+                return true;
+            }
+        }
+        return false;
     }
 }
