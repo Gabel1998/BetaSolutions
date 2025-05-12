@@ -23,6 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // Starter hele Spring Boot-applikationen i test-kontekst
 @SpringBootTest
+@ActiveProfiles("test")
 // Kører SQL-scriptet som ligger i src/test/resources før hver testmetode
 @Sql(scripts = "classpath:h2init.sql")
 // Sørger for at konteksten nulstilles efter hver test (sletter alt i H2)
