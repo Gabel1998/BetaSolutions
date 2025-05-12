@@ -2,11 +2,11 @@
 USE db_employees;
 
 -- Medarbejdere
-INSERT INTO tb_employees (em_first_name, em_last_name, em_efficiency)
+INSERT INTO tb_employees (em_first_name, em_last_name, em_efficiency, em_max_weekly_hours)
 VALUES
-    ('Emil', 'Hansen', 1.10),
-    ('Sofie', 'Jensen', 0.95),
-    ('Mads', 'Larsen', 1.20);
+    ('Emil', 'Hansen', 1.10, 37.5),
+    ('Sofie', 'Jensen', 0.95, 20),
+    ('Mads', 'Larsen', 1.20, 15);
 
 -- Kompetencer
 INSERT INTO tb_skills (sk_name)

@@ -20,8 +20,8 @@ CREATE TABLE tb_subprojects (
     sp_p_id INT,
     sp_name VARCHAR(500) NOT NULL,
     sp_description VARCHAR(255),
-    sp_start_date DATE,
-    sp_end_date DATE,
+    start_date DATE,
+    end_date DATE,
     sp_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     sp_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (sp_p_id) REFERENCES tb_projects(p_id)
@@ -35,8 +35,9 @@ CREATE TABLE tb_tasks (
     ts_description VARCHAR(1000),
     ts_estimated_hours DECIMAL(5,2),
     ts_actual_hours DECIMAL(5,2),
-    sp_start_date DATE,
-    sp_end_date DATE,
+    start_date DATE,
+    end_date DATE,
+    project_id INT,
     ts_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     ts_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (ts_sp_id) REFERENCES tb_subprojects(sp_id)

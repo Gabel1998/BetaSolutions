@@ -99,35 +99,27 @@ public class TaskService {
         // Loop through each task and its assigned employees
         for (Task task : tasks) {
             List<TaskEmployee> taskEmployees = taskEmployeeRepository.findByTaskId(task.getId());
-
             // Loop through each employee assigned to task
-            // Try-catch to handle employeeID parsing (string -> long)
             for (TaskEmployee te : taskEmployees) {
-                long numericEmployeeId;
-                try {
-                    numericEmployeeId = Long.parseLong(te.getEmployeeId());
-                    double currentTotal = employeeTotalHours.getOrDefault(numericEmployeeId, 0.0);
-                    employeeTotalHours.put(numericEmployeeId, currentTotal + te.getAllocatedHours());
-                } catch (NumberFormatException e) {
-                    System.err.println("Invalid employee ID format: " + te.getEmployeeId());
-                    continue; // Skip invalid entries
-                }
-                                                ///HVORFOR ER EMPLOYEE ID VARCHAR??? DET GIVER INGEN MENING.
-                                                ///Det skal jo helst være long (bigint)? - "worst case" int(som man heller ikke skal gøre).
-                                                ///Så hvorfor, og hvordan blev det besluttet at bruge varchar? Det giver problemer og LAANG metode.
+                Long employeeId = te.getEmployeeId();
+                // Add hours to employee's total
+                double currentTotal = employeeTotalHours.getOrDefault(employeeId, 0.0);
+                employeeTotalHours.put(employeeId, currentTotal + te.getAllocatedHours());
             }
         }
-        // Check if any employee has total hours exceeding limit
+        // Validate if any employee exceeds their max allowed hours
         for (Map.Entry<Long, Double> entry : employeeTotalHours.entrySet()) {
             long employeeId = entry.getKey();
             double totalHours = entry.getValue();
-            Employees employee = employeeService.getEmployeeById((int)employeeId);
-            double maxAllowedHours = (employee != null) ? employee.getMaxWeeklyHours() : 40.0; // Default to 40 hours if not set
 
-            if(totalHours > maxAllowedHours) {
-                return true;
+            // Fetch employee from DB to get max allowed weekly hours
+            Employees employee = employeeService.getEmployeeById((int) employeeId);
+            double maxAllowedHours = (employee != null) ? employee.getMaxWeeklyHours() : 40.0;
+
+            if (totalHours > maxAllowedHours) {
+                return true;  // Employee exceeded allowed hours
             }
         }
-        return false;
+        return false;  // All employees within limits
     }
 }

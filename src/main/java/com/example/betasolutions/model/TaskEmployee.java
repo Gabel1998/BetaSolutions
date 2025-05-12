@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class TaskEmployee {
     private Long tseId; //Primary Key
     private Long taskId; //foreign key til Task
-    private String employeeId; //foreign key til Employee
+    private Long employeeId; //foreign key til Employee
     private double hoursWorked;
     private double allocatedHours; // = H_allocated
     private double allocationPercentage; // = H_allocated / H_total * 100
@@ -28,11 +28,11 @@ public class TaskEmployee {
         this.taskId = taskId;
     }
 
-    public String getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 
