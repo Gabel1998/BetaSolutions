@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -28,8 +30,15 @@ public class H2TestConfig {
         return new JdbcTemplate(h2DataSource);
     }
 
-    @Bean
+    // Provide a dummy JdbcTemplate to satisfy @Qualifier("employeesJdbcTemplate")
+    @Bean(name = "employeesJdbcTemplate")
     public JdbcTemplate employeesJdbcTemplate(DataSource h2DataSource) {
         return new JdbcTemplate(h2DataSource);
+    }
+
+    @Bean
+    @Primary
+    public PlatformTransactionManager transactionManager(DataSource h2DataSource) {
+        return new DataSourceTransactionManager(h2DataSource);
     }
 }
