@@ -4,6 +4,7 @@ import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.service.TaskService;
+import com.example.betasolutions.service.TaskEmployeeService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
@@ -20,11 +23,13 @@ public class TaskController {
     private final TaskService taskService;
     private final ProjectService projectService;
     private final SubProjectService subProjectService;
+    private final TaskEmployeeService taskEmployeeService;
 
-    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService) {
+    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.subProjectService = subProjectService;
+        this.taskEmployeeService = taskEmployeeService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -176,4 +181,12 @@ public class TaskController {
         taskService.updateTask(task);
         return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
+
+    @GetMapping("/workload")
+    public String showWorkload(Model model) {
+        Map<String, Map<LocalDate, Double>> workload = taskEmployeeService.getEmployeeLoadOverTime();
+        model.addAttribute("workload", workload);
+        return "tasks/workload";
+    }
+
 }

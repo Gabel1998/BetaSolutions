@@ -15,6 +15,12 @@ public class TaskEmployeeRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public List<TaskEmployee> findAll() {
+        String sql = "SELECT * FROM task_employee";
+        return jdbcTemplate.query(sql, new TaskEmployeeRowMapper());
+    }
+
+
     public List<TaskEmployee> findByTaskId(Long taskId) {
         String sql = "SELECT * FROM tb_task_employees WHERE tse_ts_id = ?";
         return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), taskId);
@@ -30,4 +36,6 @@ public class TaskEmployeeRepository {
         /// hardcoded mock for testing
         //return List.of("Alexander", "Andreas", "Rasmus", "Sofie");
     }
+
+
 }

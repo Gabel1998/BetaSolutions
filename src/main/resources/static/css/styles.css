@@ -358,3 +358,63 @@ input {
     color: var(--grey-soft);
     margin-top: 1rem;
 }
+/* ===================== Graphic layout for employye workload ===================== */
+
+.bar-container {
+    max-width: 960px;
+    margin: auto;
+    padding: 2rem;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.employee-section {
+    margin-bottom: 3rem;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary-color);
+}
+
+h2 {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    color: var(--text-color);
+}
+
+.bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 150px;
+    border-left: 2px solid var(--grey-light);
+    border-bottom: 2px solid var(--grey-light);
+    padding: 0 0.5rem;
+    background-color: var(--container-color);
+}
+
+.bar {
+    background-color: var(--primary-color);
+    width: 30px;
+    text-align: center;
+    color: var(--white);
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: background-color 0.3s;
+    border-radius: 4px 4px 0 0;
+}
+
+.bar:hover {
+    background-color: var(--secondary-color);
+    cursor: help;
+}
+
+.bar span {
+    transform: rotate(-45deg);
+    writing-mode: vertical-lr;
+    margin-bottom: 4px;
+}
