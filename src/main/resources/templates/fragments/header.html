@@ -3,9 +3,7 @@
 <head th:fragment="head">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title th:text ="${pageTitle}">Projektstyring</title> <!-- Skal vi måske fjerne denne '<title>', da IDE'et klager over alle andre
-                                                               HTML sider, når vi replacer header, uden at have '<title>' med?
-                                                               == Fjerne <title> her i skapalon -> implementer i alle klasser, efter navn -->
+
     <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/base.css}">
     <link rel="stylesheet" th:href="@{/css/componements.css}">
@@ -25,6 +23,7 @@
                 <li><a th:href="@{/projects}">Projects</a></li>
                 <li><a th:href="@{/subprojects}">Subprojects</a></li>
                 <li><a th:href="@{/tasks}">Tasks</a> </li>
+                <li><a th:href="@{/workload}">Belastning</a></li>
                 <li><a th:href="@{/projects/summary}">Summary</a> </li>
             </ul>
         </nav>

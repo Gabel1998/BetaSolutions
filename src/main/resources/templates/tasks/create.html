@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/header :: head}"/>
     <meta charset="UTF-8">
     <title>Create Task</title>
 </head>
 <body>
 
 <!-- Fælles header -->
-<div th:replace="~{fragments/header :: header}"></div>
+<div th:replace="~{fragments/header :: head}"></div>
 
 <main class="content">
 

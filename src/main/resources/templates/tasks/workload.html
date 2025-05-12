@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<head th:replace="~{fragments/header :: head}">
+    <title>Workload Employees</title>
+<body>
+
+<!-- Header fragment -->
+<div th:replace="fragments/header :: header"></div>
+
+<main class="bar-container">
+    <h1>Medarbejderbelastning pr. dag</h1>
+
+    <div th:each="entry : ${workload}" class="employee-section">
+        <h2 th:text="'Medarbejder: ' + ${entry.key}"></h2>
+        <div class="bar-chart">
+            <div th:each="dayStat : ${entry.value.entrySet()}"
+                 class="bar"
+                 th:style="'height:' + ${dayStat.value * 10} + 'px'"
+                 th:title="${dayStat.key} + ': ' + ${dayStat.value} + ' timer'">
+                <span th:text="${#dates.format(dayStat.key, 'dd/MM')}"></span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer fragment -->
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
