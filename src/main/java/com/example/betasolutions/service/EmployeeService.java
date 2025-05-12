@@ -27,7 +27,7 @@ public class EmployeeService {
     }
 
     // READ BY ID
-    public Employees getEmployeeById(int id) {
+    public Employees getEmployeeById(long id) {
         return employeeRepository.getEmployeeById(id);
     }
 

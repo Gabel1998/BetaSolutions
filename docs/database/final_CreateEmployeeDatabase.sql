@@ -28,4 +28,3 @@ CREATE TABLE tb_employee_skills (
                                     FOREIGN KEY (emsk_em_id) REFERENCES tb_employees(em_id),
                                     FOREIGN KEY (emsk_sk_id) REFERENCES tb_skills(sk_id)
 );
-em_max_weekly_hours

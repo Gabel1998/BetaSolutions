@@ -2,7 +2,7 @@
 USE db_projects;
 
 -- Projekter
-INSERT INTO tb_projects (p_name, p_description, start_date, end_date)
+INSERT INTO tb_projects (p_name, p_description, p_start_date, p_end_date)
 VALUES
     ('Grøn Energi', 'Projekt om grøn omstilling', '2025-01-01', '2025-06-30'),
     ('Byg Nyt HQ', 'Nyt hovedkontor i Aarhus', '2025-03-01', '2025-12-31');
@@ -41,5 +41,3 @@ VALUES
     (100000, 7000, 42.00), -- Emil
     (100001, 7001, 38.00), -- Sofie
     (100002, 7002, 90.00); -- Mads
-
-ALTER TABLE tb_tasks ADD COLUMN project_id BIGINT;

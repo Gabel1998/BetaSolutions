@@ -10,8 +10,6 @@
 <main class="content">
     <h2>Rediger task</h2>
 
-    <!-- Debug (fjern denne linje når alt virker) -->
-    <p th:text="'(Debug) Task ID: ' + ${task.id}"></p>
 
     <form th:action="@{/tasks/update/{id}(id=${task.id})}" th:object="${task}" method="post" class="form-container">
 
