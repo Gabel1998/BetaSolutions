@@ -7,8 +7,12 @@ public class Employees {
     private String emFirstName;
     private String emLastName;
     private double emEfficiency;
+    private double maxWeeklyHours = 40.0; ///MANGLER i db og ER model. default value: 40timer/uge?
     private LocalDateTime emCreatedAt;
     private LocalDateTime emUpdatedAt;
+
+
+
     //getters og setters
     public void setEmId(Integer emId){
         this.emId = emId;
@@ -59,4 +63,11 @@ public class Employees {
     }
 
 
+    public double getMaxWeeklyHours() {
+        return maxWeeklyHours;
+    }
+
+    public void setMaxWeeklyHours(double maxWeeklyHours) {
+        this.maxWeeklyHours = maxWeeklyHours;
+    }
 }

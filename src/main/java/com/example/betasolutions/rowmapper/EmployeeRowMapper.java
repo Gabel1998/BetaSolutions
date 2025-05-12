@@ -18,6 +18,7 @@ public class EmployeeRowMapper implements RowMapper<Employees> {
         employees.setEmEfficiency(rs.getDouble("em_efficiency"));
         employees.setEmCreatedAt(rs.getTimestamp("em_created_at").toLocalDateTime());
         employees.setEmUpdatedAt(rs.getTimestamp("em_updated_at").toLocalDateTime());
+        employees.setMaxWeeklyHours(rs.getDouble("em_max_weekly_hours"));
         return employees;
     }
 }

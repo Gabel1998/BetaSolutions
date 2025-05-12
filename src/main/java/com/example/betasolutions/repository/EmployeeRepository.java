@@ -53,4 +53,16 @@ public class EmployeeRepository {
         String sql = "DELETE FROM employees WHERE em_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    // READ MAXIMUM WEEKLY HOURS
+    public double getMaxWeeklyHours(int id) {
+        String sql = "SELECT em_max_weekly_hours FROM employees WHERE em_id = ?";
+        return jdbcTemplate.queryForObject(sql, Double.class, id);
+    }
+
+    // UPDATE MAXIMUM WEEKLY HOURS
+    public void updateMaxWeeklyHours(int id, double maxWeeklyHours) {
+        String sql = "UPDATE employees SET em_max_weekly_hours = ? WHERE em_id = ?";
+        jdbcTemplate.update(sql, maxWeeklyHours, id);
+    }
 }

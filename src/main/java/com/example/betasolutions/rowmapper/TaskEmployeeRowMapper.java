@@ -12,7 +12,7 @@ public class TaskEmployeeRowMapper implements RowMapper<TaskEmployee> {
         TaskEmployee employee = new TaskEmployee();
         employee.setTseId(rs.getLong("tse_id"));
         employee.setTaskId(rs.getLong("tse_ts_id"));
-        employee.setEmployeeId(rs.getString("tse_em_id"));
+        employee.setEmployeeId(rs.getLong("tse_em_id"));
         employee.setHoursWorked(rs.getDouble("tse_hours_worked"));
         return employee;
     }
