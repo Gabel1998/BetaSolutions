@@ -1,5 +1,6 @@
 package com.example.betasolutions;
 
+import com.example.betasolutions.config.H2TestConfig;
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
@@ -9,6 +10,7 @@ import com.example.betasolutions.repository.TaskRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,6 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 // Starter hele Spring Boot-applikationen i test-kontekst
 @SpringBootTest
 @ActiveProfiles("test")
+@Import(H2TestConfig.class)
 // Kører SQL-scriptet som ligger i src/test/resources før hver testmetode
 @Sql(scripts = "classpath:h2init.sql")
 // Sørger for at konteksten nulstilles efter hver test (sletter alt i H2)
