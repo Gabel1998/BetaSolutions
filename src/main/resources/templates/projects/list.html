@@ -26,13 +26,16 @@
                 <p>Start: <span th:text="${project.startDate}"></span></p>
                 <p>Slut: <span th:text="${project.endDate}"></span></p>
 
-                <!-- Hours used on project (est. and actual) -->
                 <p th:if="${projectHours != null and projectHours.containsKey(project.id)}">
                     Estimerede timer: <span th:text="${#numbers.formatDecimal(projectHours.get(project.id).get('estimatedHours'), 1, 1)}">0.0</span>
                 </p>
                 <p th:if="${projectHours != null and projectHours.containsKey(project.id)}">
                     Faktiske timer: <span th:text="${#numbers.formatDecimal(projectHours.get(project.id).get('actualHours'), 1, 1)}">0.0</span>
                 </p>
+                <p th:if="${projectCo2 != null and projectCo2.containsKey(project.id)}">
+                    CO₂-forbrug: <span th:text="${#numbers.formatDecimal(projectCo2.get(project.id), 1, 1)}">0.0</span>
+                </p>
+
 
             </a>
         </div>

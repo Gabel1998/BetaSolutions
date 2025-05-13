@@ -29,4 +29,9 @@ public class ResourceRepository {
         String sql = "INSERT INTO resource (re_name, re_co2_per_hour, re_created_at) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, resource.getRe_name(), resource.getRe_co2_perHour(), resource.getRe_created_at());
     }
+
+    public List<Resource> findResourcesByProjectId(int projectId) {
+        String sql = "SELECT * FROM resource WHERE re_project_id = ?";
+        return jdbcTemplate.query(sql, new ResourceRowMapper(), projectId);
+    }
 }
