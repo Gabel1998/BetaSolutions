@@ -2,6 +2,7 @@ package com.example.betasolutions.controller;
 
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.service.ProjectService;
+import com.example.betasolutions.service.ResourceService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private ResourceService resourceService;
 
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
@@ -38,18 +40,28 @@ public class ProjectController {
 
         List<Project> projects = projectService.getAllProjects();
 
-        // Beregning af total timer af tasks for projekter
+        // Timer
         List<Integer> projectIds = projects.stream()
                 .map(Project::getId)
                 .collect(Collectors.toList());
-        Map<Integer, Map<String, Double>> projectHours =
-                projectService.calculateProjectHoursByProjectIds(projectIds);
+        Map<Integer, Map<String, Double>> projectHours = projectService.calculateProjectHoursByProjectIds(projectIds);
+
+        // CO₂ forbrug
+        Map<Integer, Double> projectCo2 = new HashMap<>();
+        for (Project project : projects) {
+            double actualHours = 0.0;
+            if (projectHours.containsKey(project.getId())) {
+                actualHours = projectHours.get(project.getId()).getOrDefault("actualHours", 0.0);
+            }
+            double co2 = resourceService.calculateTotalCo2ForProject(project.getId(), actualHours);
+            projectCo2.put(project.getId(), co2);
+        }
 
         model.addAttribute("pageTitle", "Alle projekter");
         model.addAttribute("projects", projects);
         model.addAttribute("projectHours", projectHours);
+        model.addAttribute("projectCo2", projectCo2);
 
-        //hvis der er en succes i session
         String succesMessage = (String)session.getAttribute("successMessage");
         if (succesMessage != null) {
             model.addAttribute("successMessage", succesMessage);
