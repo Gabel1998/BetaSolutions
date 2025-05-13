@@ -14,6 +14,9 @@ public class TaskEmployeeRowMapper implements RowMapper<TaskEmployee> {
         employee.setTaskId(rs.getLong("tse_ts_id"));
         employee.setEmployeeId(rs.getLong("tse_em_id"));
         employee.setHoursWorked(rs.getDouble("tse_hours_worked"));
+        employee.setStartDate(rs.getDate("start_date").toLocalDate());
+        employee.setEndDate(rs.getDate("end_date").toLocalDate());
+
         return employee;
     }
 }

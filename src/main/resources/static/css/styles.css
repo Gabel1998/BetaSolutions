@@ -418,3 +418,7 @@ h2 {
     writing-mode: vertical-lr;
     margin-bottom: 4px;
 }
+.overburdened {
+    background-color: red !important;
+}
+
