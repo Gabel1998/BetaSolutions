@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head th:replace="~{fragments/header :: head}">
     <title>Workload Employees</title>
+</head>
 <body>
 
 <!-- Header fragment -->
@@ -11,12 +12,17 @@
     <h1>Medarbejderbelastning pr. dag</h1>
 
     <div th:each="entry : ${workload}" class="employee-section">
-        <h2 th:text="'Medarbejder: ' + ${entry.key}"></h2>
-        <div class="bar-chart">
+        <!-- Medarbejdernavn via map -->
+        <h2 th:text="'Medarbejder: ' + ${employeeNames[entry.key]}"></h2>
+
+        <div class="bar-chart" th:attr="id='emp' + ${entry.key}">
+            <!-- Hver dag: Pair<Double, Double> = (timer, procent) -->
             <div th:each="dayStat : ${entry.value.entrySet()}"
+                 th:with="hours=${dayStat.value.left}, percent=${dayStat.value.right}"
                  class="bar"
-                 th:style="'height:' + ${dayStat.value * 10} + 'px'"
-                 th:title="${dayStat.key} + ': ' + ${dayStat.value} + ' timer'">
+                 th:classappend="${percent > 100} ? ' overburdened' : ''"
+                 th:style="'height:' + (${hours} * 10) + 'px'"
+                 th:title="${#dates.format(dayStat.key, 'dd/MM/yyyy')} + ': ' + ${hours} + ' timer (' + ${percent} + '%)'">
                 <span th:text="${#dates.format(dayStat.key, 'dd/MM')}"></span>
             </div>
         </div>

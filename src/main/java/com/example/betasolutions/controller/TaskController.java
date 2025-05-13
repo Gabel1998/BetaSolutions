@@ -1,18 +1,22 @@
 package com.example.betasolutions.controller;
+import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.service.TaskService;
 import com.example.betasolutions.service.TaskEmployeeService;
+import com.example.betasolutions.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,12 +28,14 @@ public class TaskController {
     private final ProjectService projectService;
     private final SubProjectService subProjectService;
     private final TaskEmployeeService taskEmployeeService;
+    private final EmployeeService employeeService;
 
-    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService) {
+    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeService employeeService) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.subProjectService = subProjectService;
         this.taskEmployeeService = taskEmployeeService;
+        this.employeeService = employeeService;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -184,8 +190,19 @@ public class TaskController {
 
     @GetMapping("/workload")
     public String showWorkload(Model model) {
-        Map<String, Map<LocalDate, Double>> workload = taskEmployeeService.getEmployeeLoadOverTime();
+        // Map<Long employeeId, Map<LocalDate, Pair<timer, procent>>>
+        Map<Long, Map<LocalDate, Pair<Double, Double>>> workload = taskEmployeeService.getEmployeeLoadOverTime();
+
+        // Lav map med navne: Map<Long, String>
+        Map<Long, String> employeeNames = new HashMap<>();
+        for (Long id : workload.keySet()) {
+            Employees emp = employeeService.getEmployeeById(id);
+            String fullName = emp.getEmFirstName() + " " + emp.getEmLastName();
+            employeeNames.put(id, fullName);
+        }
+
         model.addAttribute("workload", workload);
+        model.addAttribute("employeeNames", employeeNames);
         return "tasks/workload";
     }
 
