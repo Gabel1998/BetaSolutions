@@ -16,7 +16,7 @@ public class TaskEmployeeRepository {
     }
 
     public List<TaskEmployee> findAll() {
-        String sql = "SELECT * FROM task_employee";
+        String sql = "SELECT * FROM tb_task_employees";
         return jdbcTemplate.query(sql, new TaskEmployeeRowMapper());
     }
 
