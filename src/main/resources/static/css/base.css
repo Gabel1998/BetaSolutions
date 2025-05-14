@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
+
 /* ════════════════════════════════════════ */
 /*      GLOBAL VARIABLES + ROOT COLORS      */
 /* ════════════════════════════════════════ */
@@ -12,7 +14,7 @@
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 2rem;
-    --radius: 8px;
+    --radius: 12px;
 }
 
 /* ════════════════════════════════════════ */
@@ -24,12 +26,14 @@ body {
     font-weight: 400;
     color: var(--black);
     background-color: var(--white);
+    line-height: 1.6;
     margin: 0;
     padding: 0;
 }
 
 a {
     color: var(--blue);
+    font-weight: 600;
     text-decoration: none;
 }
 a:hover {
@@ -37,6 +41,6 @@ a:hover {
 }
 
 h1, h2, h3 {
-    font-weight: 800;
+    font-weight: 700;
     color: var(--black);
 }

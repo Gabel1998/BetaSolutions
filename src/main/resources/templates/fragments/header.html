@@ -1,46 +1,52 @@
 <!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title th:text ="${pageTitle}">Projektstyring</title> <!-- Skal vi måske fjerne denne '<title>', da IDE'et klager over alle andre
-                                                               HTML sider, når vi replacer header, uden at have '<title>' med?
-                                                               == Fjerne <title> her i skapalon -> implementer i alle klasser, efter navn -->
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <link rel="stylesheet" th:href="@{/css/base.css}">
-    <link rel="stylesheet" th:href="@{/css/componements.css}">
-    <link rel="stylesheet" th:href="@{/css/main.css}">
-</head>
-<header th:fragment="header">
-    <div class="header-container">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Projektstyring</title>
 
-        <div class="logo">
-            <a th:href="@{/}"><img th:src="@{/images/logo/AlphaSolutions.png}" alt="Logo" class="nav-logo"></a>
+    <!-- Import Google Fonts Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/components.css}">
+    <link rel="stylesheet" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+</head>
+
+<header th:fragment="header">
+    <div class="header-container flex">
+        <div class="logo flex">
+            <a th:href="@{/}">
+                <img th:src="@{/images/logo/AlphaSolutions.png}" alt="Alpha Solutions Logo" class="nav-logo">
+            </a>
             <h1>Alpha Solution Projects</h1>
         </div>
 
         <nav class="main-nav">
-            <ul class="nav-menu">
-                <li><a th:href="@{/}">Hjem</a></li>
-                <li><a th:href="@{/projects}">Projects</a></li>
-                <li><a th:href="@{/subprojects}">Subprojects</a></li>
-                <li><a th:href="@{/tasks}">Tasks</a> </li>
-                <li><a th:href="@{/projects/summary}">Summary</a> </li>
+            <ul class="nav-menu flex">
+                <li><a th:href="@{/}">HJEM</a></li>
+                <li><a th:href="@{/projects}">PROJECTS</a></li>
+<!--                <li><a th:href="@{/subprojects}">SUBPROJECTS</a></li>-->
+<!--                <li><a th:href="@{/tasks}">TASKS</a></li>-->
+                <li><a th:href="@{/projects/summary}">SUMMARY</a></li>
             </ul>
         </nav>
 
-        <!--VIRKER IKKE(session.admin), SKAL RETTES MED RIGTIG INFO I SPRINT 2-->
+
         <div class="user-controls">
-            <!-- Ikke logget ind -->
-            <div th:if="${session.admin == null}" class="user-info">
-                <a th:href="@{/login}" class="nav-button">Login</a>
+            <!-- Visible if NOT logged in -->
+            <div th:if="${session.user == null}" class="user-info">
+                <a th:href="@{/login}" class="button">Login</a>
             </div>
 
-            <!-- Logget ind -->
-            <div th:if="${session.admin != null}" class="user-info">
-                <span th:text="${session.admin}">Username</span>
-                <a th:href="@{/logout}" class="nav-button">Logout</a>
+            <!-- Visible if logged in -->
+            <div th:if="${session.user != null}" class="user-info flex">
+                <span th:text="${session.user}">Username</span>
+                <a th:href="@{/logout}" class="button">Logout</a>
             </div>
         </div>
+
     </div>
 </header>
