@@ -38,8 +38,14 @@ public class EmployeeRepository {
     // READ BY ID
     public Employees getEmployeeById(long id) {
         String sql = "SELECT * FROM tb_employees WHERE em_id = ?";
-        return jdbcTemplate.queryForObject(sql, new EmployeeRowMapper(), id);
+        List<Employees> result = jdbcTemplate.query(sql, new EmployeeRowMapper(), id);
+        if (result.isEmpty()) {
+            System.out.println("⚠️ Medarbejder med ID " + id + " ikke fundet i tb_employees.");
+            return null;
+        }
+        return result.get(0);
     }
+
 
     // UPDATE
     public void updateEmployee(Employees employee) {
