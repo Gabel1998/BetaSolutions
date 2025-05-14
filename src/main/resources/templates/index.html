@@ -1,39 +1,47 @@
 <!DOCTYPE html>
-<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/header :: head}">
-    <title>Alpha Solutions</title></head>
-
+    <title>Alpha Solutions</title>
+</head>
 <body>
-<!-- ======== HEADER TEMPLATE ======== -->
+<!-- Header -->
 <div th:replace="~{fragments/header :: header}"></div>
 
-<div class="page">
-    <section class="banner">
-        <h2>Alpha Solutions</h2>
+<main class="container">
+    <!-- Banner -->
+    <section class="banner text-center card">
+        <h1>Alpha Solutions</h1>
     </section>
 
-    <!-- Uden login -->
-    <section class="login-prompt">
-        <p>Log ind for at se projekter</p>
-        <a th:href="@{/auth/login}" class="nav-button">Login</a>
+    <!-- Show Login Prompt if NOT logged in -->
+    <section class="login-prompt text-center card" th:if="${session.user == null}">
+        <p>Please log in to view your projects</p>
+        <a th:href="@{/auth/login}" class="button">Login</a>
     </section>
 
-    <!-- Med login -->
-    <section class="projects">
-        <h2>Seneste opdateret Projekter</h2>
-        <div class="project-list">
-            <a th:each="project : ${projects}"
-               th:href="@{'/subprojects?projectId=' + ${project.id}}"
-               class="project-card">
-                <h3 th:text="${project.name}">Projektnavn</h3>
-            </a>
-        </div>
+    <!-- Show Projects if Logged in -->
+    <section th:if="${session.user != null}">
+        <section class="card" th:if="${#lists.isEmpty(projects) == false}">
+            <h2>Recently Updated Projects</h2>
+            <div class="project-list">
+                <a th:each="project : ${projects}"
+                   th:href="@{'/subprojects?projectId=' + ${project.id}}"
+                   class="project-card">
+                    <h3 th:text="${project.name}">Project Name</h3>
+                </a>
+            </div>
+        </section>
+
+        <section class="card text-center" th:if="${#lists.isEmpty(projects)}">
+            <h2>No Projects Found</h2>
+            <p>There are currently no projects available.</p>
+        </section>
     </section>
+</main>
 
-    <footer>
-        <div th:replace="~{fragments/footer :: footer}"></div>
-    </footer>
-</div>
-
+<!-- Footer -->
+<footer class="container">
+    <div th:replace="~{fragments/footer :: footer}"></div>
+</footer>
 </body>
 </html>
