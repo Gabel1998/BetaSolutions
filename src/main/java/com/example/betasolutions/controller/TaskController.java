@@ -2,6 +2,7 @@ package com.example.betasolutions.controller;
 import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
+import com.example.betasolutions.repository.EmployeeRepository;
 import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.service.TaskService;
@@ -29,13 +30,15 @@ public class TaskController {
     private final SubProjectService subProjectService;
     private final TaskEmployeeService taskEmployeeService;
     private final EmployeeService employeeService;
+    private final EmployeeRepository employeeRepository;
 
-    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeService employeeService) {
+    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeService employeeService, EmployeeRepository employeeRepository) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.subProjectService = subProjectService;
         this.taskEmployeeService = taskEmployeeService;
         this.employeeService = employeeService;
+        this.employeeRepository = employeeRepository;
     }
 
     private boolean isLoggedIn(HttpSession session) {
@@ -134,6 +137,25 @@ public class TaskController {
         return "tasks/distribution"; /// ja, eller hvad det nu skal være, nu har jeg lavet en midlertidig
     }
 
+    @GetMapping("/workload")
+    public String showWorkload(Model model) {
+        Map<Long, Map<LocalDate, Pair<Double, Double>>> workload = taskEmployeeService.getEmployeeLoadOverTime();
+
+        // Create a map of employee IDs to names
+        Map<Long, String> employeeNames = new HashMap<>();
+        for (Long employeeId : workload.keySet()) {
+            Employees employee = employeeRepository.getEmployeeById(employeeId);
+            if (employee != null) {
+                // Combine first and last name
+                employeeNames.put(employeeId, employee.getEmFirstName() + " " + employee.getEmLastName());
+            }
+        }
+
+        model.addAttribute("workload", workload);
+        model.addAttribute("employeeNames", employeeNames);
+        return "tasks/workload";
+    }
+
     @PostMapping("/create")
     public String createTask(@ModelAttribute @Valid Task task,
                              BindingResult result,
@@ -187,23 +209,4 @@ public class TaskController {
         taskService.updateTask(task);
         return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
-
-    @GetMapping("/workload")
-    public String showWorkload(Model model) {
-        // Map<Long employeeId, Map<LocalDate, Pair<timer, procent>>>
-        Map<Long, Map<LocalDate, Pair<Double, Double>>> workload = taskEmployeeService.getEmployeeLoadOverTime();
-
-        // Lav map med navne: Map<Long, String>
-        Map<Long, String> employeeNames = new HashMap<>();
-        for (Long id : workload.keySet()) {
-            Employees emp = employeeService.getEmployeeById(id);
-            String fullName = emp.getEmFirstName() + " " + emp.getEmLastName();
-            employeeNames.put(id, fullName);
-        }
-
-        model.addAttribute("workload", workload);
-        model.addAttribute("employeeNames", employeeNames);
-        return "tasks/workload";
-    }
-
 }
