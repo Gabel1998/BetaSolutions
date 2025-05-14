@@ -56,6 +56,11 @@ public class TaskEmployeeService {
         for (Map.Entry<Long, Map<LocalDate, Double>> entry : dailyHoursMap.entrySet()) {
             long employeeId = entry.getKey();
             Employees emp = employeeRepository.getEmployeeById(employeeId);
+            if (emp == null) {
+                System.out.println("⚠️ Skipper medarbejder ID " + employeeId + " fordi den ikke findes i db_employees.");
+                continue;
+            }
+
 
             double maxPerDay = emp.getMaxWeeklyHours() / 5.0; // antag 5 arbejdsdage
             Map<LocalDate, Pair<Double, Double>> dailyWithPercent = new TreeMap<>();
