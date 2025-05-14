@@ -9,9 +9,18 @@
 
 <main class="container">
     <!-- Banner -->
-    <section class="banner text-center card">
+    <section class="banner">
         <h1>Alpha Solutions</h1>
+        <p class="motto">Without people, technology solves nothing.</p>
+    <section th:if="${session.user != null}">
+        <div class="banner-buttons">
+            <a href="/projects" class="button">Go to Projects</a>
+            <a href="/projects/create" class="button">Create Project</a>
+        </div>
     </section>
+    </section>
+
+
 
     <!-- Show Login Prompt if NOT logged in -->
     <section class="login-prompt text-center card" th:if="${session.user == null}">
@@ -40,8 +49,6 @@
 </main>
 
 <!-- Footer -->
-<footer class="container">
-    <div th:replace="~{fragments/footer :: footer}"></div>
-</footer>
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
