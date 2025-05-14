@@ -23,7 +23,7 @@ public class EmployeesDataSourceConfig {
         return employeesDataSourceProperties().initializeDataSourceBuilder().build();
     }
 
-    @Bean
+    @Bean(name = "employeesJdbcTemplate")
     public JdbcTemplate employeesJdbcTemplate() {
         return new JdbcTemplate(employeesDataSource());
     }
