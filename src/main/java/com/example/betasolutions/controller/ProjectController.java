@@ -28,10 +28,9 @@ public class ProjectController {
 
     //Kontrol om bruger er logget ind
     private boolean isLoggedIn(HttpSession session) {
-        return session.getAttribute("username") != null;
+        return session.getAttribute("user") != null;
     }
 
-    /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
     @GetMapping
     public String listProjects(Model model, HttpSession session) {
         if (!isLoggedIn(session)){
