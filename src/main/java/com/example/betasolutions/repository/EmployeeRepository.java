@@ -47,7 +47,6 @@ public class EmployeeRepository {
         return result.get(0);
     }
 
-
     // UPDATE
     public void updateEmployee(Employees employee) {
         String sql = "UPDATE tb_employees SET em_first_name = ?, em_last_name = ?, em_efficiency = ?, em_updated_at = ?, max_weekly_hours = ? WHERE em_id = ?";
