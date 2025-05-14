@@ -37,7 +37,7 @@ public class SubProjectController {
     }
 
     private boolean isLoggedIn(HttpSession session) {
-        return session.getAttribute("username") != null;
+        return session.getAttribute("user") != null;
     }
 
 
