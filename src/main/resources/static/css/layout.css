@@ -24,7 +24,7 @@
 }
 
 /* ════════════════════════════════════════ */
-/*               HEADER LAYOUT             */
+/*               HEADER LAYOUT              */
 /* ════════════════════════════════════════ */
 .header-container {
     max-width: 1200px;
@@ -82,7 +82,7 @@
 }
 
 /* ════════════════════════════════════════ */
-/*               FOOTER LAYOUT             */
+/*               FOOTER LAYOUT              */
 /* ════════════════════════════════════════ */
 footer {
     width: 100%;
@@ -113,4 +113,24 @@ footer .footer-container {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background-color: var(--grey-light);
+    border-radius: var(--radius);
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    font-weight: 600;
+    color: var(--blue);
+    text-align: center;
+}
+
+.back-to-top {
+    display: block;
+    margin-top: var(--spacing-md);
+    text-align: center;
+    color: var(--blue);
 }
