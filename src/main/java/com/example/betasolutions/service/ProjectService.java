@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class ProjectService {
 
-    private SubProjectService subProjectService;
+    private final SubProjectService subProjectService;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
 //    Constructor

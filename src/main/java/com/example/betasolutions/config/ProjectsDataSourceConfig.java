@@ -17,7 +17,7 @@ public class ProjectsDataSourceConfig {
         return new DataSourceProperties();
     }
 
-    @Bean
+    @Bean(name = "projectsDataSource")
     public DataSource projectsDataSource() {
         return projectsDataSourceProperties().initializeDataSourceBuilder().build();
     }

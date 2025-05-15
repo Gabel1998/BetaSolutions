@@ -1,6 +1,5 @@
 package com.example.betasolutions.controller;
 
-import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.*;
