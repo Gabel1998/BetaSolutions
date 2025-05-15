@@ -28,6 +28,8 @@
 /*      BASE TYPOGRAPHY & HTML RESET        */
 /* ════════════════════════════════════════ */
 body {
+    display: flex;
+    flex-direction: column;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     font-weight: 400;
@@ -36,6 +38,10 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+}
+main {
+    flex: 1;
 }
 
 a {
