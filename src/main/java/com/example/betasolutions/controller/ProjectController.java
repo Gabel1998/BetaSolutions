@@ -5,6 +5,7 @@ import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.ResourceService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,18 +21,19 @@ import java.util.stream.Collectors;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private ResourceService resourceService;
+    private final ResourceService resourceService;
 
-    public ProjectController(ProjectService projectService) {
+    @Autowired
+    public ProjectController(ProjectService projectService, ResourceService resourceService) {
         this.projectService = projectService;
+        this.resourceService = resourceService;
     }
 
     //Kontrol om bruger er logget ind
     private boolean isLoggedIn(HttpSession session) {
-        return session.getAttribute("username") != null;
+        return session.getAttribute("user") != null;
     }
 
-    /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
     @GetMapping
     public String listProjects(Model model, HttpSession session) {
         if (!isLoggedIn(session)){

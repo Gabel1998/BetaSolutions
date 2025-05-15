@@ -1,0 +1,106 @@
+/* ════════════════════════════════════════ */
+/*                 BUTTONS                  */
+/* ════════════════════════════════════════ */
+.button {
+    display: inline-block;
+    padding: 0.65rem 1.25rem;
+    border: 1px solid var(--pink);
+    background: transparent;
+    color: var(--nice-black);
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: background 0.25s, border-color 0.25s, color 0.25s;
+}
+.button:hover {
+    background-color: var(--pink);
+    border-color:   var(--pink);
+    color:          var(--white);
+}
+
+/* ════════════════════════════════════════ */
+/*                   CARDS                  */
+/* ════════════════════════════════════════ */
+.card {
+    background: var(--card-bg);
+    padding: var(--spacing-lg);
+    border-radius:    calc(var(--radius) * 1.2);
+    border: 1px solid var(--grey-soft);
+    box-shadow:       0 4px 16px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    margin: var(--spacing-lg) auto;
+    /*margin-bottom: var(--spacing-lg);*/
+    max-width: 720px;
+}
+
+.card:hover {
+    /*transform: translateY(-4px);*/
+    /*transition: 0.2s ease-in-out;*/
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* ════════════════════════════════════════ */
+/*               DISTRIBUTION BAR           */
+/* ════════════════════════════════════════ */
+.bar-container {
+    background: #e0e0e0;
+    height: 20px;
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing-md);
+}
+.bar {
+    background: var(--pink);
+    height: 100%;
+    border-radius: var(--radius);
+}
+
+/* ════════════════════════════════════════ */
+/*               STATUS INDICATORS          */
+/* ════════════════════════════════════════ */
+.status-ok {
+    color: green;
+    font-weight: bold;
+}
+.status-warning {
+    color: var(--pink);
+    font-weight: bold;
+}
+
+/* ════════════════════════════════════════ */
+/*                    OTHER                 */
+/* ════════════════════════════════════════ */
+/* Section headers with divider */
+section h2 {
+    border-bottom: 2px solid var(--grey-soft);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.project-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+.project-card, .project-list a.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 240px;
+    max-width: 300px;
+    min-height: 100px;
+    padding: 1.5rem;
+    border: 1px solid var(--grey-soft);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+}
+
+.project-card:hover, .project-list a.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}

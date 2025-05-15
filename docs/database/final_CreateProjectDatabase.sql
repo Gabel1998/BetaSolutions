@@ -49,6 +49,8 @@ CREATE TABLE tb_task_employees (
     tse_ts_id BIGINT,
     tse_em_id BIGINT,
     tse_hours_worked DECIMAL(5,2),
+    start_date DATE,
+    end_date DATE,
     FOREIGN KEY (tse_ts_id) REFERENCES tb_tasks(ts_id)
 ) AUTO_INCREMENT=500000;
 

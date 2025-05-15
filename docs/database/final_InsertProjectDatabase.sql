@@ -36,8 +36,10 @@ VALUES
     (100002, 3001, 90.00); -- Ingeniør på opgave 3
 
 -- Tildel medarbejdere
-INSERT INTO tb_task_employees (tse_ts_id, tse_em_id, tse_hours_worked)
+INSERT INTO tb_task_employees (tse_ts_id, tse_em_id, tse_hours_worked, start_date, end_date)
 VALUES
-    (100000, 7000, 42.00), -- Emil
-    (100001, 7001, 38.00), -- Sofie
-    (100002, 7002, 90.00); -- Mads
+    (100000, 7000, 42.00, '2025-05-12', '2025-05-16'), -- Emil, 5 dage
+    (100001, 7001, 38.00, '2025-05-12', '2025-05-15'), -- Sofie, 4 dage
+    (100002, 7002, 90.00, '2025-05-12', '2025-05-19'), -- Mads, 6 dage
+    (100000, 7000,  8.00, '2025-05-12', '2025-05-12'), -- Emil works 8h on one day
+    (100001, 7001, 16.00, '2025-05-12', '2025-05-13'); -- Sofie works 16h over two days

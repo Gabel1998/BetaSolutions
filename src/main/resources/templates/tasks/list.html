@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header :: head}"><title>Task Overview</title></head>
+<head th:replace="~{fragments/header :: head}">
+    <title>Task Overview</title>
+</head>
 
 <body>
 
@@ -8,32 +10,41 @@
 
 <main class="content">
 
-    <div class="top-bar">
-        <h2 th:text="'Tasks for ' + ${subProject.name}">Subprojektets navn</h2>
-        <a class="button" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Rediger subprojekt</a>
-    </div>
-
-    <div th:if="${overLimit}" class="alert alert-danger" role="alert">
-        Advarsel: Det samlede daglige timetal overstiger kapaciteten!
-    </div>
-    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
-
-    <section class="item-list">
-        <a th:each="task : ${tasks}"
-           th:href="@{'/tasks/edit/' + ${task.id}}"
-           class="item-card">
-
-            <h3 th:text="${task.name}">Tasknavn</h3>
-            <p th:text="${task.description}">Beskrivelse</p>
-            <p>Estimerede timer: <span th:text="${task.estimatedHours}">0.0</span></p>
-            <p>Faktiske timer: <span th:text="${task.actualHours}">0.0</span></p>
-
-        </a>
+    <!-- Show Login Prompt if NOT logged in -->
+    <section class="login-prompt text-center card" th:if="${session.user == null}">
+        <p>Please log in to view your tasks</p>
+        <a th:href="@{/auth/login}" class="button">Login</a>
     </section>
 
-    <div class="create-button-container">
-        <a class="button" th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">+ Opret ny task</a>
-    </div>
+    <!-- Show Tasks if Logged in -->
+    <section th:if="${session.user != null}">
+        <div class="top-bar">
+            <h2 th:text="'Tasks for ' + ${subProject.name}">Subproject Name</h2>
+            <a class="button" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Edit Subproject</a>
+        </div>
+
+        <div th:if="${overLimit}" class="alert alert-danger" role="alert">
+            Warning: Total daily hours exceed capacity!
+        </div>
+        <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+
+        <section class="item-list">
+            <a th:each="task : ${tasks}"
+               th:href="@{'/tasks/edit/' + ${task.id}}"
+               class="item-card">
+
+                <h3 th:text="${task.name}">Task Name</h3>
+                <p th:text="${task.description}">Description</p>
+                <p>Estimated Hours: <span th:text="${task.estimatedHours}">0.0</span></p>
+                <p>Actual Hours: <span th:text="${task.actualHours}">0.0</span></p>
+
+            </a>
+        </section>
+
+        <div class="create-button-container">
+            <a class="button" th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">+ Create New Task</a>
+        </div>
+    </section>
 
 </main>
 
