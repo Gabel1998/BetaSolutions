@@ -1,47 +1,12 @@
-@import url('../css/base.css');
-@import url('../css/components.css');    /* WORK IN PROGRESS */
-@import url('../css/layout.css');
-/* ===================== Root Colors ===================== */
-:root {
-    --black: #000000;
-    --white: #ffffff;
-    --blue: #0000EE;
-    --grey-light: #dedede;
-    --grey-soft: #bdcfd8;
-    --pink: #ff325a;
-
-    /*--primary-color: var(--pink);*/
-    /*--secondary-color: var(--grey-soft);*/
-    /*--background-color: var(--white);*/
-    /*--text-color: var(--black);*/
-    /*--button-color: var(--blue);*/
-    /*--container-color: var(--grey-light);*/
-}
+@import url('./base.css');
+@import url('./components.css');
+@import url('./layout.css');
 
 /* ===================== Global ===================== */
 html, body {
-    height: 100%;
     margin: 0;
     padding: 0;
 }
-
-/*body {*/
-/*    font-family: 'Poppins', sans-serif;*/
-/*    overflow-x: hidden;*/
-/*    background-color: var(--background-color);*/
-/*    color: var(--text-color);*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    min-height: 100vh;*/
-/*    padding-top: 70px;*/
-/*}*/
-
-
-
-/*a {*/
-/*    text-decoration: none;*/
-/*    color: inherit;*/
-/*}*/
 
 .content-wrapper {
     margin-top: 70px;
@@ -62,28 +27,6 @@ header, footer {
     font-size: 0.9em;
 }
 
-/*header {*/
-/*    position: fixed;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    width: 100%;*/
-/*    z-index: 10;*/
-/*    background: var(--grey-light);*/
-/*    border-bottom: 1px solid var(--grey-soft);*/
-/*    backdrop-filter: blur(6px);*/
-/*    padding: 10px 0;*/
-/*    height: 70px;*/
-/*}*/
-
-/*footer {*/
-/*    background-color: var(--grey-light);*/
-/*    text-align: center;*/
-/*    margin-top: auto;*/
-/*    flex-shrink: 0;*/
-/*    padding: 5px 0;*/
-/*    color: var(--text-color);*/
-/*}*/
-
 /* ===================== Header Components ===================== */
 .header-container {
     display: flex;
@@ -94,50 +37,6 @@ header, footer {
     padding: 0 4vw;
     height: 100%;
 }
-
-/*.logo {*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    gap: 0.8rem;*/
-/*    height: 100%;*/
-/*}*/
-
-/*.nav-logo {*/
-/*    height: 40px;*/
-/*    object-fit: contain;*/
-/*}*/
-
-/*.logo h1 {*/
-/*    font-size: 1.3rem;*/
-/*    font-weight: 600;*/
-/*    color: var(--text-color);*/
-/*    margin: 0;*/
-/*    line-height: 70px;*/
-/*    align-items: center;*/
-/*    height: 100%;*/
-/*}*/
-
-/*.main-nav {*/
-/*    display: flex;*/
-/*    flex: 1;*/
-/*    justify-content: center;*/
-/*    height: 100%;*/
-/*    align-items: center;*/
-/*}*/
-
-/*.nav-menu {*/
-/*    display: flex;*/
-/*    gap: 2.5rem;*/
-/*    list-style: none;*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*}*/
-
-/*.nav-menu a {*/
-/*    font-weight: 500;*/
-/*    transition: color 0.2s ease;*/
-/*    color: var(--text-color);*/
-/*}*/
 
 .nav-menu a:hover {
     color: var(--pink);
@@ -334,15 +233,8 @@ input {
     color: var(--grey-soft);
     margin-top: 1rem;
 }
-/* ===================== Graphic layout for employye workload ===================== */
+/* ===================== Graphic layout for employee workload ===================== */
 
-/*.bar-container {*/
-/*    max-width: 960px;*/
-/*    margin: auto;*/
-/*    padding: 2rem;*/
-/*    background-color: var(--background-beige);*/
-/*    color: var(--text-color);*/
-/*}*/
 
 .employee-section {
     margin-bottom: 3rem;
@@ -366,18 +258,6 @@ h2 {
     background-color: var(--card-bg);
 }
 
-/*.bar {*/
-/*    background-color: var(--background-beige);*/
-/*    width: 30px;*/
-/*    text-align: center;*/
-/*    color: var(--card-bg);*/
-/*    font-size: 0.75rem;*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    justify-content: flex-end;*/
-/*    transition: background-color 0.3s;*/
-/*    border-radius: 4px 4px 0 0;*/
-/*}*/
 
 .bar:hover {
     background-color: var(--pink);
@@ -394,7 +274,6 @@ h2 {
 }
 
 /* ===================== Responsive Design ===================== */
-/* soften the banner corners and tighten up spacing */
 .rounded-banner {
     border-radius: 1rem;
     padding: 2rem;
