@@ -29,13 +29,10 @@
     box-shadow:       0 4px 16px rgba(0,0,0,0.05);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
     margin: var(--spacing-lg) auto;
-    /*margin-bottom: var(--spacing-lg);*/
     max-width: 720px;
 }
 
 .card:hover {
-    /*transform: translateY(-4px);*/
-    /*transition: 0.2s ease-in-out;*/
     box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
 
@@ -69,7 +66,6 @@
 /* ════════════════════════════════════════ */
 /*                    OTHER                 */
 /* ════════════════════════════════════════ */
-/* Section headers with divider */
 section h2 {
     border-bottom: 2px solid var(--grey-soft);
     padding-bottom: var(--spacing-sm);
@@ -103,4 +99,175 @@ section h2 {
 .project-card:hover, .project-list a.card:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+/* ───────────────────────────────────────── */
+/*               SUBPROJECT GRID            */
+/* ───────────────────────────────────────── */
+.item-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: var(--spacing-lg) auto;
+}
+
+/* ───────────────────────────────────────── */
+/*             SUBPROJECT CARD              */
+/* ───────────────────────────────────────── */
+.item-card {
+    background: var(--card-bg);
+    border: 1px solid var(--grey-soft);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+.card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    flex: 1;
+}
+
+/* ───────────────────────────────────────── */
+/*           DOWNLOAD BUTTON                */
+/* ───────────────────────────────────────── */
+.download-btn {
+    margin-top: var(--spacing-md);
+    align-self: stretch;
+    text-align: center;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--pink);
+    background: transparent;
+    color: var(--nice-black);
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+.download-btn:hover {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: var(--white);
+}
+
+/* ───────────────────────────────────────── */
+/*           LOGIN‐CARD STYLES              */
+/* ───────────────────────────────────────── */
+.login-container {
+    width: 100%;
+    max-width: 700px;
+    margin: var(--spacing-lg) auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2rem;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-md);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+}
+.login-container h1 {
+    margin-bottom: var(--spacing-md);
+}
+.login-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: var(--nice-black);
+}
+
+.login-container input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--grey-soft);
+    border-radius: var(--radius);
+    box-sizing: border-box;
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--grey-soft);
+    border-radius: var(--radius);
+    background-color: var(--card-bg);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+}
+
+.form-container input[type="text"]:focus,
+.form-container input[type="password"]:focus {
+    outline: none;
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3);
+}
+
+.login-container .button[type="submit"] {
+    width: 100%;
+    margin-top: var(--spacing-md);
+}
+
+
+.login-container .register-link {
+    margin-top: var(--spacing-md);
+    display: inline-block;
+}
+
+/* ───────────────────────────────────────── */
+/*        LOGIN‐CARD SUPER POLISH          */
+/* ───────────────────────────────────────── */
+.login-container {
+    position: relative;
+    box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.6),
+            0 4px 12px rgba(0,0,0,0.08);
+    border-radius: calc(var(--radius) * 1.5);
+}
+.login-container::before {
+    content: "";
+    position: absolute;
+    top: -6px; bottom: -6px; left: -6px; right: -6px;
+    border-radius: inherit;
+    background: linear-gradient(45deg, #ffd1dc 0%, #ffe0e6 100%);
+    z-index: -1;
+    filter: blur(12px);
+    opacity: 0.4;
+}
+@media (min-width: 600px) {
+    .form-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 1.5rem;
+        row-gap: 1rem;
+    }
+    .form-container > div {
+        width: 100%;
+    }
+    .login-container button,
+    .login-container p {
+        grid-column: 1 / -1;
+    }
+}
+.login-container .register-link {
+    margin-top: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 999px;
 }
