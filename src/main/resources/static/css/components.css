@@ -18,6 +18,18 @@
     color:          var(--white);
 }
 
+.two-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+}
+.button--create:hover {
+    background-color: var(--green);
+    border-color:     var(--green);
+    color:            #fff;
+}
+
 /* ════════════════════════════════════════ */
 /*                   CARDS                  */
 /* ════════════════════════════════════════ */
@@ -138,7 +150,7 @@ section h2 {
 }
 
 /* ───────────────────────────────────────── */
-/*           DOWNLOAD BUTTON                */
+/*           DOWNLOAD BUTTON                 */
 /* ───────────────────────────────────────── */
 .download-btn {
     margin-top: var(--spacing-md);
@@ -160,7 +172,7 @@ section h2 {
 }
 
 /* ───────────────────────────────────────── */
-/*           LOGIN‐CARD STYLES              */
+/*            LOGIN‐CARD STYLES              */
 /* ───────────────────────────────────────── */
 .login-container {
     width: 100%;
