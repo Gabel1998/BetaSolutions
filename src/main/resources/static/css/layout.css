@@ -29,7 +29,7 @@
 .header-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,6 +50,10 @@
 .nav-menu a {
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.page-container {
+    padding-top: var(--spacing-xl);
 }
 
 /* ════════════════════════════════════════ */
@@ -91,7 +95,6 @@
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-
     background: var(--grey-soft);
 }
 
@@ -111,7 +114,6 @@ footer .footer-container {
     flex-wrap: wrap;
     gap: var(--spacing-lg);
     padding: var(--spacing-lg);
-
     background-color: var(--grey-light);
     border-radius: var(--radius);
 }
