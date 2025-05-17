@@ -20,7 +20,7 @@
     <section th:if="${session.user != null}">
         <div class="top-bar">
             <h2 th:text="'Tasks for ' + ${subProject.name}">Subproject Name</h2>
-            <a class="button" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Edit Subproject</a>
+            <a class="two-buttons" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Edit Subproject</a>
         </div>
 
         <div th:if="${overLimit}" class="alert alert-danger" role="alert">
@@ -41,8 +41,8 @@
             </a>
         </section>
 
-        <div class="create-button-container">
-            <a class="button" th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">+ Create New Task</a>
+        <div class="two-buttons">
+            <a class="button button--create" th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">+ Create New Task</a>
         </div>
     </section>
 

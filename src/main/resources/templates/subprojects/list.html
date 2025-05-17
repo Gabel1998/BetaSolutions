@@ -22,7 +22,7 @@
         <!-- project heading + edit link -->
         <div class="top-bar">
             <h2 th:text="${project != null} ? ${project.name} : 'Unknown project'">Project Name</h2>
-            <a class="button" th:href="@{'/projects/edit/' + ${project.id}}">Edit Project</a>
+            <a class="two-buttons" th:href="@{'/projects/edit/' + ${project.id}}">Edit Project</a>
         </div>
 
         <!-- any flash message -->
@@ -55,8 +55,8 @@
             </div>
         </section>
 
-        <div class="create-button-container">
-            <a class="button" th:href="@{'/subprojects/create?projectId=' + ${project.id}}">+ Create New Subproject</a>
+        <div class="two-buttons">
+            <a class="button button--create" th:href="@{'/subprojects/create?projectId=' + ${project.id}}">+ Create New Subproject</a>
         </div>
 
     </section>
