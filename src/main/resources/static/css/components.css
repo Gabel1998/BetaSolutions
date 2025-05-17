@@ -17,7 +17,6 @@
     border-color:   var(--pink);
     color:          var(--white);
 }
-
 .two-buttons {
     display: flex;
     justify-content: center;
@@ -43,7 +42,6 @@
     margin: var(--spacing-lg) auto;
     max-width: 720px;
 }
-
 .card:hover {
     box-shadow: 0 6px 16px rgba(0,0,0,0.08);
 }
@@ -84,21 +82,23 @@ section h2 {
     margin-bottom: var(--spacing-md);
 }
 
+/* ════════════════════════════════════════ */
+/*               PROJECT LIST               */
+/* ════════════════════════════════════════ */
 .project-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--spacing-md);
 }
-
-.project-card, .project-list a.card {
+.project-card,
+.project-list a.card {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-width: 240px;
     max-width: 300px;
-    min-height: 100px;
     padding: 1.5rem;
     border: 1px solid var(--grey-soft);
     border-radius: var(--radius);
@@ -107,15 +107,15 @@ section h2 {
     transition: all 0.2s ease-in-out;
     text-align: center;
 }
-
-.project-card:hover, .project-list a.card:hover {
+.project-card:hover,
+.project-list a.card:hover {
     transform: translateY(-4px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.08);
 }
 
-/* ───────────────────────────────────────── */
-/*               SUBPROJECT GRID            */
-/* ───────────────────────────────────────── */
+/* ════════════════════════════════════════ */
+/*             SUBPROJECT GRID              */
+/* ════════════════════════════════════════ */
 .item-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -124,9 +124,9 @@ section h2 {
     margin: var(--spacing-lg) auto;
 }
 
-/* ───────────────────────────────────────── */
-/*             SUBPROJECT CARD              */
-/* ───────────────────────────────────────── */
+/* ════════════════════════════════════════ */
+/*           SUBPROJECT CARD               */
+/* ════════════════════════════════════════ */
 .item-card {
     background: var(--card-bg);
     border: 1px solid var(--grey-soft);
@@ -141,17 +141,15 @@ section h2 {
     transform: translateY(-4px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.08);
 }
-
 .card-link {
     display: block;
     color: inherit;
     text-decoration: none;
     flex: 1;
 }
-
-/* ───────────────────────────────────────── */
-/*           DOWNLOAD BUTTON                 */
-/* ───────────────────────────────────────── */
+/* ════════════════════════════════════════ */
+/*           DOWNLOAD BUTTON               */
+/* ════════════════════════════════════════ */
 .download-btn {
     margin-top: var(--spacing-md);
     align-self: stretch;
@@ -170,22 +168,20 @@ section h2 {
     border-color: var(--pink);
     color: var(--white);
 }
-
-/* ───────────────────────────────────────── */
-/*            LOGIN‐CARD STYLES              */
-/* ───────────────────────────────────────── */
+/* ════════════════════════════════════════ */
+/*           LOGIN-CARD STYLES             */
+/* ════════════════════════════════════════ */
 .login-container {
-    width: 100%;
     max-width: 700px;
     margin: var(--spacing-lg) auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    row-gap: 2rem;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-lg) var(--spacing-xl) var(--spacing-md);
-    border-radius: var(--radius);
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
     background: var(--card-bg);
+    border: 1px solid var(--grey-soft);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 .login-container h1 {
     margin-bottom: var(--spacing-md);
@@ -196,56 +192,15 @@ section h2 {
     flex-direction: column;
     gap: var(--spacing-md);
 }
-
-.form-container label {
-    display: block;
-    margin-bottom: 0.25rem;
-    font-weight: 600;
-    color: var(--nice-black);
-}
-
-.login-container input {
-    width: 100%;
-    padding: var(--spacing-sm);
-    border: 1px solid var(--grey-soft);
-    border-radius: var(--radius);
-    box-sizing: border-box;
-}
-
-.form-container input[type="text"],
-.form-container input[type="password"] {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid var(--grey-soft);
-    border-radius: var(--radius);
-    background-color: var(--card-bg);
-    font-size: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    box-sizing: border-box;
-}
-
-.form-container input[type="text"]:focus,
-.form-container input[type="password"]:focus {
-    outline: none;
-    border-color: var(--pink);
-    box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3);
-}
-
-.login-container .button[type="submit"] {
-    width: 100%;
+.form-footer {
+    font-size: 0.9rem;
+    color: var(--grey-mid);
     margin-top: var(--spacing-md);
 }
-
-
 .login-container .register-link {
     margin-top: var(--spacing-md);
     display: inline-block;
 }
-
-/* ───────────────────────────────────────── */
-/*        LOGIN‐CARD SUPER POLISH          */
-/* ───────────────────────────────────────── */
 .login-container {
     position: relative;
     box-shadow:
@@ -263,23 +218,34 @@ section h2 {
     filter: blur(12px);
     opacity: 0.4;
 }
+
 @media (min-width: 600px) {
     .form-container {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        column-gap: 1.5rem;
-        row-gap: 1rem;
+        grid-template-columns: repeat(2,1fr);
+        column-gap: var(--spacing-lg);
+        row-gap: var(--spacing-md);
     }
-    .form-container > div {
-        width: 100%;
-    }
-    .login-container button,
-    .login-container p {
-        grid-column: 1 / -1;
-    }
+    .form-container > div { width: 100%; }
+    .form-container > .full-span { grid-column: 1 / -1; }
 }
-.login-container .register-link {
-    margin-top: 0.5rem;
-    padding: 0.65rem 1.5rem;
-    border-radius: 999px;
+
+/* ════════════════════════════════════════ */
+/*            EDIT-TASK FORM FIXUP         */
+/* ════════════════════════════════════════ */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+.timestamps {
+    text-align: right;
+    font-size: 0.9rem;
+    color: var(--grey-soft);
+    margin-bottom: var(--spacing-md);
 }
