@@ -49,9 +49,15 @@
             </div>
         </section>
 
-        <div class="create-button-container">
-            <a class="button" th:href="@{/projects/create}">+ Opret nyt projekt</a>
+        <div class="two-buttons">
+            <a class="button button--create" th:href="@{/projects/create}">
+                + Create New Project
+            </a>
+            <a class="button button--delete" th:href="@{/projects/delete}">
+                - Delete Project
+            </a>
         </div>
+
     </section>
 
 </main>

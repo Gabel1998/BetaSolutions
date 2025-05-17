@@ -10,7 +10,9 @@
     --blue:             #0000EE;
     --grey-light:       #dedede;
     --grey-soft:        #bdcfd8;
+    --grey-mid:         #f0efec;
     --pink:             #ff325a;
+    --green:            #2ecc71;
     --text-color:       #333333;
     --accent-pink:      var(--pink);
     --accent-blue:      var(--blue);
@@ -18,9 +20,11 @@
     --card-bg:          #fcfaf8;
     --radius:           16px;
 
+    --spacing-xs:      0.250rem;
     --spacing-sm:       0.5rem;
     --spacing-md:       1rem;
     --spacing-lg:       2rem;
+    --spacing-xl:       3rem;
 
 }
 

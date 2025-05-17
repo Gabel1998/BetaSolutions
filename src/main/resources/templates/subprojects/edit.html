@@ -8,32 +8,31 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
-    <h2>Rediger subprojekt</h2>
+    <h2>Edit Subproject</h2>
 
-    <!-- Form: sender ændringer til /subprojects/update/{id} -->
     <form th:action="@{'/subprojects/update/' + ${subProject.id}}" th:object="${subProject}" method="post" class="form-container">
 
-        <!-- Skjult felt: ID på det overordnede projekt -->
+        <!-- Hidden field: ID of the parent project -->
         <input type="hidden" th:field="*{projectId}"/>
 
-        <!-- Subprojektnavn -->
-        <label for="name">Navn</label>
+        <!-- Subproject name -->
+        <label for="name">Name</label>
         <input type="text" id="name" th:field="*{name}" required>
 
-        <!-- Beskrivelse af subprojektet -->
-        <label for="description">Beskrivelse</label>
+        <!-- Description of the subproject -->
+        <label for="description">Description</label>
         <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
-        <!-- Startdato for subprojekt -->
-        <label for="startDate">Startdato</label>
+        <!-- Start date for subproject -->
+        <label for="startDate">Start Date</label>
         <input type="date" id="startDate" th:field="*{startDate}" required>
 
-        <!-- Slutdato for subprojekt -->
-        <label for="endDate">Slutdato</label>
+        <!-- End date for subproject -->
+        <label for="endDate">End Date</label>
         <input type="date" id="endDate" th:field="*{endDate}">
 
-        <!-- Gem-knap -->
-        <button type="submit" class="button">Gem ændringer</button>
+        <!-- Save button -->
+        <button type="submit" class="button button--create">Save Changes</button>
     </form>
 </main>
 
