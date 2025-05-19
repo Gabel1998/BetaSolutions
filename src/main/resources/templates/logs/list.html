@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}"></head>
+<title>Log Hours - Tasks</title>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="content">
+  <section class="card">
+    <h1>Log Your Hours</h1>
+
+    <form th:action="@{/logs}" method="post" class="form-container">
+      <div th:each="task : ${tasks}" class="form-group">
+        <label th:for="${'hours_' + task.id}" th:text="${task.name}"></label>
+        <input type="number" step="0.25" min="0" th:name="${'hours_' + task.id}" th:id="${'hours_' + task.id}" />
+      </div>
+
+      <div class="two-buttons">
+        <button type="submit" class="button button--create">Submit Hours</button>
+      </div>
+    </form>
+  </section>
+</main>
+</body>
+</html>
