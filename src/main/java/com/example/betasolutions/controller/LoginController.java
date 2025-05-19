@@ -12,29 +12,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/auth")
 public class LoginController {
 
-
-    /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
+    // Display login page
     @GetMapping("/login")
-    public String ShowLoginForm(Model model) {
+    public String showLoginForm(Model model) {
         model.addAttribute("pageTitle", "Login");
-        return "login"; //henviser til login.html
+        return "login"; // login.html
     }
 
+    // Handle logout
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/auth/login";
     }
 
+    // Handle login form submission
+    /// skal fikses så når man kan oprette bruger, den kan logge ind
     @PostMapping("/login")
     public String loginUser(@RequestParam String username, @RequestParam String password, HttpSession session) {
-        //Midlertidigt login
+        // TEMPORARY: Only allow admin/admin123 for now
         if ("admin".equals(username) && "admin123".equals(password)) {
-            session.setAttribute("userRole", "ADMIN");
-            session.setAttribute("username", username);
+            session.setAttribute("user", username);  // Store username in session
             return "redirect:/projects";
         } else {
-            return "redirect:/auth/login?error";
+            return "redirect:/auth/login?error";     // Show error on wrong login
         }
     }
 

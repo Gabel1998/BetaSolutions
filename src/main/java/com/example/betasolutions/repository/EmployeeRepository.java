@@ -20,13 +20,14 @@ public class EmployeeRepository {
 
     // CREATE
     public void addEmployee(Employees employee) {
-        String sql = "INSERT INTO tb_employees (em_first_name, em_last_name, em_efficiency, em_created_at, em_updated_at) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tb_employees (em_first_name, em_last_name, em_efficiency, em_created_at, em_updated_at, max_weekly_hours) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 employee.getEmFirstName(),
                 employee.getEmLastName(),
                 employee.getEmEfficiency(),
                 employee.getEmCreatedAt(),
-                employee.getEmUpdatedAt());
+                employee.getEmUpdatedAt(),
+                employee.getMaxWeeklyHours());
     }
 
     // READ ALL
@@ -38,19 +39,25 @@ public class EmployeeRepository {
     // READ BY ID
     public Employees getEmployeeById(long id) {
         String sql = "SELECT * FROM tb_employees WHERE em_id = ?";
-        List<Employees> results = jdbcTemplate.query(sql, new EmployeeRowMapper(), id);
-        return results.isEmpty() ? null : results.get(0);
+
+        List<Employees> result = jdbcTemplate.query(sql, new EmployeeRowMapper(), id);
+        if (result.isEmpty()) {
+            System.out.println("⚠️ Medarbejder med ID " + id + " ikke fundet i tb_employees.");
+            return null;
+        }
+        return result.get(0);
     }
 
 
     // UPDATE
     public void updateEmployee(Employees employee) {
-        String sql = "UPDATE tb_employees SET em_first_name = ?, em_last_name = ?, em_efficiency = ?, em_updated_at = ? WHERE em_id = ?";
+        String sql = "UPDATE tb_employees SET em_first_name = ?, em_last_name = ?, em_efficiency = ?, em_updated_at = ?, max_weekly_hours = ? WHERE em_id = ?";
         jdbcTemplate.update(sql,
                 employee.getEmFirstName(),
                 employee.getEmLastName(),
                 employee.getEmEfficiency(),
                 employee.getEmUpdatedAt(),
+                employee.getMaxWeeklyHours(),
                 employee.getEmId());
     }
 
@@ -61,14 +68,14 @@ public class EmployeeRepository {
     }
 
     // READ MAXIMUM WEEKLY HOURS
-    public double getMaxWeeklyHours(int id) {
-        String sql = "SELECT em_max_weekly_hours FROM tb_employees WHERE em_id = ?";
+    public double getMaxWeeklyHours(long id) {
+        String sql = "SELECT max_weekly_hours FROM tb_employees WHERE em_id = ?";
         return jdbcTemplate.queryForObject(sql, Double.class, id);
     }
 
     // UPDATE MAXIMUM WEEKLY HOURS
-    public void updateMaxWeeklyHours(int id, double maxWeeklyHours) {
-        String sql = "UPDATE tb_employees SET em_max_weekly_hours = ? WHERE em_id = ?";
+    public void updateMaxWeeklyHours(long id, double maxWeeklyHours) {
+        String sql = "UPDATE tb_employees SET max_weekly_hours = ? WHERE em_id = ?";
         jdbcTemplate.update(sql, maxWeeklyHours, id);
     }
 }

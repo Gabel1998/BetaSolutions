@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header :: header}">
+<head th:replace="~{fragments/header :: head}">
     <title>Overview</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
@@ -10,21 +9,30 @@
 
 <main class="content">
 
-    <h2>Projekter</h2>
+    <!-- Show Login Prompt if NOT logged in -->
+    <section class="login-prompt text-center card" th:if="${session.user == null}">
+        <p>Please log in to view your projects</p>
+        <a th:href="@{/auth/login}" class="button">Login</a>
+    </section>
 
-    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
-    <!-- rækkefølge efter deadline? -> sprint 2 -->
-    <section class="projects">
-        <h2>Seneste opdateret Projekter</h2>
-        <div class="project-list">
-            <a th:each="project : ${projects}"
-               th:href="@{'/subprojects?projectId=' + ${project.id}}"
-               class="project-card">
+    <!-- Show Projects if Logged in -->
+    <section th:if="${session.user != null}">
+        <h2>Projekter</h2>
 
-                <h3 th:text="${project.name}">Projektnavn</h3>
-                <p th:text="${project.description}">Beskrivelse</p>
-                <p>Start: <span th:text="${project.startDate}"></span></p>
-                <p>Slut: <span th:text="${project.endDate}"></span></p>
+        <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+
+        <!-- rækkefølge efter deadline? -> sprint 2 -->
+        <section class="projects">
+            <h2>Seneste opdateret Projekter</h2>
+            <div class="project-list">
+                <a th:each="project : ${projects}"
+                   th:href="@{'/subprojects?projectId=' + ${project.id}}"
+                   class="project-card">
+
+                    <h3 th:text="${project.name}">Projektnavn</h3>
+                    <p th:text="${project.description}">Beskrivelse</p>
+                    <p>Start: <span th:text="${project.startDate}"></span></p>
+                    <p>Slut: <span th:text="${project.endDate}"></span></p>
 
                 <p th:if="${projectHours != null and projectHours.containsKey(project.id)}">
                     Estimerede timer: <span th:text="${#numbers.formatDecimal(projectHours.get(project.id).get('estimatedHours'), 1, 1)}">0.0</span>
@@ -40,13 +48,20 @@
                 </p>
 
 
+                </a>
+            </div>
+        </section>
+
+        <div class="two-buttons">
+            <a class="button button--create" th:href="@{/projects/create}">
+                + Create New Project
+            </a>
+            <a class="button button--delete" th:href="@{/projects/delete}">
+                - Delete Project
             </a>
         </div>
-    </section>
 
-    <div class="create-button-container">
-        <a class="button" th:href="@{/projects/create}">+ Opret nyt projekt</a>
-    </div>
+    </section>
 
 </main>
 
