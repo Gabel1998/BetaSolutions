@@ -1,3 +1,27 @@
+/* ——— Overrides til workload ——— */
+/* Fjern grå track-baggrund */
+.bar-container.bar-chart {
+    background-color: transparent !important;
+    background-image: none      !important;
+}
+
+/* Gør selve .bar gennemsigtig */
+.bar-container.bar-chart .bar {
+    background-color: transparent !important;
+}
+
+/* Farv kun split-divs */
+.bar-container.bar-chart .bar-normal {
+    background-color: steelblue !important;
+    width: 100%;
+}
+
+.bar-container.bar-chart .bar-over {
+    background-color: red       !important;
+    width: 100%;
+}
+
+/* ——— Resten af workload.css ——— */
 .bar-container {
     max-width: 960px;
     margin: auto;
@@ -29,24 +53,51 @@ h2 {
 }
 
 .bar {
-    background-color: steelblue;
-    width: 30px;
-    text-align: center;
-    color: white;
-    font-size: 0.75rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    align-items: center;
+    width: 50px;
+    text-align: center;
+    color: white;
+    font-size: 0.75rem;
     transition: background-color 0.3s;
 }
 
 .bar:hover {
-    background-color: #4682b4;
     cursor: help;
 }
 
 .bar span {
-    transform: rotate(-45deg);
-    writing-mode: vertical-lr;
     margin-bottom: 4px;
+}
+
+.axis-label-x {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.axis-label-y {
+    position: absolute;
+    left: -3rem;
+    top: 50%;
+    transform: rotate(-90deg) translateY(-50%);
+    transform-origin: left center;
+    font-weight: bold;
+}
+
+/* workload.css — nederst i dit head, så det overstyrer alt andet */
+.bar-container.bar-chart .bar {
+    /* fjern den 100%-højde, som ligger i det generelle stylesheet */
+    height: auto !important;
+    background-color: transparent !important;
+}
+.bar-container.bar-chart .bar-normal {
+    background-color: steelblue !important;
+    width: 100%;
+}
+.bar-container.bar-chart .bar-over {
+    background-color: red !important;
+    width: 100%;
 }
