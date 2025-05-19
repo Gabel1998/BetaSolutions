@@ -1,17 +1,25 @@
 package com.example.betasolutions.controller;
+import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
+import com.example.betasolutions.repository.EmployeeRepository;
 import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.service.TaskService;
+import com.example.betasolutions.service.TaskEmployeeService;
+import com.example.betasolutions.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/tasks")
@@ -20,15 +28,22 @@ public class TaskController {
     private final TaskService taskService;
     private final ProjectService projectService;
     private final SubProjectService subProjectService;
+    private final TaskEmployeeService taskEmployeeService;
+    private final EmployeeService employeeService;
+    private final EmployeeRepository employeeRepository;
 
-    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService) {
+    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeService employeeService, EmployeeRepository employeeRepository) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.subProjectService = subProjectService;
+        this.taskEmployeeService = taskEmployeeService;
+        this.employeeService = employeeService;
+
+        this.employeeRepository = employeeRepository;
     }
 
     private boolean isLoggedIn(HttpSession session) {
-        return session.getAttribute("username") != null;
+        return session.getAttribute("user") != null;
     }
 
     /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
@@ -121,6 +136,25 @@ public class TaskController {
         double dailyHours = taskService.getTotalDailyHoursForTask(taskId);
         model.addAttribute("dailyHours", dailyHours);
         return "tasks/distribution"; /// ja, eller hvad det nu skal være, nu har jeg lavet en midlertidig
+    }
+
+    @GetMapping("/workload")
+    public String showWorkload(Model model) {
+        Map<Long, Map<LocalDate, Pair<Double, Double>>> workload = taskEmployeeService.getEmployeeLoadOverTime();
+
+        // Create a map of employee IDs to names
+        Map<Long, String> employeeNames = new HashMap<>();
+        for (Long employeeId : workload.keySet()) {
+            Employees employee = employeeRepository.getEmployeeById(employeeId);
+            if (employee != null) {
+                // Combine first and last name
+                employeeNames.put(employeeId, employee.getEmFirstName() + " " + employee.getEmLastName());
+            }
+        }
+
+        model.addAttribute("workload", workload);
+        model.addAttribute("employeeNames", employeeNames);
+        return "tasks/workload";
     }
 
     @PostMapping("/create")
