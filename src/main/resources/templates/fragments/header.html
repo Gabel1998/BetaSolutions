@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
 
     <link rel="stylesheet" th:href="@{/css/styles.css}">
@@ -9,7 +8,16 @@
     <link rel="stylesheet" th:href="@{/css/componements.css}">
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <link rel="stylesheet" th:href="@{/css/workload.css}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Projektstyring</title>
+
+    <!-- Import Google Fonts Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
 </head>
+
 <header th:fragment="header">
     <div class="header-container">
 
@@ -34,13 +42,38 @@
             <!-- Ikke logget ind -->
             <div th:if="${session.admin == null}" class="user-info">
                 <a th:href="@{/login}" class="nav-button">Login</a>
+    <div class="header-wrapper">
+        <header class="header-container">
+            <div class="logo flex">
+                <a th:href="@{/}" class="nav-logo">
+                    <img src="/images/logo/AlphaSolutions.png" alt="Alpha Solutions" />
+                </a>
+                <h1>Alpha Solution Projects</h1>
             </div>
 
-            <!-- Logget ind -->
-            <div th:if="${session.admin != null}" class="user-info">
-                <span th:text="${session.admin}">Username</span>
-                <a th:href="@{/logout}" class="nav-button">Logout</a>
+            <nav class="main-nav">
+                <ul class="nav-menu">
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/projects}">Projects</a></li>
+                    <li><a th:href="@{tasks/workload}">Workload</a></li>
+                    <li><a th:href="@{/projects/summary}">Summary</a> </li>
+                    <li><a th:href="@{/}">Logs</a> </li>
+                </ul>
+            </nav>
+
+
+            <div class="user-controls">
+                <!-- Visible if NOT logged in -->
+                <div th:if="${session.user == null}" class="user-info">
+                    <a th:href="@{/login}" class="button">Login</a>
+                </div>
+
+                <!-- Visible if logged in -->
+                <div th:if="${session.user != null}" class="user-info flex">
+                    <span th:text="${session.user}">Username</span>
+                    <a th:href="@{/auth/logout}" class="button">Logout</a>
+                </div>
             </div>
-        </div>
+        </header>
     </div>
 </header>

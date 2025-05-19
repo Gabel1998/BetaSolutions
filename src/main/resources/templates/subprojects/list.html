@@ -2,56 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/header :: head}">
     <title>Overview</title>
+
 </head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
-<main class="content">
+<main class="container">
 
-    <div th:if="${project != null}">
-        <p th:text="'Subprojekter for: ' + ${project.name}">Fallback tekst</p>
-    </div>
-    <div th:if="${project == null}">
-        <p style="color: red;">⚠️ Projekt ikke sat korrekt i modellen!</p>
-    </div>
-
-    <div class="top-bar">
-        <h2 th:text="${project != null} ? ${project.name} : 'Ukendt projekt'">Projektets navn</h2>
-
-        <a class="button" th:href="@{'/projects/edit/' + ${project.id}}">Rediger projekt</a>
-    </div>
-
-    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
-
-    <section class="item-list">
-        <a th:each="sub : ${subProjects}"
-           th:href="@{'/tasks?subProjectId=' + ${sub.id}}"
-           class="item-card">
-
-            <h3 th:text="${sub.name}">Subprojektnavn</h3>
-            <p th:text="${sub.description}">Beskrivelse</p>
-            <p>Start: <span th:text="${sub.startDate}"></span></p>
-            <p>Slut: <span th:text="${sub.endDate}"></span></p>
-
-            <!-- Estimated & Actual hours -->
-            <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">
-                Estimerede timer: <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('estimatedHours'), 1, 1)}">0.0</span>
-            </p>
-            <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">
-                Faktiske timer: <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('actualHours'), 1, 1)}">0.0</span>
-            </p>
-
-            <!-- Generate gantt button-->
-            <a th:href="@{/subprojects/{id}/gantt(id=${sub.id})}" class="button">Download Gantt Diagram</a>
-
-        </a>
+    <!-- if not logged in, show a nice card -->
+    <section class="login-prompt text-center card"
+             th:if="${session.user == null}">
+        <p>Please log in to view your subprojects</p>
+        <a th:href="@{/auth/login}" class="button">Login</a>
     </section>
 
-    <div class="create-button-container">
-        <a class="button" th:href="@{'/subprojects/create?projectId=' + ${project.id}}">+ Opret nyt subprojekt</a>
-    </div>
+    <!-- if logged in, show subprojects -->
+    <section th:if="${session.user != null}">
 
+        <!-- project heading + edit link -->
+        <div class="top-bar">
+            <h2 th:text="${project != null} ? ${project.name} : 'Unknown project'">Project Name</h2>
+            <a class="two-buttons" th:href="@{'/projects/edit/' + ${project.id}}">Edit Project</a>
+        </div>
+
+        <!-- any flash message -->
+        <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+
+
+        <section class="item-list">
+            <div th:each="sub : ${subProjects}" class="item-card">
+
+                <!-- clickable area for details -->
+                <a th:href="@{'/tasks?subProjectId=' + ${sub.id}}"
+                   class="card-link">
+                    <h3 th:text="${sub.name}">Subproject Name</h3>
+                    <p th:text="${sub.description}">Description</p>
+                    <p>Start: <span th:text="${sub.startDate}">2025-01-01</span></p>
+                    <p>End:   <span th:text="${sub.endDate}">2025-12-31</span></p>
+
+                    <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Estimated Hours:
+                        <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('estimatedHours'),1,1)}">0.0
+              </span>
+                    </p>
+                    <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Actual Hours:
+                        <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('actualHours'),1,1)}">0.0
+              </span>
+                    </p>
+                </a>
+
+                <a th:href="@{/subprojects/{id}/gantt(id=${sub.id})}" class="button download-btn">Download Gantt Diagram</a>
+
+            </div>
+        </section>
+
+        <div class="two-buttons">
+            <a class="button button--create" th:href="@{'/subprojects/create?projectId=' + ${project.id}}">+ Create New Subproject</a>
+        </div>
+
+    </section>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>

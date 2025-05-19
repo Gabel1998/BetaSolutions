@@ -1,6 +1,5 @@
 package com.example.betasolutions.controller;
 
-import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.*;
@@ -37,7 +36,7 @@ public class SubProjectController {
     }
 
     private boolean isLoggedIn(HttpSession session) {
-        return session.getAttribute("username") != null;
+        return session.getAttribute("user") != null;
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.betasolutions.controller;
 import com.example.betasolutions.model.Resource;
+import com.example.betasolutions.model.TaskEmployee;
 import com.example.betasolutions.repository.ResourceRepository;
 import com.example.betasolutions.service.ResourceService;
 import org.springframework.stereotype.Controller;
@@ -29,8 +30,8 @@ import java.util.List;
         }
 
         @GetMapping("/{id}/co2")
-        public double calculateCo2ForResource(@PathVariable int id, @RequestParam double hours) {
+        public double calculateCo2ForResource(@PathVariable int id, @RequestParam double hoursWorked) {
             Resource resource = repository.findById(id);
-            return service.calculateCo2(resource, hours);
+            return service.calculateCo2(resource, hoursWorked);
         }
     }

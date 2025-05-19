@@ -1,22 +1,57 @@
-<footer th:fragment="footer" class="footer">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
-    <div class="footer-container">
-        <p>&copy; 2025 BETA Solutions</p>
+<div class="footer-wrapper">
+    <footer th:fragment="footer">
+        <div class="footer-grid">
+            <div>
+                <p><strong>KØBENHAVN</strong><br>
+                    Gothersgade 14, 4. sal<br>
+                    1123 København K, Danmark<br>
+                    +45 70 20 65 38<br>
+                    cph@alpha-solutions.com</p>
+            </div>
 
-        <nav class="footer-links">
-            <a th:href="@{/about}">Om os</a>
-            <a th:href="@{/cookies}">Cookiepolitik</a>
-            <a th:href="@{/privacy}">Datapolitik</a>
-        </nav>
+            <div>
+                <p><strong>OSLO</strong><br>
+                    Drammensveien 130, C19<br>
+                    0277 Oslo, Norge<br>
+                    +47 900 54 940<br>
+                    oslo@alpha-solutions.com</p>
+            </div>
 
-        <a href="#" class="back-to-top">↑ back to top</a>
-    </div>
-</footer>
+            <div>
+                <p><strong>NEW JERSEY</strong><br>
+                    211 River St., 9th Fl, Hoboken, NJ 07030, USA<br>
+                    +1 (347) 338-2220<br>
+                    ny@alpha-solutions.com</p>
+            </div>
 
-<!-- ======== !!!OPTIONAL!!! (back-to-top button) ======== -->
-<script>
-    document.querySelector('.back-to-top')?.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-</script>
+            <div>
+                <p><strong>DALLAS</strong><br>
+                    16415 Addison Road, Suite 400, Addison, TX 75001, USA<br>
+                    +1 (347) 338-2220<br>
+                    dallas@alpha-solutions.com</p>
+            </div>
+
+            <div>
+                <p><strong>LOS ANGELES</strong><br>
+                    15303 Ventura Boulevard, Suite 900, Sherman Oaks, CA 91403, USA<br>
+                    +1 (347) 338-2220<br>
+                    la@alpha-solutions.com</p>
+            </div>
+
+            <nav class="footer-links">
+                <a th:href="@{/about}">Om os</a>
+                <a th:href="@{/cookies}">Cookiepolitik</a>
+                <a th:href="@{/privacy}">Datapolitik</a>
+            </nav>
+
+            <a href="#" class="back-to-top">↑ Back to top</a>
+            <script>
+                document.querySelector('.back-to-top')
+                    ?.addEventListener('click', e => {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    });
+            </script>
+        </div>
+    </footer>
+</div>
