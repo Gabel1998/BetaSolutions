@@ -1,6 +1,7 @@
 package com.example.betasolutions.controller;
 
 import com.example.betasolutions.service.*;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +45,12 @@ public class LogController {
     @GetMapping("/select")
     public String showSubprojectsAndTasks(@RequestParam long employeeId,
                                           @RequestParam int projectId,
-                                          Model model) {
+                                          Model model,
+                                          HttpSession session) {
+        // Store selections in session
+        session.setAttribute("employeeId", employeeId);
+        session.setAttribute("projectId", projectId);
+
         model.addAttribute("employeeId", employeeId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("subprojects", subProjectService.getAllSubProjectsByProjectId(projectId));
@@ -52,18 +58,26 @@ public class LogController {
     }
 
     @GetMapping("/fill")
-    public String showLogFormForSubproject(
-            @RequestParam long employeeId,
-            @RequestParam int projectId,
-            @RequestParam int subProjectId,
-            Model model) {
+    public String showTaskLogForm(@RequestParam int subProjectId,
+                                  Model model,
+                                  HttpSession session) {
+        // Retrieve session attributes
+        Long employeeId = (Long) session.getAttribute("employeeId");
+        Integer projectId = (Integer) session.getAttribute("projectId");
 
+        if (employeeId == null || projectId == null) {
+            return "redirect:/logs"; // fallback if session lost
+        }
+
+        // Pass data to model for rendering
         model.addAttribute("employeeId", employeeId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("subProjectId", subProjectId);
-        model.addAttribute("tasks", taskService.getTasksBySubProjectId(subProjectId));
 
-        return "logs/list"; // This will show your log form with tasks
+        // TODO: Load relevant tasks for this subProjectId
+        // model.addAttribute("tasks", taskService.getTasksBySubProjectId(subProjectId));
+
+        return "logs/list";  // or whatever your task form template is
     }
 
 
