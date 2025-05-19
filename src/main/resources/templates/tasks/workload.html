@@ -1,59 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head th:replace="~{fragments/header :: head}">
-    <title>Medarbejderbelastning pr. dag</title>
-    <!-- Link workload.css som det sidste stylesheet -->
-    <link rel="stylesheet" th:href="@{/css/workload.css}" />
+    <title>Workload Employees</title>
+    <!-- Sørg for at workload.css linkes som det SIDSTE stylesheet her -->
 </head>
 <body>
 
-<!-- Header fra dit fragment -->
+<!-- Header -->
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="container">
     <h1>Medarbejderbelastning pr. dag</h1>
 
     <!-- Hvis ingen data -->
-    <p th:if="${workload == null or #maps.isEmpty(workload)}">
+    <p th:if="${workload == null or #lists.isEmpty(workload)}">
         Der er ingen data at vise.
     </p>
 
-    <!-- For hver medarbejder (map => Entry) -->
-    <div th:if="${workload != null and !#maps.isEmpty(workload)}"
-         th:each="empEntry : ${workload.entrySet()}">
-        <section class="employee-section">
-            <h2 th:text="'Medarbejder: ' + ${employeeNames[empEntry.key]}">
-                Medarbejder: Emil Hansen
-            </h2>
+    <!-- For hver medarbejder -->
+    <div th:if="${workload != null and !#lists.isEmpty(workload)}">
+        <section th:each="empEntry : ${workload}" class="employee-section">
+            <h2 th:text="'Medarbejder: ' + ${employeeNames[empEntry.key]}"></h2>
 
             <div style="position: relative;">
                 <div class="axis-label-y">Timer (y-akse)</div>
 
                 <div class="bar-container bar-chart">
-                    <!-- For hver dag i den medarbejders indre map -->
-                    <div th:each="dayEntry : ${empEntry.value.entrySet()}"
+                    <div th:each="dayEntry : ${empEntry.value}"
                          th:with="
-                   day       = dayEntry.key;
-                   stats     = dayEntry.value;
-                   hours     = stats.first;
-                   pct       = stats.second;
-                   clamped   = (pct > 100 ? 100 : pct);
-                   overPct   = (pct > 100 ? pct - 100 : 0);
-                   normalPx  = (clamped * hours * 10) + 'px';
-                   overPx    = (overPct * hours * 10) + 'px'
-                 "
+                   day=${dayEntry.key},
+                   stats=${dayEntry.value},
+                   hours=${stats.first},
+                   pct=${stats.second},
+                   clampedPct=${pct > 100 ? 100 : pct},
+                   overPct=${pct > 100 ? pct - 100 : 0},
+                   normalH=${clampedPct * hours * 10},
+                   overH=${overPct * hours * 10}"
                          class="bar"
-                         th:title="|${#temporals.format(day,'dd/MM/yyyy')}: ${hours} t (${pct}% )|">
-
+                         th:title="${day.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy'))} + ': ' + hours + 't (' + pct + '%)'">
                         <div class="bar-normal"
-                             th:style="|height:${normalPx}|"></div>
+                             th:style="'height:' + normalH + 'px'">
+                        </div>
 
-                        <div class="bar-over"
-                             th:if="${overPct > 0}"
-                             th:style="|height:${overPx}|"></div>
+                        <div th:if="${overPct > 0}"
+                             class="bar-over"
+                             th:style="'height:' + overH + 'px'">
+                        </div>
 
-                        <span th:text="${#temporals.format(day,'dd/MM')}"></span>
-                    </div>
+                        <span th:text="${day.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM'))}"></span>                    </div>
                 </div>
 
                 <div class="axis-label-x">Dato (x-akse)</div>
@@ -62,7 +56,7 @@
     </div>
 </main>
 
-<!-- Footer fra dit fragment -->
+<!-- Footer -->
 <div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
