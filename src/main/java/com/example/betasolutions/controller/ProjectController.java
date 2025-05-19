@@ -51,11 +51,7 @@ public class ProjectController {
         // CO₂ forbrug
         Map<Integer, Double> projectCo2 = new HashMap<>();
         for (Project project : projects) {
-            double actualHours = 0.0;
-            if (projectHours.containsKey(project.getId())) {
-                actualHours = projectHours.get(project.getId()).getOrDefault("actualHours", 0.0);
-            }
-            double co2 = resourceService.calculateTotalCo2ForProject(project.getId(), actualHours);
+            double co2 = resourceService.calculateTotalCo2ForProject(project.getId());
             projectCo2.put(project.getId(), co2);
         }
 
