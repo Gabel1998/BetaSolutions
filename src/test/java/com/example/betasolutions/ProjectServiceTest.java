@@ -23,6 +23,7 @@ public class ProjectServiceTest {
         projectRepository = mock(ProjectRepository.class);
         taskRepository = mock(TaskRepository.class);
 //        projectService = new ProjectService(projectRepository, taskRepository, null);
+
     }
 
     @Test
