@@ -30,4 +30,11 @@ public class TaskEmployeeRepository {
         /// hardcoded mock for testing
         //return List.of("Alexander", "Andreas", "Rasmus", "Sofie");
     }
+
+    public List<TaskEmployee> findByProjectId(int projectId) {
+        String sql = "SELECT te.* FROM tb_task_employees te " +
+                "JOIN tb_tasks t ON te.tse_ts_id = t.ts_id " +
+                "WHERE t.project_id = ?";
+        return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), projectId);
+    }
 }

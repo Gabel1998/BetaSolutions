@@ -38,8 +38,10 @@ public class EmployeeRepository {
     // READ BY ID
     public Employees getEmployeeById(long id) {
         String sql = "SELECT * FROM tb_employees WHERE em_id = ?";
-        return jdbcTemplate.queryForObject(sql, new EmployeeRowMapper(), id);
+        List<Employees> results = jdbcTemplate.query(sql, new EmployeeRowMapper(), id);
+        return results.isEmpty() ? null : results.get(0);
     }
+
 
     // UPDATE
     public void updateEmployee(Employees employee) {
