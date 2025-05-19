@@ -74,4 +74,11 @@ public class TaskEmployeeRepository {
         String sql = "DELETE FROM tb_task_employees WHERE tse_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    public List<TaskEmployee> findByProjectId(int projectId) {
+        String sql = "SELECT te.* FROM tb_task_employees te " +
+                "JOIN tb_tasks t ON te.tse_ts_id = t.ts_id " +
+                "WHERE t.project_id = ?";
+        return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), projectId);
+    }
 }

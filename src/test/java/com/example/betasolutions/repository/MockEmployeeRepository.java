@@ -20,8 +20,8 @@ public class MockEmployeeRepository extends EmployeeRepository {
         return Collections.emptyList();
     }
 
-    @Override
-    public Employees getEmployeeById(long id) {
-        return new Employees(); // Return a dummy employee object
-    }
+//    @Override
+//    public Employees getEmployeeById(int employeeId) {
+//        return new Employees(); // Return a dummy employee object
+//    }
 }
