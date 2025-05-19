@@ -8,9 +8,6 @@
 
 <h1>Log Your Hours - Subproject</h1>
 <form th:action="@{/logs/fill}" method="get">
-  <input type="hidden" name="employeeId" th:value="${employeeId}" />
-  <input type="hidden" name="projectId" th:value="${projectId}" />
-
   <label for="subProjectId">Select Subproject:</label>
   <select name="subProjectId" id="subProjectId">
     <option th:each="subproject : ${subprojects}"
