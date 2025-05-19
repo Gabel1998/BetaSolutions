@@ -74,4 +74,10 @@ public class TaskEmployeeRepository {
         String sql = "DELETE FROM tb_task_employees WHERE tse_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    public void logHours(long taskId, long employeeId, double hoursWorked) {
+        String sql = "INSERT INTO tb_task_employees (tse_ts_id, tse_em_id, tse_hours_worked) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, taskId, employeeId, hoursWorked);
+    }
+
 }

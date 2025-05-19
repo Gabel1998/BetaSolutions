@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}"></head>
+<title>Log Hours - Select Subproject</title>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<h1>Log Your Hours - Subproject</h1>
+<form th:action="@{/logs/fill}" method="get">
+  <input type="hidden" name="employeeId" th:value="${employeeId}" />
+  <input type="hidden" name="projectId" th:value="${projectId}" />
+
+  <label for="subProjectId">Select Subproject:</label>
+  <select name="subProjectId" id="subProjectId">
+    <option th:each="subproject : ${subprojects}"
+            th:value="${subproject.id}"
+            th:text="${subproject.name}">
+    </option>
+  </select>
+  <button type="submit">Continue</button>
+</form>
+
+</body>
+</html>

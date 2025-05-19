@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}"></head>
+<title>Log Hours - Select Employee & Project</title>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+<main class="content">
+    <section class="card">
+        <h1>Log Your Hours - Select Employee and Project</h1>
+
+        <form th:action="@{/logs/select}" method="get" class="form-container">
+            <div class="form-group">
+                <label for="employee">Select Employee:</label>
+                <select name="employeeId" id="employee">
+                    <option th:each="employee : ${employees}"
+                            th:value="${employee.emId}"
+                            th:text="${employee.emFirstName + ' ' + employee.emLastName}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="project">Select Project:</label>
+                <select name="projectId" id="project">
+                    <option th:each="project : ${projects}"
+                            th:value="${project.id}"
+                            th:text="${project.name}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="two-buttons">
+                <button type="submit" class="button button--create">Continue</button>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>
