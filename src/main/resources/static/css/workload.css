@@ -61,10 +61,19 @@ h2 {
     text-align: center;
     color: white;
     font-size: 0.75rem;
+
+    background-color: steelblue;
+    width: 30px;
+    text-align: center;
+    color: white;
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     transition: background-color 0.3s;
 }
 
-.bar:hover {
+    background-color: #4682b4;
     cursor: help;
 }
 
@@ -100,4 +109,9 @@ h2 {
 .bar-container.bar-chart .bar-over {
     background-color: red !important;
     width: 100%;
+}
+
+    transform: rotate(-45deg);
+    writing-mode: vertical-lr;
+    margin-bottom: 4px;
 }

@@ -23,18 +23,25 @@
     text-align: center;
 }
 
-/* ════════════════════════════════════════ */
-/*               HEADER LAYOUT             */
-/* ════════════════════════════════════════ */
+/* ───────────────────────────────────────── */
+/*     HEADER – logo + title alignment       */
+/* ───────────────────────────────────────── */
 .header-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: var(--spacing-md);
+    padding: var(--spacing-lg) var(--spacing-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--spacing-md);
+    border-bottom: none;
+}
+
+.header-wrapper {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    background: var(--grey-mid);
     border-bottom: 1px solid var(--grey-soft);
 }
 .nav-logo {
@@ -85,32 +92,49 @@
 /*               FOOTER LAYOUT             */
 /* ════════════════════════════════════════ */
 footer {
+    background: var(--grey-mid);
+    border-top: 1px solid var(--grey-soft);
     width: 100%;
     position: relative;
     background: var(--grey-soft);
     padding: var(--spacing-lg) 0;
-    margin-top: var(--spacing-lg);
-    box-sizing: border-box;
-    left: 0;
-    right: 0;
 }
-
 .footer-wrapper {
     width: 100vw;
     position: relative;
     left: 50%;
     right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    background: var(--grey-soft);
+    margin: 0;
+    padding: 0 var(--spacing-lg);
 }
 
-footer .footer-container {
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: var(--spacing-md);
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--grey-light);
+    border-radius: var(--radius);
+}
+
+.footer-links {
+    grid-column: 1 / -1;
+    justify-self: center;
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--spacing-lg);
+    gap: var(--spacing-md);
+    margin-top: 0;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: var(--blue);
+    text-align: center;
+}
+
+.back-to-top {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 0;
+    color: var(--blue);
+    text-align: center;
 }
