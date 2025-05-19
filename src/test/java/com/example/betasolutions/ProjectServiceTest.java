@@ -1,8 +1,11 @@
 package com.example.betasolutions;
 import com.example.betasolutions.model.Project;
+import com.example.betasolutions.repository.EmployeeRepository;
 import com.example.betasolutions.repository.ProjectRepository;
+import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import com.example.betasolutions.service.ProjectService;
+import com.example.betasolutions.service.SubProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,8 +25,17 @@ public class ProjectServiceTest {
     void setUp() {
         projectRepository = mock(ProjectRepository.class);
         taskRepository = mock(TaskRepository.class);
-//        projectService = new ProjectService(projectRepository, taskRepository, null);
+        SubProjectService subProjectService = mock(SubProjectService.class);
+        TaskEmployeeRepository taskEmployeeRepository = mock(TaskEmployeeRepository.class);
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
 
+        projectService = new ProjectService(
+                projectRepository,
+                taskRepository,
+                subProjectService,
+                taskEmployeeRepository,
+                employeeRepository
+        );
     }
 
     @Test
