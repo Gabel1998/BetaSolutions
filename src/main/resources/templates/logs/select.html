@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header :: head}"></head>
-<title>Log Hours - Select Employee & Project</title>
+<head th:replace="~{fragments/header :: head}">
+    <title>Log Hours - Select Employee and Project</title>
+</head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
+
 <main class="content">
     <section class="card">
         <h1>Log Your Hours - Select Employee and Project</h1>
+
+        <!-- User-friendly warning, if not found-->
+        <div th:if="${param.emptySubprojects}" class="alert-warning">
+            ⚠ This project has no subprojects. Please choose another.
+        </div>
+        <div th:if="${param.emptyTasks}" class="alert-warning">
+            ⚠ The selected subproject has no tasks. Please choose another.
+        </div>
+        <div th:if="${param.success}" class="alert-success">
+            ✅ Hours successfully logged.
+        </div>
+
 
         <form th:action="@{/logs/select}" method="get" class="form-container">
             <div class="form-group">

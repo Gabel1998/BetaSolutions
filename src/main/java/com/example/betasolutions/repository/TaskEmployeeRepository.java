@@ -80,4 +80,11 @@ public class TaskEmployeeRepository {
         jdbcTemplate.update(sql, taskId, employeeId, hoursWorked);
     }
 
+    public double getLoggedHoursForTaskAndEmployee(long taskId, long employeeId) {
+        String sql = "SELECT SUM(tse_hours_worked) FROM tb_task_employees WHERE tse_ts_id = ? AND tse_em_id = ?";
+        Double result = jdbcTemplate.queryForObject(sql, Double.class, taskId, employeeId);
+        return result != null ? result : 0.0;
+    }
+
+
 }

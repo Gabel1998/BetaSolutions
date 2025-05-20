@@ -7,6 +7,22 @@
     padding: var(--spacing-md) var(--spacing-lg);
 }
 
+.alert-warning {
+    color: var(--pink);
+    font-weight: bold;
+    margin-top: var(--spacing-sm);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.95rem;
+}
+
 /* ════════════════════════════════════════ */
 /*               FLEX + GRID                */
 /* ════════════════════════════════════════ */
