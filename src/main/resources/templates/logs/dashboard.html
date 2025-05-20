@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
+  <title>Dashboard Overview</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="content">
+  <section class="card">
+    <h1>Overview of Logged Hours</h1>
+
+    <div th:if="${#lists.isEmpty(overview)}" class="alert-warning">
+      ⚠ No logged hours found for any task.
+    </div>
+
+    <h2>Project Subproject Task Hours</h2>
+
+    <table th:if="${!#lists.isEmpty(overview)}" class="form-container">
+      <thead>
+      <tr>
+        <th class="text-left">Project</th>
+        <th class="text-left">Subproject</th>
+        <th class="text-left">Task</th>
+        <th class="text-right">Hours</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="row : ${overview}">
+        <td th:text="${row.projectName}">Project</td>
+        <td th:text="${row.subProjectName}">Subproject</td>
+        <td th:text="${row.taskName}">Task</td>
+        <td class="text-right" th:text="${#numbers.formatDecimal(row.loggedHours, 1, 2)}">0.00</td>
+      </tr>
+      </tbody>
+    </table>
+
+
+
+
+
+  </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

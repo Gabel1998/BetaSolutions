@@ -1,5 +1,6 @@
 package com.example.betasolutions.controller;
 
+import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.repository.TaskEmployeeRepository;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,17 +26,19 @@ public class LogController {
     private final TaskEmployeeService taskEmployeeService;
     private final EmployeeService employeeService;
     private final ProjectService projectService;
+    private final TaskService taskService;
     private final TaskRepository taskRepository;
     private final TaskEmployeeRepository taskEmployeeRepository;
     private final SubProjectService subProjectService;
 
     public LogController(TaskEmployeeService taskEmployeeService,
                          EmployeeService employeeService,
-                         ProjectService projectService, TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository,
+                         ProjectService projectService, TaskService taskService, TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository,
                          SubProjectService subProjectService) {
         this.taskEmployeeService = taskEmployeeService;
         this.employeeService = employeeService;
         this.projectService = projectService;
+        this.taskService = taskService;
         this.taskRepository = taskRepository;
         this.taskEmployeeRepository = taskEmployeeRepository;
         this.subProjectService = subProjectService;
@@ -89,6 +94,41 @@ public class LogController {
         model.addAttribute("tasks", tasks);
         return "logs/list";
     }
+
+    @GetMapping("/dashboard")
+    public String showDashboard(Model model) {
+        List<Task> allTasks = taskService.getAllTasks();
+
+        List<Map<String, Object>> taskOverview = new ArrayList<>();
+        for (Task task : allTasks) {
+            double totalHours = taskService.getTotalHoursForTask(task.getId());
+
+            Map<String, Object> row = new HashMap<>();
+            row.put("projectName",
+                    (task.getProjectId() != null)
+                            ? projectService.getProjectById(task.getProjectId())
+                            .map(Project::getName)
+                            .orElse("Unknown Project")
+                            : "Unknown Project"
+            );
+
+            row.put("subProjectName",
+                    (task.getSubProjectId() != null)
+                            ? subProjectService.getSubProjectById(task.getSubProjectId())
+                            .map(SubProject::getName)
+                            .orElse("Unknown Subproject")
+                            : "Unknown Subproject");
+
+            row.put("taskName", task.getName());
+            row.put("loggedHours", totalHours);
+
+            taskOverview.add(row);
+        }
+
+        model.addAttribute("overview", taskOverview);
+        return "logs/dashboard";
+    }
+
 
     // Submit the logged hours
     @PostMapping
