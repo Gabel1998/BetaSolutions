@@ -2,6 +2,8 @@ package com.example.betasolutions.controller;
 
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
+import com.example.betasolutions.repository.TaskEmployeeRepository;
+import com.example.betasolutions.repository.TaskRepository;
 import com.example.betasolutions.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -19,20 +21,21 @@ import java.util.Map;
 public class LogController {
 
     private final TaskEmployeeService taskEmployeeService;
-    private final TaskService taskService;
     private final EmployeeService employeeService;
     private final ProjectService projectService;
+    private final TaskRepository taskRepository;
+    private final TaskEmployeeRepository taskEmployeeRepository;
     private final SubProjectService subProjectService;
 
     public LogController(TaskEmployeeService taskEmployeeService,
-                         TaskService taskService,
                          EmployeeService employeeService,
-                         ProjectService projectService,
+                         ProjectService projectService, TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository,
                          SubProjectService subProjectService) {
         this.taskEmployeeService = taskEmployeeService;
-        this.taskService = taskService;
         this.employeeService = employeeService;
         this.projectService = projectService;
+        this.taskRepository = taskRepository;
+        this.taskEmployeeRepository = taskEmployeeRepository;
         this.subProjectService = subProjectService;
     }
 
@@ -74,8 +77,12 @@ public class LogController {
             return "redirect:/logs";
         }
 
-        List<Task> tasks = taskService.getTasksWithLoggedHoursBySubProject(subProjectId, employeeId);
-            if (tasks.isEmpty()) {
+        List<Task> tasks = taskRepository.findBySubProjectId(subProjectId);
+        for (Task task : tasks) {
+            Double logged = taskEmployeeRepository.getLoggedHoursForTaskAndEmployee(task.getId(), employeeId);
+            task.setPrefilledHours(logged == null ? 0.0 : logged);
+        }
+        if (tasks.isEmpty()) {
                 return "redirect:/logs/select?employeeId=" + employeeId + "&projectId=" + session.getAttribute("projectId") + "&emptyTasks=true";
             }
 
