@@ -1,5 +1,7 @@
 package com.example.betasolutions.controller;
 
+import com.example.betasolutions.model.SubProject;
+import com.example.betasolutions.model.Task;
 import com.example.betasolutions.service.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -33,7 +36,7 @@ public class LogController {
         this.subProjectService = subProjectService;
     }
 
-    // Step 1: Show employee and project selection
+    // Show employee and project selection
     @GetMapping
     public String showLogSelection(Model model) {
         model.addAttribute("employees", employeeService.getAllEmployees());
@@ -41,55 +44,57 @@ public class LogController {
         return "logs/select";
     }
 
-    // Step 2: Show subprojects after employee and project are selected
+    // Show subprojects after employee and project are selected
     @GetMapping("/select")
     public String showSubprojectsAndTasks(@RequestParam long employeeId,
                                           @RequestParam int projectId,
                                           Model model,
                                           HttpSession session) {
-        // Store selections in session
         session.setAttribute("employeeId", employeeId);
         session.setAttribute("projectId", projectId);
 
+        List<SubProject> subprojects = subProjectService.getAllSubProjectsByProjectId(projectId);
+        if (subprojects.isEmpty()) {
+            return "redirect:/logs?emptySubprojects";
+        }
+
         model.addAttribute("employeeId", employeeId);
         model.addAttribute("projectId", projectId);
-        model.addAttribute("subprojects", subProjectService.getAllSubProjectsByProjectId(projectId));
+        model.addAttribute("subprojects", subprojects);
         return "logs/subproject-selection";
     }
 
+    // Show tasks after subproject is selected
     @GetMapping("/fill")
     public String showTaskLogForm(@RequestParam int subProjectId,
                                   Model model,
                                   HttpSession session) {
-        // Retrieve session attributes
         Long employeeId = (Long) session.getAttribute("employeeId");
-        Integer projectId = (Integer) session.getAttribute("projectId");
-
-        if (employeeId == null || projectId == null) {
-            return "redirect:/logs"; // fallback if session lost
+        if (employeeId == null) {
+            return "redirect:/logs";
         }
 
-        // Pass data to model for rendering
-        model.addAttribute("employeeId", employeeId);
-        model.addAttribute("projectId", projectId);
-        model.addAttribute("subProjectId", subProjectId);
+        List<Task> tasks = taskService.getTasksWithLoggedHoursBySubProject(subProjectId, employeeId);
+            if (tasks.isEmpty()) {
+                return "redirect:/logs/select?employeeId=" + employeeId + "&projectId=" + session.getAttribute("projectId") + "&emptyTasks=true";
+            }
 
-        // TODO: Load relevant tasks for this subProjectId
-        // model.addAttribute("tasks", taskService.getTasksBySubProjectId(subProjectId));
-
-        return "logs/list";  // or whatever your task form template is
+        model.addAttribute("tasks", tasks);
+        return "logs/list";
     }
 
-
-
-    // Step 3: Submit the logged hours
+    // Submit the logged hours
     @PostMapping
-    public String submitLog(@RequestParam Map<String, String> params) {
+    public String submitLog(@RequestParam Map<String, String> params, HttpSession session) {
+        Long employeeId = (Long) session.getAttribute("employeeId");
+        if (employeeId == null) {
+            return "redirect:/logs";
+        }
+
         params.forEach((key, value) -> {
             if (key.startsWith("hours_") && !value.isBlank()) {
                 long taskId = Long.parseLong(key.replace("hours_", ""));
                 double hoursWorked = Double.parseDouble(value);
-                long employeeId = 1L; // Replace this with real employee selection if available
                 taskEmployeeService.logHours(taskId, employeeId, hoursWorked);
             }
         });
