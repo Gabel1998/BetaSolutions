@@ -7,6 +7,10 @@
     padding: var(--spacing-md) var(--spacing-lg);
 }
 
+.text-right {
+    text-align: right;
+}
+
 .alert-warning {
     color: var(--pink);
     font-weight: bold;
@@ -135,6 +139,24 @@
 .user-controls span {
     line-height: 1;
     margin-right: var(--spacing-sm);
+}
+
+/* ───────────────────────────────────────── */
+/*                 TABLE DESIGN              */
+/* ───────────────────────────────────────── */
+table.form-container {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+}
+table.form-container th,
+table.form-container td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--grey-soft);
+}
+table.form-container th {
+    text-align: left;
+    font-weight: bold;
 }
 
 /* ════════════════════════════════════════ */
