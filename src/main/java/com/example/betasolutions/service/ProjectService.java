@@ -2,7 +2,9 @@ package com.example.betasolutions.service;
 
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.Task;
+import com.example.betasolutions.repository.EmployeeRepository;
 import com.example.betasolutions.repository.ProjectRepository;
+import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +18,23 @@ import java.util.Optional;
 @Service
 public class ProjectService {
 
-    private final SubProjectService subProjectService;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
-//    Constructor
-    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository, SubProjectService subProjectService) {
+    private final SubProjectService subProjectService;
+    private final TaskEmployeeRepository taskEmployeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public ProjectService(
+            ProjectRepository projectRepository,
+            TaskRepository taskRepository,
+            SubProjectService subProjectService,
+            TaskEmployeeRepository taskEmployeeRepository,
+            EmployeeRepository employeeRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
         this.subProjectService = subProjectService;
+        this.taskEmployeeRepository = taskEmployeeRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     public void createProject(Project project) {
@@ -46,7 +57,7 @@ public class ProjectService {
         projectRepository.update(project);
     }
 
-    public double calculateDagRate (Long projectId) {
+    public double calculateDagRate(Long projectId) {
         Optional<Project> projectOpt = projectRepository.findById(projectId);
         if (projectOpt.isEmpty()) return 0;
 

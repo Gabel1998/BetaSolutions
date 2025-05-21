@@ -34,39 +34,34 @@ public class ProjectController {
         return session.getAttribute("user") != null;
     }
 
+
     @GetMapping
     public String listProjects(Model model, HttpSession session) {
-        if (!isLoggedIn(session)) {
+        if (!isLoggedIn(session)){
             return "redirect:/auth/login";
         }
 
         List<Project> projects = projectService.getAllProjects();
 
+        // Timer
         List<Integer> projectIds = projects.stream()
                 .map(Project::getId)
                 .collect(Collectors.toList());
-
         Map<Integer, Map<String, Double>> projectHours = projectService.calculateProjectHoursByProjectIds(projectIds);
 
+        // CO₂ forbrug
         Map<Integer, Double> projectCo2 = new HashMap<>();
         for (Project project : projects) {
             double co2 = resourceService.calculateTotalCo2ForProject(project.getId());
             projectCo2.put(project.getId(), co2);
         }
 
-        Map<Integer, Double> adjustedHours = new HashMap<>();
-        for (Project project : projects) {
-            double adjusted = projectService.adjustEstimatedHoursBasedOnEfficiency(project.getId());
-            adjustedHours.put(project.getId(), adjusted);
-        }
-
         model.addAttribute("pageTitle", "Alle projekter");
         model.addAttribute("projects", projects);
         model.addAttribute("projectHours", projectHours);
         model.addAttribute("projectCo2", projectCo2);
-        model.addAttribute("adjustedHours", adjustedHours);
 
-        String succesMessage = (String) session.getAttribute("successMessage");
+        String succesMessage = (String)session.getAttribute("successMessage");
         if (succesMessage != null) {
             model.addAttribute("successMessage", succesMessage);
             session.removeAttribute("successMessage");
@@ -153,11 +148,11 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    @GetMapping("/{id}/projects/list")
-    public String getAdjustedEstimatedHours(@PathVariable int id, Model model) {
-        double adjustedHours = projectService.adjustEstimatedHoursBasedOnEfficiency(id);
-        model.addAttribute("adjustedHours", adjustedHours);
-        return "projects/list";
-
-    }
+//    @GetMapping("/{id}/projects/list")
+//    public String getAdjustedEstimatedHours(@PathVariable int id, Model model) {
+//        double adjustedHours = projectService.adjustEstimatedHoursBasedOnEfficiency(id);
+//        model.addAttribute("adjustedHours", adjustedHours);
+//        return "projects/list";
+//
+//    }
 }
