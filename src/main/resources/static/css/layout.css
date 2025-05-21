@@ -60,8 +60,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: var(--spacing-lg) var(--spacing-md);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
     border-bottom: none;
 }
@@ -78,6 +78,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
+    margin-right: var(--spacing-xl);
 }
 .nav-logo {
     height: 40px;
@@ -146,11 +147,18 @@
     gap: var(--spacing-sm);
 }
 
-.user-controls span {
-    line-height: 1;
-    margin-right: var(--spacing-sm);
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    text-transform: lowercase;
 }
 
+.user-info span {
+    font-weight: 600;
+    font-size: 0.95rem;
+    white-space: nowrap;
+}
 /* ───────────────────────────────────────── */
 /*                 TABLE DESIGN              */
 /* ───────────────────────────────────────── */

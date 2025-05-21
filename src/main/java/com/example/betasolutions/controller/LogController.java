@@ -43,10 +43,16 @@ public class LogController {
         this.taskEmployeeRepository = taskEmployeeRepository;
         this.subProjectService = subProjectService;
     }
+    // Check if user is logged in
+    private boolean isLoggedIn(HttpSession session) {
+        return session.getAttribute("user") != null;
+    }
 
     // Show employee and project selection
     @GetMapping
-    public String showLogSelection(Model model) {
+    public String showLogSelection(Model model, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+
         model.addAttribute("employees", employeeService.getAllEmployees());
         model.addAttribute("projects", projectService.getAllProjects());
         return "logs/select";
@@ -58,6 +64,7 @@ public class LogController {
                                           @RequestParam int projectId,
                                           Model model,
                                           HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
         session.setAttribute("employeeId", employeeId);
         session.setAttribute("projectId", projectId);
 
@@ -96,7 +103,8 @@ public class LogController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(Model model) {
+    public String showDashboard(Model model, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
         List<Task> allTasks = taskService.getAllTasks();
 
         List<Map<String, Object>> taskOverview = new ArrayList<>();
@@ -133,6 +141,7 @@ public class LogController {
     // Submit the logged hours
     @PostMapping
     public String submitLog(@RequestParam Map<String, String> params, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
         Long employeeId = (Long) session.getAttribute("employeeId");
         if (employeeId == null) {
             return "redirect:/logs";

@@ -45,7 +45,8 @@
             </section>
 
             <div class="two-buttons">
-                <a class="button button--create" th:href="@{/projects/create}">
+                <a class="button button--create"
+                   th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">
                     + Create New Task
                 </a>
             </div>

@@ -5,52 +5,52 @@
 </head>
 <body>
 
-<!-- Fælles header -->
+
 <div th:replace="~{fragments/header :: head}"></div>
 
 <main class="content">
 
-    <h2>Opret ny task</h2>
+    <h2>Create New Task</h2>
     <div class="container">
         <div class="card">
             <form th:action="@{/tasks/create}" th:object="${task}" method="post" class="form-container">
 
-                <!-- FK til subproject (og projekt) -->
+                <!-- hidden fields for subProjectId and projectId -->
                 <input type="hidden" th:field="*{subProjectId}"/>
                 <input type="hidden" th:field="*{projectId}"/>
 
-                <!-- Navn -->
-                <label for="name">Navn</label>
+                <!-- Name -->
+                <label for="name">Name</label>
                 <input type="text" id="name" th:field="*{name}" required>
                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
-                <!-- Beskrivelse -->
-                <label for="description">Beskrivelse</label>
+                <!-- Description -->
+                <label for="description">Description</label>
                 <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
-                <!-- Datoer -->
-                <label for="startDate">Startdato</label>
+                <!-- Dates -->
+                <label for="startDate">Start Date</label>
                 <input type="date" id="startDate" th:field="*{startDate}">
 
-                <label for="endDate">Slutdato</label>
+                <label for="endDate">End Date</label>
                 <input type="date" id="endDate" th:field="*{endDate}">
 
-                <!-- Timer -->
-                <label for="estimatedHours">Estimerede timer</label>
+                <!-- Hours -->
+                <label for="estimatedHours">Estimated Hours</label>
                 <input type="number" step="0.1" id="estimatedHours" th:field="*{estimatedHours}" required>
                 <div th:if="${#fields.hasErrors('estimatedHours')}" th:errors="*{estimatedHours}"></div>
 
-                <label for="actualHours">Faktiske timer</label>
+                <label for="actualHours">Actual Hours</label>
                 <input type="number" step="0.1" id="actualHours" th:field="*{actualHours}">
 
                 <!-- Submit -->
-                <button type="submit" class="button">Opret</button>
+                <button type="submit" class="button button--create">Submit</button>
             </form>
         </div>
     </div>
 </main>
 
-<!-- Fælles footer -->
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

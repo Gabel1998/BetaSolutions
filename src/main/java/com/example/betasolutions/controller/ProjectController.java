@@ -85,7 +85,8 @@ public class ProjectController {
     }
 
     @GetMapping("/summary")
-    public String showProjectSummary(Model model) {
+    public String showProjectSummary(Model model, HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
         List<Project> projects = projectService.getAllProjects();
 
         Map<Integer, Double> projectActualHoursMap = new HashMap<>();

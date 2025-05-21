@@ -191,37 +191,39 @@ section h2 {
 .login-container h1 {
     margin-bottom: var(--spacing-md);
 }
+.login-container input {
+    margin-bottom: var(--spacing-sm);
+}
+.login-container p {
+    margin-top: var(--spacing-md);
+}
 .login-container form {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
 }
 .form-footer {
-    font-size: 0.9rem;
-    color: var(--grey-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
     margin-top: var(--spacing-md);
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 .login-container .register-link {
     margin-top: var(--spacing-md);
     display: inline-block;
 }
 .login-container {
-    position: relative;
-    box-shadow:
-            inset 0 1px 0 rgba(255,255,255,0.6),
-            0 4px 12px rgba(0,0,0,0.08);
-    border-radius: calc(var(--radius) * 1.5);
-}
-.login-container::before {
-    content: "";
-    position: absolute;
-    top: -6px; bottom: -6px; left: -6px; right: -6px;
-    border-radius: inherit;
-    background: linear-gradient(45deg, #ffd1dc 0%, #ffe0e6 100%);
-    z-index: -1;
-    filter: blur(12px);
-    opacity: 0.4;
+    width: 100%;
+    max-width: 420px;
+    padding: var(--spacing-xl);
+    gap: var(--spacing-md);
+    text-align: left;
+    font-weight: 600;
+    margin-top: var(--spacing-sm);
 }
 
 @media (min-width: 600px) {
@@ -261,7 +263,8 @@ section h2 {
 select,
 input[type="text"],
 input[type="number"],
-input[type="date"] {
+input[type="date"],
+input[type="password"] {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid var(--grey-soft);
@@ -276,7 +279,8 @@ input[type="date"] {
 select:focus,
 input[type="text"]:focus,
 input[type="number"]:focus,
-input[type="date"]:focus {
+input[type="date"]:focus,
+input[type="password"]:focus {
     border-color: var(--pink);
     box-shadow: 0 0 5px rgba(255, 50, 90, 0.2);
     outline: none;

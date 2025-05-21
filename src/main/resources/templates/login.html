@@ -42,10 +42,10 @@
             <button type="submit" class="button">LOGIN</button>
         </form>
 
-        <p>
-            Need access?
-            <a th:href="@{/register}" class="button">Create User</a>
-        </p>
+        <div class="form-footer">
+            <span>Need access?</span>
+            <a th:href="@{/auth/register}" class="button button--create">Create User</a>
+        </div>
     </section>
 </main>
 
