@@ -133,4 +133,9 @@ public class ProjectService {
         return totalEfficiency > 0 ? totalEstimatedHours / totalEfficiency : totalEstimatedHours;
     }
 
+    public Optional<Project> getProjectById(Long id) {
+        if (id == null) return Optional.empty();
+        return projectRepository.findById(id.intValue());
+    }
+
 }

@@ -1,26 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
-<head>
+<head th:replace="~{fragments/header :: head}">
     <title>Medarbejder Workload</title>
     <link rel="stylesheet" th:href="@{/css/workload.css}">
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}"></div>
+
 <main class="container">
-    <h1>Medarbejderbelastning - Næste 7 dage</h1>
+    <h1>Employee Workload - Last 7 days</h1>
+
+    <div class="legend">
+        <p><span class="color-box green"></span> Under capacity (≤ 100%)</p>
+        <p><span class="color-box yellow"></span> Slight overload (100–120%)</p>
+        <p><span class="color-box red"></span> Critical overload (> 120%)</p>
+    </div>
 
     <div th:each="workload : ${workloads}" class="employee">
-        <h2 th:text="${workload.employeeName}"></h2>
+        <h2 th:text="${workload.employeeName}">Employee</h2>
         <div class="chart">
-            <div th:each="entry : ${workload.dailyLoadPercent}" style="display: flex; flex-direction: column; align-items: center;">
-                <div class="bar" th:classappend="${entry.value > 100} ? 'overloaded' : ''"
-                     th:style="'height:' + ${entry.value} + 'px'"
-                     th:text="${entry.value.intValue()} + '%'">
+            <div th:each="entry : ${workload.dailyLoadPercent}">
+                <div class="bar"
+                     th:title="${#numbers.formatDecimal(entry.value, 1, 1)} + '%'"
+                     th:classappend="${entry.value > 120 ? 'bar--red' : (entry.value > 100 ? 'bar--yellow' : 'bar--green')}"
+                     th:style="'height:' + (${entry.value > 200} ? 200 : entry.value) + '%'">
+                    <span th:text="${#numbers.formatDecimal(entry.value, 1, 0)} + '%'"></span>
                 </div>
-                <div class="label" th:text="${#temporals.format(entry.key, 'E')}"
-                     style="writing-mode: vertical-lr;"></div>
+                <div class="label" th:text="${#temporals.format(entry.key, 'E')}">Day</div>
             </div>
         </div>
     </div>
 </main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

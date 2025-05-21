@@ -88,8 +88,8 @@ public class LogController {
             task.setPrefilledHours(logged == null ? 0.0 : logged);
         }
         if (tasks.isEmpty()) {
-                return "redirect:/logs/select?employeeId=" + employeeId + "&projectId=" + session.getAttribute("projectId") + "&emptyTasks=true";
-            }
+            return "redirect:/logs/select?employeeId=" + employeeId + "&projectId=" + session.getAttribute("projectId") + "&emptyTasks=true";
+        }
 
         model.addAttribute("tasks", tasks);
         return "logs/list";

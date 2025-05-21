@@ -71,7 +71,7 @@ class WorkloadControllerTest {
         assertThat(list).hasSize(1);
 
         WorkloadPerEmployeeDTO dto = list.get(0);
-        assertThat(dto.getEmployeeName()).isEqualTo("Test User");
+        assertThat(dto.employeeName()).isEqualTo("Test User");
         assertThat(dto.getDailyLoadPercent().get(today)).isEqualTo(0.0);
         assertThat(dto.getDailyLoadPercent().get(today.plusDays(6))).isEqualTo(60.0);
 

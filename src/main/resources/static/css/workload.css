@@ -1,4 +1,3 @@
-/* workload.css */
 .employee {
     margin-bottom: 2rem;
 }
@@ -16,19 +15,51 @@
 
 .bar {
     width: 30px;
-    background-color: steelblue;
     text-align: center;
-    color: white;
     font-size: 0.75rem;
+    color: #fff;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
-.bar.overloaded {
-    background-color: red;
+.bar--green {
+    background-color: #4caf50;
+}
+
+.bar--yellow {
+    background-color: #ff9800;
+}
+
+.bar--red {
+    background-color: #f44336;
 }
 
 .label {
+    writing-mode: vertical-lr;
     text-align: center;
     font-size: 0.75rem;
     margin-top: 0.2rem;
-    writing-mode: vertical-lr;
+    color: #333;
 }
+
+.legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.85rem;
+}
+
+.color-box {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.green { background-color: #4caf50; }
+.yellow { background-color: #ff9800; }
+.red { background-color: #f44336; }

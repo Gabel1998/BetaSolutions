@@ -138,25 +138,6 @@ public class TaskController {
         return "tasks/distribution"; /// ja, eller hvad det nu skal være, nu har jeg lavet en midlertidig
     }
 
-    @GetMapping("/workload")
-    public String showWorkload(Model model) {
-        Map<Long, Map<LocalDate, Pair<Double, Double>>> workload = taskEmployeeService.getEmployeeLoadOverTime();
-
-        // Create a map of employee IDs to names
-        Map<Long, String> employeeNames = new HashMap<>();
-        for (Long employeeId : workload.keySet()) {
-            Employees employee = employeeRepository.getEmployeeById(employeeId);
-            if (employee != null) {
-                // Combine first and last name
-                employeeNames.put(employeeId, employee.getEmFirstName() + " " + employee.getEmLastName());
-            }
-        }
-
-        model.addAttribute("workload", workload);
-        model.addAttribute("employeeNames", employeeNames);
-        return "tasks/workload";
-    }
-
     @PostMapping("/create")
     public String createTask(@ModelAttribute @Valid Task task,
                              BindingResult result,
