@@ -63,3 +63,8 @@ h1, h2, h3 {
     color: var(--nice-black);
     text-align: center;
 }
+
+p {
+    margin: 0;
+    padding: 0;
+}

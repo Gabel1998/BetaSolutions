@@ -27,6 +27,15 @@
     font-size: 0.95rem;
 }
 
+.red-text {
+    color: var(--pink);
+}
+
+.bold-text {
+    font-family: Montserrat, sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}
 /* ════════════════════════════════════════ */
 /*              FLEX + GRID                */
 /* ════════════════════════════════════════ */
