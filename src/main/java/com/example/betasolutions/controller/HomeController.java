@@ -20,4 +20,15 @@ public class HomeController {
         model.addAttribute("projects", projectService.getAllProjects());
         return "index";
     }
+
+    @GetMapping("/cookies")
+    public String cookies() {
+        return "cookies";
+    }
+
+    @GetMapping("/privacy")
+    public String privacy() {
+        return "privacy";
+    }
+
 }

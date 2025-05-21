@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
+  <title>Cookies</title>
+</head>
+
+<body>
+
+<!-- ======== HEADER TEMPLATE ======== -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!--=========CONTENT============-->
+<h1>Cookie Policy</h1>
+<main class="container">
+  <div class="card">
+    <div class="text-center">
+    <p>This cookie policy explains how we use cookies and similar technologies when you visit our website. By using our site, you accept our use of cookies in accordance with this policy.</p>
+
+    <h2>What are cookies?</h2>
+    <p>Cookies are small text files that are stored on your computer or mobile device when you visit a website. They are widely used to make websites work, or work more efficiently, as well as to provide information to the site owners.</p>
+
+    <h2>Types of cookies we use</h2>
+    <ul>
+      <li><strong>Necessary cookies:</strong> These cookies are essential for the website to function properly. They enable core functionality such as navigation and access to secure areas.</li>
+      <li><strong>Functional cookies:</strong> Used to remember your choices and preferences (such as language or region) to improve your user experience.</li>
+      <li><strong>Statistical cookies:</strong> Collect anonymous information about how visitors use the website - for example, which pages are visited most frequently.</li>
+      <li><strong>Marketing cookies:</strong> Used to track visitors across websites and display relevant advertisements.</li>
+    </ul>
+
+    <h2>How you can control cookies</h2>
+    <p>Most browsers allow you to manage your cookie settings. You can choose to block or delete cookies. However, please be aware that some features on the website may not work properly if you opt out of cookies.</p>
+
+    <h2>Changes to the cookie policy</h2>
+    <p>We reserve the right to update this cookie policy periodically. The date of the latest change will appear at the bottom of the page.</p>
+
+    <p>Last updated: May 21, 2024</p>
+
+    <p>Also read our <a th:href="@{/privacy}">privacy policy</a> for information on how we handle your personal data.</p>
+    </div>
+  </div>
+</main>
+
+<!-- ======== FOOTER ======== -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/burgermenu.js}"></script>
+</body>
+</html>

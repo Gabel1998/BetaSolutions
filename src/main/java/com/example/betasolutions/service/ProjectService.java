@@ -120,6 +120,12 @@ public class ProjectService {
         return result;
     }
 
+
+    public Optional<Project> getProjectById(Long id) {
+        if (id == null) return Optional.empty();
+        return projectRepository.findById(id.intValue());
+    }
+
     public double adjustEstimatedHoursBasedOnEfficiency(int projectId) {
         double totalEstimatedHours = getTotalEstimatedHoursForProject(projectId);
 
@@ -131,6 +137,7 @@ public class ProjectService {
                 .sum();
 
         return totalEfficiency > 0 ? totalEstimatedHours / totalEfficiency : totalEstimatedHours;
+
     }
 
 }

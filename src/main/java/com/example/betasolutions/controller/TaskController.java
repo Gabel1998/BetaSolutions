@@ -54,7 +54,7 @@ public class TaskController {
         }
 
         SubProject subProject = subProjectService.getSubProjectById(subProjectId)
-                .orElseThrow(() -> new RuntimeException("Subprojekt ikke fundet")); //skal have runtime exception, ellers virker prjektet ikke.
+                .orElseThrow(() -> new RuntimeException("Subprojekt ikke fundet"));
 
         List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId);
         model.addAttribute("tasks", tasks);
@@ -112,8 +112,13 @@ public class TaskController {
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+        //get task before deleting to retrieve subProjectId
+        Task task = taskService.getTaskById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+        Integer subProjectId = task.getSubProjectId();
+        //delete task
         taskService.deleteTask(id);
-        return "redirect:/tasks";
+        return "redirect:/tasks?subProjectId=" + subProjectId;
     }
 
     @GetMapping("/task/{id}/hours")
@@ -197,7 +202,7 @@ public class TaskController {
         SubProject subProject = subProjectService.getSubProjectById(task.getSubProjectId())
                 .orElseThrow(() -> new RuntimeException("Subproject not found"));
 
-        // Sørg for at projectId ALTID er sat
+        // Make sure projectId is set correctly
         task.setProjectId(Long.valueOf(subProject.getProjectId()));
 
         if (result.hasErrors()) {

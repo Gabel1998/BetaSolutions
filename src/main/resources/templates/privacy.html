@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
+    <title>Privacy Policy</title>
+</head>
+
+<body>
+
+<!-- ======== HEADER TEMPLATE ======== -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<!--=========CONTENT============-->
+<h1>Privacy Policy</h1>
+<main class="container">
+    <div class="card">
+        <div class="text-center">
+        <p>At Alpha Solutions, we respect and protect your personal data in accordance with applicable data protection laws, including the EU General Data Protection Regulation (GDPR).</p>
+
+        <h2>Information We Collect</h2>
+        <ul>
+            <li>Name, email address, and account details when you create an account</li>
+            <li>Login information and session data</li>
+            <li>Project, subproject, and task information you create or modify</li>
+            <li>Time tracking data and logs you submit</li>
+        </ul>
+
+        <h2>How We Use Your Information</h2>
+        <p>We use your information to provide and improve our project management service, including:</p>
+        <ul>
+            <li>Providing access to your projects and personal functions</li>
+            <li>Enabling collaboration on projects and tasks</li>
+            <li>Ensuring secure login and session management</li>
+            <li>Generating reports and analytics on project progress</li>
+        </ul>
+
+        <h2>Legal Basis for Processing</h2>
+        <p>We process your information based on your consent, contractual obligations (e.g., providing project management services), or when necessary to comply with legal requirements.</p>
+
+        <h2>Data Sharing</h2>
+        <p>We do not share your information with third parties unless it's necessary to provide our service or we are legally obligated to do so. All data is stored securely on our servers.</p>
+
+        <h2>Data Retention</h2>
+        <p>We retain your data for as long as you have an active account with us, or as long as necessary to comply with applicable laws and regulations.</p>
+
+        <h2>Your Rights</h2>
+        <p>You have the right to:</p>
+        <ul>
+            <li>Access the information we have about you</li>
+            <li>Rectify or delete your information</li>
+            <li>Withdraw consent at any time</li>
+            <li>Object to processing of your personal data</li>
+            <li>File a complaint with your local data protection authority</li>
+        </ul>
+
+        <p>To exercise any of these rights, please contact us through the contact form or email address provided on our website.</p>
+
+        <h2>Security Measures</h2>
+        <p>We implement appropriate technical and organizational measures to protect your personal data against unauthorized access, alteration, disclosure, or destruction.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+
+        <p>Also read our <a th:href="@{/cookies}">cookie policy</a> for details on how we use cookies.</p>
+
+        <p>Last updated: May 21, 2024</p>
+        </div>
+    </div>
+</main>
+
+<!-- ======== FOOTER ======== -->
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/burgermenu.js}"></script>
+</body>
+</html>

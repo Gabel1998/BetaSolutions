@@ -5,40 +5,41 @@
 </head>
 <body>
 
-<!-- Fælles header -->
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
-    <h2>Opret nyt subprojekt</h2>
+    <h2>Create Subproject</h2>
+    <div class="container">
+        <div class="card">
+            <!-- Formular bound to subproject-objects -->
+            <form th:action="@{/subprojects/create}" th:object="${subProject}" method="post" class="form-container">
 
-    <!-- Formular bundet til SubProject-objekt -->
-    <form th:action="@{/subprojects/create}" th:object="${subProject}" method="post" class="form-container">
+                <!-- hidden field (projectId) -->
+                <input type="hidden" th:field="*{projectId}"/>
 
-        <!-- Skjult felt: ID på det overordnede projekt -->
-        <input type="hidden" th:field="*{projectId}"/>
+                <!--Subproject name-->
+                <label for="name">Name</label>
+                <input type="text" id="name" th:field="*{name}" required>
 
-        <!--Subproject navn: kort fritekst-->
-        <label for="name">Navn</label>
-        <input type="text" id="name" th:field="*{name}" required>
+                <!--SubProject description -->
+                <label for="description">Description</label>
+                <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
-        <!--SubProject beskrivelse: længere fritekst-->
-        <label for="description">Beskrivelse</label>
-        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                <!--StartDate-->
+                <label for="startDate">Start</label>
+                <input type="date" id="startDate" th:field="*{startDate}" required>
 
-        <!--StartDato: hvornår subprojektet begynder-->
-        <label for="startDate">Startdato</label>
-        <input type="date" id="startDate" th:field="*{startDate}" required>
+                <!--EndDate-->
+                <label for="endDate">End</label>
+                <input type="date" id="endDate" th:field="*{endDate}">
 
-        <!--SlutDato: hvornår projektet forventes afsluttet-->
-        <label for="endDate">Slutdato</label>
-        <input type="date" id="endDate" th:field="*{endDate}">
-
-        <!--Submit knap-->
-        <button type="submit" class="button">Opret</button>
-    </form>
+                <!--Submit-->
+                <button type="submit" class="button">Create</button>
+            </form>
+        </div>
+    </div>
 </main>
 
-<!--Fælles footer-->
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

@@ -23,7 +23,7 @@
         <!-- project heading + edit link -->
         <div class="top-bar">
             <h2 th:text="${project != null} ? ${project.name} : 'Unknown project'">Project Name</h2>
-            <a class="two-buttons" th:href="@{'/projects/edit/' + ${project.id}}">Edit Project</a>
+            <a class="two-buttons yellow-text" th:href="@{'/projects/edit/' + ${project.id}}">Edit Project</a>
         </div>
 
         <!-- any flash message -->
@@ -32,32 +32,38 @@
 
         <section class="item-list">
             <div th:each="sub : ${subProjects}" class="item-card">
+                <div class="text-center">
+                    <!-- clickable area for details -->
+                    <a th:href="@{'/tasks?subProjectId=' + ${sub.id}}"
+                       class="card-link">
+                        <h3 th:text="${sub.name}">Subproject Name</h3>
+                        <p th:text="${sub.description}">Description</p>
+                        <p>Start: <span th:text="${sub.startDate}">2025-01-01</span></p>
+                        <p>End:   <span th:text="${sub.endDate}">2025-12-31</span></p>
 
-                <!-- clickable area for details -->
-                <a th:href="@{'/tasks?subProjectId=' + ${sub.id}}"
-                   class="card-link">
-                    <h3 th:text="${sub.name}">Subproject Name</h3>
-                    <p th:text="${sub.description}">Description</p>
-                    <p>Start: <span th:text="${sub.startDate}">2025-01-01</span></p>
-                    <p>End:   <span th:text="${sub.endDate}">2025-12-31</span></p>
-
-                    <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Estimated Hours:
-                        <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('estimatedHours'),1,1)}">0.0
+                        <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Estimated Hours:
+                            <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('estimatedHours'),1,1)}">0.0
               </span>
-                    </p>
-                    <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Actual Hours:
-                        <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('actualHours'),1,1)}">0.0
+                        </p>
+                        <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Actual Hours:
+                            <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('actualHours'),1,1)}">0.0
               </span>
-                    </p>
-                </a>
-
-                <a th:href="@{/subprojects/{id}/gantt(id=${sub.id})}" class="button download-btn">Download Gantt Diagram</a>
-
+                        </p>
+                    </a>
+                    <div class="two-buttons">
+                    <a th:href="@{/subprojects/{id}/gantt(id=${sub.id})}" class="button">Download Gantt Diagram</a>
+                    <form th:action="@{'/subprojects/delete/' + ${sub.id}}" method="get">
+                        <button class="button" type="submit" onclick="return confirm('Are you sure you want to delete this subproject?');">Delete Subproject</button>
+                    </form>
+                    </div>
+                </div>
             </div>
         </section>
 
         <div class="two-buttons">
-            <a class="button button--create" th:href="@{'/subprojects/create?projectId=' + ${project.id}}">+ Create New Subproject</a>
+            <a class="button button--create" th:href="@{/projects/create}">
+                + Create New Subproject
+            </a>
         </div>
 
     </section>

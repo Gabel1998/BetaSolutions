@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
+  <title>Log Hours - Select Subproject</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="content">
+  <section class="card">
+    <h1>Log Your Hours - Subproject</h1>
+
+    <form th:action="@{/logs/fill}" method="get" class="form-container">
+      <div class="form-group">
+        <label for="subProjectId">Select Subproject:</label>
+
+        <div th:if="${#lists.isEmpty(subprojects)}">
+          <p class="alert-warning">⚠ No subprojects found for this project.</p>
+        </div>
+
+        <select name="subProjectId" id="subProjectId" th:if="${!#lists.isEmpty(subprojects)}">
+          <option th:each="subproject : ${subprojects}"
+                  th:value="${subproject.id}"
+                  th:text="${subproject.name}">
+          </option>
+        </select>
+      </div>
+
+      <div class="two-buttons">
+        <button type="submit" class="button button--create" th:disabled="${#lists.isEmpty(subprojects)}">Continue</button>
+      </div>
+    </form>
+
+  </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

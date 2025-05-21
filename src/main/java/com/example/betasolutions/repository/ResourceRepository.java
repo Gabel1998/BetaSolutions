@@ -38,4 +38,15 @@ public class ResourceRepository {
                     "WHERE t.project_id = ?";
             return jdbcTemplate.query(sql, new ResourceRowMapper(), projectId);
     }
+
+    // Calculate CO2 for a specific resource
+    public double calculateTotalCo2ForProject(int projectId) {
+        String sql = "SELECT SUM(tr.tsre_hours_used * r.re_co2_per_hour) AS total_co2 " +
+                "FROM tb_tasks_resources tr " +
+                "JOIN tb_resources r ON tr.tsre_re_id = r.re_id " +
+                "JOIN tb_tasks t ON tr.tsre_ts_id = t.ts_id " +
+                "WHERE t.project_id = ?";
+        Double result = jdbcTemplate.queryForObject(sql, Double.class, projectId);
+        return result != null ? result : 0.0;
+    }
 }

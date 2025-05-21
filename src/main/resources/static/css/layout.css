@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════ */
-/*            LAYOUT UTILITIES             */
+/*             LAYOUT UTILITIES             */
 /* ════════════════════════════════════════ */
 .container {
     max-width: 1200px;
@@ -7,8 +7,38 @@
     padding: var(--spacing-md) var(--spacing-lg);
 }
 
+.text-right {
+    text-align: right;
+}
+
+.alert-warning {
+    color: var(--pink);
+    font-weight: bold;
+    margin-top: var(--spacing-sm);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.95rem;
+}
+
+.red-text {
+    color: var(--pink);
+}
+
+.yellow-text {
+    margin-bottom: 0.5rem;
+}
+.yellow-text:hover {
+    color: var(--yellow);
+}
 /* ════════════════════════════════════════ */
-/*              FLEX + GRID                */
+/*               FLEX + GRID                */
 /* ════════════════════════════════════════ */
 .flex {
     display: flex;
@@ -44,9 +74,24 @@
     background: var(--grey-mid);
     border-bottom: 1px solid var(--grey-soft);
 }
+.header-container .logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
 .nav-logo {
     height: 40px;
 }
+.header-container .nav-logo img {
+    height: 32px;
+    width: auto;
+}
+.header-container h1 {
+    font-size: 1.75rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
 .nav-menu {
     list-style: none;
     margin: 0;
@@ -57,6 +102,10 @@
 .nav-menu a {
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.page-container {
+    padding-top: var(--spacing-xl);
 }
 
 /* ════════════════════════════════════════ */
@@ -88,18 +137,48 @@
     gap: var(--spacing-sm);
 }
 
+/* ───────────────────────────────────────── */
+/*     USER CONTROLS – align name + button   */
+/* ───────────────────────────────────────── */
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.user-controls span {
+    line-height: 1;
+    margin-right: var(--spacing-sm);
+}
+
+/* ───────────────────────────────────────── */
+/*                 TABLE DESIGN              */
+/* ───────────────────────────────────────── */
+table.form-container {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+}
+table.form-container th,
+table.form-container td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--grey-soft);
+}
+table.form-container th {
+    text-align: left;
+    font-weight: bold;
+}
+
 /* ════════════════════════════════════════ */
-/*               FOOTER LAYOUT             */
+/*               FOOTER LAYOUT              */
 /* ════════════════════════════════════════ */
 footer {
     background: var(--grey-mid);
     border-top: 1px solid var(--grey-soft);
-    width: 100%;
-    position: relative;
-    background: var(--grey-soft);
     padding: var(--spacing-lg) 0;
 }
 .footer-wrapper {
+    max-width: 1200px;
     width: 100vw;
     position: relative;
     left: 50%;

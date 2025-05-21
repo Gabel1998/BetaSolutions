@@ -45,27 +45,14 @@ public class PlantUmlGanttService {
             LocalDate start = task.getStartDate();
             LocalDate end = task.getEndDate();
 
-            if (start == null || end == null) continue; // Skip tasks with invalid dates
+            if (start == null || end == null) continue; // Skip invalid
 
             long duration = ChronoUnit.DAYS.between(start, end);
 
-            // Calculate percent complete, handling potential division by zero
-            int percentComplete;
-            try {
-                percentComplete = task.getPercentComplete();
-            } catch (ArithmeticException e) {
-                percentComplete = 0; // Default to 0% if division by zero occurs
-            }
-
-            String assignedTo = task.getAssignedTo() != null ? task.getAssignedTo() : "Unassigned";
-
-            // Diagram line
+            // Clean diagram line without unnecessary data
             uml.append("[")
                     .append(taskName)
-                    .append(" – ")
-                    .append(duration).append("d – ")
-                    .append(percentComplete).append("% – ")
-                    .append(assignedTo)
+                    .append(" – ").append(duration).append("d")
                     .append("] starts ").append(start)
                     .append(" and ends ").append(end)
                     .append("\n");
@@ -78,4 +65,5 @@ public class PlantUmlGanttService {
         reader.generateImage(os);
         return os.toByteArray();
     }
+
 }

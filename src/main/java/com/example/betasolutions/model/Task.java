@@ -29,6 +29,8 @@ public class Task {
     @PositiveOrZero(message = "Actual hours must be 0 or more")
     private double actualHours;
 
+    private double prefilledHours;
+
     private LocalDate startDate; // ny
     private LocalDate endDate;   // ny
 
@@ -134,5 +136,13 @@ public class Task {
     public String getAssignedTo() {
         /// Mangler logik til at assigne employee(s) til task
         return "Assigned to employee"; // placeholder
+    }
+
+    public double getPrefilledHours() {
+        return prefilledHours;
+    }
+
+    public void setPrefilledHours(double prefilledHours) {
+        this.prefilledHours = prefilledHours;
     }
 }
