@@ -11,10 +11,9 @@
     --grey-light:       #dedede;
     --grey-soft:        #bdcfd8;
     --grey-mid:         #f0efec;
-    --grey-large:       #9a9893;
     --pink:             #ff325a;
     --green:            #2ecc71;
-    --yellow:          #FFC800;
+    --yellow:           #ffc800;
     --text-color:       #333333;
     --accent-pink:      var(--pink);
     --accent-blue:      var(--blue);
@@ -64,9 +63,4 @@ h1, h2, h3 {
     font-weight: 700;
     color: var(--nice-black);
     text-align: center;
-}
-
-p {
-    margin: 0;
-    padding: 0;
 }

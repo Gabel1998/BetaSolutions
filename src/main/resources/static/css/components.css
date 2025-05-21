@@ -11,7 +11,6 @@
     font-weight: 600;
     text-transform: uppercase;
     transition: background 0.25s, border-color 0.25s, color 0.25s;
-    margin-top: 1rem;
 }
 .button:hover {
     background-color: var(--pink);
@@ -20,9 +19,14 @@
 }
 .two-buttons {
     display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-md);
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin: var(--spacing-md) auto 0;
+}
+
+.button--create {
+    margin-bottom: 0.5rem;
 }
 .button--create:hover {
     background-color: var(--green);
@@ -195,7 +199,7 @@ section h2 {
 }
 .form-footer {
     font-size: 0.9rem;
-    color: var(--grey-large);
+    color: var(--grey-mid);
     margin-top: var(--spacing-md);
 }
 .login-container .register-link {

@@ -92,13 +92,10 @@ public class TaskEmployeeRepository {
         return result != null ? result : 0.0;
     }
 
-
     public List<TaskEmployee> findByProjectId(int projectId) {
-        String sql = """
-                SELECT te.* FROM tb_task_employees te
-                JOIN tb_tasks t ON te.tse_ts_id = t.ts_id
-                WHERE t.project_id = ?
-                """;
+        String sql = "SELECT te.* FROM tb_task_employees te " +
+                "JOIN tb_tasks t ON te.tse_ts_id = t.ts_id " +
+                "WHERE t.project_id = ?";
         return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), projectId);
     }
 }

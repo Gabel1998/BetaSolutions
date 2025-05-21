@@ -1,4 +1,10 @@
+DROP TABLE IF EXISTS tb_task_employees;
+
+
+DROP TABLE IF EXISTS tb_tasks;
+DROP TABLE IF EXISTS tb_subprojects;
 DROP TABLE IF EXISTS tb_projects;
+
 CREATE TABLE tb_projects (
                              p_id INT PRIMARY KEY AUTO_INCREMENT,
                              p_name VARCHAR(100),
@@ -9,7 +15,6 @@ CREATE TABLE tb_projects (
                              p_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS tb_subprojects;
 CREATE TABLE tb_subprojects (
                                 sp_id INT PRIMARY KEY AUTO_INCREMENT,
                                 sp_p_id INT,
@@ -21,7 +26,6 @@ CREATE TABLE tb_subprojects (
                                 sp_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS tb_tasks;
 CREATE TABLE tb_tasks (
                           ts_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                           ts_sp_id INT,
@@ -35,7 +39,14 @@ CREATE TABLE tb_tasks (
                           ts_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insert 1 projekt og 1 subprojekt til test
+CREATE TABLE tb_task_employees (
+                                   tse_id INT PRIMARY KEY AUTO_INCREMENT,
+                                   tse_ts_id BIGINT,
+                                   tse_employee_id INT,
+                                   FOREIGN KEY (tse_ts_id) REFERENCES tb_tasks(ts_id) ON DELETE CASCADE
+);
+
+-- Insert test data
 INSERT INTO tb_projects (p_name, p_description, p_start_date, p_end_date)
 VALUES ('Test Projekt', 'Beskrivelse', '2025-01-01', '2025-06-01');
 
