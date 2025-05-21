@@ -1,6 +1,7 @@
 package com.example.betasolutions.repository;
 
 import com.example.betasolutions.model.TaskEmployee;
+import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.rowmapper.TaskEmployeeRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -29,15 +30,13 @@ public class TaskEmployeeRepository {
     }
 
     public List<String> findAssignedEmployeeNamesByTaskId(Integer taskId) {
-        // First get the employee IDs from the tasks database
         String sql = "SELECT tse_em_id FROM tb_task_employees WHERE tse_ts_id = ?";
         List<Long> employeeIds = jdbcTemplate.queryForList(sql, Long.class, taskId);
 
-        // Then fetch the names from the employees database using the EmployeeRepository
         return employeeIds.stream()
                 .map(employeeRepository::getEmployeeById)
-                .filter(employee -> employee != null)
-                .map(employee -> employee.getEmFirstName())
+                .filter(emp -> emp != null)
+                .map(emp -> emp.getEmFirstName() + " " + emp.getEmLastName())
                 .collect(Collectors.toList());
     }
 
@@ -48,33 +47,39 @@ public class TaskEmployeeRepository {
     }
 
     public void save(TaskEmployee taskEmployee) {
-        String sql = "INSERT INTO tb_task_employees (tse_ts_id, tse_em_id, tse_hours_worked, start_date, end_date) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String sql = """
+                INSERT INTO tb_task_employees (tse_ts_id, tse_em_id, tse_hours_worked, start_date, end_date)
+                VALUES (?, ?, ?, ?, ?)
+                """;
         jdbcTemplate.update(sql,
                 taskEmployee.getTaskId(),
                 taskEmployee.getEmployeeId(),
                 taskEmployee.getHoursWorked(),
                 taskEmployee.getStartDate(),
-                taskEmployee.getEndDate());
+                taskEmployee.getEndDate()
+        );
     }
 
     public void update(TaskEmployee taskEmployee) {
-        String sql = "UPDATE tb_task_employees SET tse_ts_id = ?, tse_em_id = ?, tse_hours_worked = ?, " +
-                "start_date = ?, end_date = ? WHERE tse_id = ?";
+        String sql = """
+                UPDATE tb_task_employees 
+                SET tse_ts_id = ?, tse_em_id = ?, tse_hours_worked = ?, start_date = ?, end_date = ?
+                WHERE tse_id = ?
+                """;
         jdbcTemplate.update(sql,
                 taskEmployee.getTaskId(),
                 taskEmployee.getEmployeeId(),
                 taskEmployee.getHoursWorked(),
                 taskEmployee.getStartDate(),
                 taskEmployee.getEndDate(),
-                taskEmployee.getTseId());
+                taskEmployee.getTseId()
+        );
     }
 
     public void delete(Long id) {
         String sql = "DELETE FROM tb_task_employees WHERE tse_id = ?";
         jdbcTemplate.update(sql, id);
     }
-
 
     public void logHours(long taskId, long employeeId, double hoursWorked) {
         String sql = "INSERT INTO tb_task_employees (tse_ts_id, tse_em_id, tse_hours_worked) VALUES (?, ?, ?)";
@@ -88,13 +93,12 @@ public class TaskEmployeeRepository {
     }
 
 
-}
-
     public List<TaskEmployee> findByProjectId(int projectId) {
-        String sql = "SELECT te.* FROM tb_task_employees te " +
-                "JOIN tb_tasks t ON te.tse_ts_id = t.ts_id " +
-                "WHERE t.project_id = ?";
+        String sql = """
+                SELECT te.* FROM tb_task_employees te
+                JOIN tb_tasks t ON te.tse_ts_id = t.ts_id
+                WHERE t.project_id = ?
+                """;
         return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), projectId);
     }
 }
-
