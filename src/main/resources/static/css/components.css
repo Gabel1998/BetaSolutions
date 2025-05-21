@@ -194,7 +194,7 @@ section h2 {
 }
 .form-footer {
     font-size: 0.9rem;
-    color: var(--grey-mid);
+    color: var(--grey-large);
     margin-top: var(--spacing-md);
 }
 .login-container .register-link {

@@ -31,6 +31,10 @@
     color: var(--pink);
 }
 
+.yellow-text:hover {
+    color: var(--yellow);
+}
+
 .bold-text {
     font-family: Montserrat, sans-serif;
     font-size: 20px;

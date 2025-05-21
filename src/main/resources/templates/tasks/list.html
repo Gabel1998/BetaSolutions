@@ -20,7 +20,7 @@
     <section th:if="${session.user != null}">
         <div class="top-bar">
             <h2 th:text="'Tasks for ' + ${subProject.name}">Subproject Name</h2>
-            <a class="two-buttons" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Edit Subproject</a>
+            <a class="two-buttons yellow-text" th:href="@{'/subprojects/edit/' + ${subProject.id}}">Edit Subproject</a>
         </div>
 
         <div th:if="${overLimit}" class="alert alert-danger" role="alert">
