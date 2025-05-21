@@ -10,41 +10,41 @@
 <main class="content">
     <h2>Create New Project</h2>
 
-    <!-- Formular bundet til Project-objekt -->
+    <!-- Formular bound to Project-object -->
     <form th:action="@{/projects/create}" th:object="${project}" method="post" class="form-container card">
 
-        <!-- Fejlmeddelelser vises her -->
+        <!-- error -->
         <div th:if="${#fields.hasErrors()}" class="status-warning">
             Please fix the highlighted errors.
         </div>
 
-        <!-- Projektnavn: kort tekst -->
+        <!-- Projectname -->
         <label for="name">Project Name</label>
         <input type="text" id="name" th:field="*{name}" required>
         <div class="status-warning" th:errors="*{name}"></div>
 
-        <!-- Projektbeskrivelse: længere fritekst -->
+        <!-- Project description -->
         <label for="description">Description</label>
         <textarea id="description" th:field="*{description}" rows="4"></textarea>
         <div class="status-warning" th:errors="*{description}"></div>
 
-        <!-- Startdato: hvornår projektet begynder -->
+        <!-- Startdate-->
         <label for="startDate">Start Date</label>
         <input type="date" id="startDate" th:field="*{startDate}" required>
         <div class="status-warning" th:errors="*{startDate}"></div>
 
-        <!-- Slutdato: hvornår projektet forventes afsluttet -->
+        <!-- Enddate -->
         <label for="endDate">End Date</label>
         <input type="date" id="endDate" th:field="*{endDate}">
         <div class="status-warning" th:errors="*{endDate}"></div>
 
-        <!-- Submit-knap -->
+        <!-- Submit-button -->
         <button type="submit" class="button">Create</button>
     </form>
 </main>
 
 
-<!-- Fælles footer -->
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

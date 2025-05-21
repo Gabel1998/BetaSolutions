@@ -9,31 +9,34 @@
 
 <main class="content">
     <h2>Edit Subproject</h2>
+    <div class="container">
+        <div class="card">
+            <form th:action="@{'/subprojects/update/' + ${subProject.id}}" th:object="${subProject}" method="post" class="form-container">
 
-    <form th:action="@{'/subprojects/update/' + ${subProject.id}}" th:object="${subProject}" method="post" class="form-container">
+                <!-- Hidden field: ID of the parent project -->
+                <input type="hidden" th:field="*{projectId}"/>
 
-        <!-- Hidden field: ID of the parent project -->
-        <input type="hidden" th:field="*{projectId}"/>
+                <!-- Subproject name -->
+                <label for="name">Name</label>
+                <input type="text" id="name" th:field="*{name}" required>
 
-        <!-- Subproject name -->
-        <label for="name">Name</label>
-        <input type="text" id="name" th:field="*{name}" required>
+                <!-- Description of the subproject -->
+                <label for="description">Description</label>
+                <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
-        <!-- Description of the subproject -->
-        <label for="description">Description</label>
-        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                <!-- Start date for subproject -->
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" th:field="*{startDate}" required>
 
-        <!-- Start date for subproject -->
-        <label for="startDate">Start Date</label>
-        <input type="date" id="startDate" th:field="*{startDate}" required>
+                <!-- End date for subproject -->
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" th:field="*{endDate}">
 
-        <!-- End date for subproject -->
-        <label for="endDate">End Date</label>
-        <input type="date" id="endDate" th:field="*{endDate}">
-
-        <!-- Save button -->
-        <button type="submit" class="button button--create">Save Changes</button>
-    </form>
+                <!-- Save button -->
+                <button type="submit" class="button button--create">Save Changes</button>
+            </form>
+        </div>
+    </div>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>
