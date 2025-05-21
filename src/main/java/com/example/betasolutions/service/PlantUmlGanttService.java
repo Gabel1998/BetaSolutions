@@ -1,12 +1,13 @@
 package com.example.betasolutions.service;
 
-////====================================
-////->   Official Gantt Chart Service  =
-////->   DO NOT CHANGE THIS FILE       =
-////->  Methods gotten from PlantUML   =
-////               :-)                 =
-////====================================
-//Comments from Co-Pilot for better understanding
+///=====================================
+///->    Official Gantt Chart Service  =
+///->    DO NOT DELETE THIS FILE       =
+///->  ------------------------------- =
+///-> PLEASE EDIT THIS FILES AS NEEDED =
+///->    methods gotten from PlantUML  =
+///                :-)                 =
+///=====================================
 
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
@@ -64,6 +65,17 @@ public class PlantUmlGanttService {
         SourceStringReader reader = new SourceStringReader(uml.toString());
         reader.generateImage(os);
         return os.toByteArray();
+    }
+
+    // Sanitize task/subproject names for PlantUML
+    private String sanitize(String input) {
+        return input
+                .replace("[", "(")
+                .replace("]", ")")
+                .replace("\"", "")
+                .replace("–", "-")
+                .replace("--", "-")
+                .trim();
     }
 
 }
