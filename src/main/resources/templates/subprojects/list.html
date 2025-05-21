@@ -32,27 +32,27 @@
 
         <section class="item-list">
             <div th:each="sub : ${subProjects}" class="item-card">
+                <div class="text-center">
+                    <!-- clickable area for details -->
+                    <a th:href="@{'/tasks?subProjectId=' + ${sub.id}}"
+                       class="card-link">
+                        <h3 th:text="${sub.name}">Subproject Name</h3>
+                        <p th:text="${sub.description}">Description</p>
+                        <p>Start: <span th:text="${sub.startDate}">2025-01-01</span></p>
+                        <p>End:   <span th:text="${sub.endDate}">2025-12-31</span></p>
 
-                <!-- clickable area for details -->
-                <a th:href="@{'/tasks?subProjectId=' + ${sub.id}}"
-                   class="card-link">
-                    <h3 th:text="${sub.name}">Subproject Name</h3>
-                    <p th:text="${sub.description}">Description</p>
-                    <p>Start: <span th:text="${sub.startDate}">2025-01-01</span></p>
-                    <p>End:   <span th:text="${sub.endDate}">2025-12-31</span></p>
-
-                    <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Estimated Hours:
-                        <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('estimatedHours'),1,1)}">0.0
+                        <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Estimated Hours:
+                            <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('estimatedHours'),1,1)}">0.0
               </span>
-                    </p>
-                    <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Actual Hours:
-                        <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('actualHours'),1,1)}">0.0
+                        </p>
+                        <p th:if="${subProjectHours != null and subProjectHours.containsKey(sub.id)}">Actual Hours:
+                            <span th:text="${#numbers.formatDecimal(subProjectHours.get(sub.id).get('actualHours'),1,1)}">0.0
               </span>
-                    </p>
-                </a>
+                        </p>
+                    </a>
 
-                <a th:href="@{/subprojects/{id}/gantt(id=${sub.id})}" class="button download-btn">Download Gantt Diagram</a>
-
+                    <a th:href="@{/subprojects/{id}/gantt(id=${sub.id})}" class="button download-btn">Download Gantt Diagram</a>
+                </div>
             </div>
         </section>
 

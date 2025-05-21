@@ -27,22 +27,23 @@
             Warning: Total daily hours exceed capacity!
         </div>
         <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+        <div class="text-center">
+            <section class="item-list">
+                <a th:each="task : ${tasks}"
+                   th:href="@{'/tasks/edit/' + ${task.id}}"
+                   class="item-card">
 
-        <section class="item-list">
-            <a th:each="task : ${tasks}"
-               th:href="@{'/tasks/edit/' + ${task.id}}"
-               class="item-card">
+                    <h3 th:text="${task.name}">Task Name</h3>
+                    <p th:text="${task.description}">Description</p>
+                    <p>Estimated Hours: <span th:text="${task.estimatedHours}">0.0</span></p>
+                    <p>Actual Hours: <span th:text="${task.actualHours}">0.0</span></p>
 
-                <h3 th:text="${task.name}">Task Name</h3>
-                <p th:text="${task.description}">Description</p>
-                <p>Estimated Hours: <span th:text="${task.estimatedHours}">0.0</span></p>
-                <p>Actual Hours: <span th:text="${task.actualHours}">0.0</span></p>
+                </a>
+            </section>
 
-            </a>
-        </section>
-
-        <div class="two-buttons">
-            <a class="button button--create" th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">+ Create New Task</a>
+            <div class="two-buttons">
+                <a class="button button--create" th:href="@{'/tasks/create?subProjectId=' + ${subProject.id}}">+ Create New Task</a>
+            </div>
         </div>
     </section>
 
