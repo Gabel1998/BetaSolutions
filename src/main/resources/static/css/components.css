@@ -11,6 +11,7 @@
     font-weight: 600;
     text-transform: uppercase;
     transition: background 0.25s, border-color 0.25s, color 0.25s;
+    margin-top: 1rem;
 }
 .button:hover {
     background-color: var(--pink);

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-// Repository for at arbejde med Task-data via JDBC
+// Repository to work with Task data via JDBC
 @Repository
 public class TaskRepository {
 
@@ -18,7 +18,7 @@ public class TaskRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Gemmer en ny Task i databasen
+    // Save new Task in database
     public void save(Task task) {
         String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -46,13 +46,13 @@ public class TaskRepository {
     }
 
 
-    // Henter alle Tasks
+    // Fetch all Tasks
     public List<Task> findAll() {
         String sql = "SELECT * FROM tb_tasks";
         return jdbcTemplate.query(sql, new TaskRowMapper());
     }
 
-    // Finder en Task på ID
+    // Find Task on ID
     public Optional<Task> findById(Long id) {
         String sql = "SELECT * FROM tb_tasks WHERE ts_id = ?";
         return jdbcTemplate.query(sql, new TaskRowMapper(), id)
@@ -60,13 +60,18 @@ public class TaskRepository {
                 .findFirst();
     }
 
-    // Sletter en Task
+    // Delete task
     public void delete(Long id) {
+        // First delete related records in tb_task_employees
+        String deleteRelatedSql = "DELETE FROM tb_task_employees WHERE tse_ts_id = ?";
+        jdbcTemplate.update(deleteRelatedSql, id);
+
+        // Then delete the task itself
         String sql = "DELETE FROM tb_tasks WHERE ts_id = ?";
         jdbcTemplate.update(sql, id);
     }
 
-    // Henter alle Tasks for et givet SubProject ID
+    // Fetch all Tasks for a given SubProject ID
     public List<Task> findBySubProjectId(int subProjectId) {
         String sql = "SELECT * FROM tb_tasks WHERE ts_sp_id = ?";
         return jdbcTemplate.query(sql, new TaskRowMapper(), subProjectId);
