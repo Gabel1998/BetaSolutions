@@ -75,6 +75,7 @@ public class TaskEmployeeRepository {
         jdbcTemplate.update(sql, id);
     }
 
+
     public void logHours(long taskId, long employeeId, double hoursWorked) {
         String sql = "INSERT INTO tb_task_employees (tse_ts_id, tse_em_id, tse_hours_worked) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql, taskId, employeeId, hoursWorked);
@@ -88,3 +89,12 @@ public class TaskEmployeeRepository {
 
 
 }
+
+    public List<TaskEmployee> findByProjectId(int projectId) {
+        String sql = "SELECT te.* FROM tb_task_employees te " +
+                "JOIN tb_tasks t ON te.tse_ts_id = t.ts_id " +
+                "WHERE t.project_id = ?";
+        return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), projectId);
+    }
+}
+

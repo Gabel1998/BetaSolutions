@@ -1,17 +1,18 @@
 package com.example.betasolutions.service;
 
+import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.Task;
+import com.example.betasolutions.model.TaskEmployee;
+import com.example.betasolutions.repository.EmployeeRepository;
 import com.example.betasolutions.repository.ProjectRepository;
+import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProjectService {
@@ -19,11 +20,15 @@ public class ProjectService {
     private final SubProjectService subProjectService;
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final TaskEmployeeRepository taskEmployeeRepository;
+    private final EmployeeRepository employeeRepository;
 //    Constructor
-    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository, SubProjectService subProjectService) {
+    public ProjectService(ProjectRepository projectRepository, TaskRepository taskRepository, SubProjectService subProjectService, TaskEmployeeRepository taskEmployeeRepository, EmployeeRepository employeeRepository) {
         this.projectRepository = projectRepository;
         this.taskRepository = taskRepository;
         this.subProjectService = subProjectService;
+        this.taskEmployeeRepository = taskEmployeeRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     public void createProject(Project project) {
@@ -115,9 +120,23 @@ public class ProjectService {
         return result;
     }
 
+
     public Optional<Project> getProjectById(Long id) {
         if (id == null) return Optional.empty();
         return projectRepository.findById(id.intValue());
+
+    public double adjustEstimatedHoursBasedOnEfficiency(int projectId) {
+        double totalEstimatedHours = getTotalEstimatedHoursForProject(projectId);
+
+        List<TaskEmployee> taskEmployees = taskEmployeeRepository.findByProjectId(projectId);
+        double totalEfficiency = taskEmployees.stream()
+                .map(te -> employeeRepository.getEmployeeById(te.getEmployeeId()))
+                .filter(Objects::nonNull)
+                .mapToDouble(Employees::getEmEfficiency)
+                .sum();
+
+        return totalEfficiency > 0 ? totalEstimatedHours / totalEfficiency : totalEstimatedHours;
+
     }
 
 }

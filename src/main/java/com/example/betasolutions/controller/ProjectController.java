@@ -36,31 +36,37 @@ public class ProjectController {
 
     @GetMapping
     public String listProjects(Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
 
         List<Project> projects = projectService.getAllProjects();
 
-        // Timer
         List<Integer> projectIds = projects.stream()
                 .map(Project::getId)
                 .collect(Collectors.toList());
+
         Map<Integer, Map<String, Double>> projectHours = projectService.calculateProjectHoursByProjectIds(projectIds);
 
-        // CO₂ forbrug
         Map<Integer, Double> projectCo2 = new HashMap<>();
         for (Project project : projects) {
             double co2 = resourceService.calculateTotalCo2ForProject(project.getId());
             projectCo2.put(project.getId(), co2);
         }
 
+        Map<Integer, Double> adjustedHours = new HashMap<>();
+        for (Project project : projects) {
+            double adjusted = projectService.adjustEstimatedHoursBasedOnEfficiency(project.getId());
+            adjustedHours.put(project.getId(), adjusted);
+        }
+
         model.addAttribute("pageTitle", "Alle projekter");
         model.addAttribute("projects", projects);
         model.addAttribute("projectHours", projectHours);
         model.addAttribute("projectCo2", projectCo2);
+        model.addAttribute("adjustedHours", adjustedHours);
 
-        String succesMessage = (String)session.getAttribute("successMessage");
+        String succesMessage = (String) session.getAttribute("successMessage");
         if (succesMessage != null) {
             model.addAttribute("successMessage", succesMessage);
             session.removeAttribute("successMessage");
@@ -70,7 +76,7 @@ public class ProjectController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
         model.addAttribute("pageTitle", "Opret projekt");
@@ -98,21 +104,21 @@ public class ProjectController {
         return "projects/summary";
     }
 
-    @GetMapping ("edit/{id}")
+    @GetMapping("edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
         model.addAttribute("pageTitle", "Rediger projekt");
         Project project = projectService.getProjectById(id)
-                .orElseThrow(()-> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new RuntimeException("Project not found"));
         model.addAttribute("project", project);
         return "projects/edit"; //henviser på edit.html i projects directory
     }
 
     @GetMapping("/delete/{id}")
     public String deleteProject(@PathVariable Integer id, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
 
@@ -137,7 +143,7 @@ public class ProjectController {
 
     @PostMapping("/update/{id}")
     public String updateProject(@PathVariable Integer id, @ModelAttribute Project project, HttpSession session) {
-        if (!isLoggedIn(session)){
+        if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
 
@@ -147,5 +153,11 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
+    @GetMapping("/{id}/projects/list")
+    public String getAdjustedEstimatedHours(@PathVariable int id, Model model) {
+        double adjustedHours = projectService.adjustEstimatedHoursBasedOnEfficiency(id);
+        model.addAttribute("adjustedHours", adjustedHours);
+        return "projects/list";
 
+    }
 }

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="da">
 <head th:replace="~{fragments/header :: head}">
     <title>Workload Employees</title>
+
 </head>
 <body>
 
@@ -11,25 +12,46 @@
 <main class="container">
     <h1>Medarbejderbelastning pr. dag</h1>
 
-    <!-- If no data at all -->
-    <p th:if="${workload == null || workload.isEmpty()}">Der er ingen data at vise.</p>
+    <!--if no data -->
+    <p th:if="${workload == null or #lists.isEmpty(workload)}">
+        Der er ingen data at vise.
+    </p>
 
-    <!-- For each employee ID in the map -->
-    <div th:if="${workload != null && !workload.isEmpty()}">
+    <!-- For each employee-->
+    <div th:if="${workload != null and !#lists.isEmpty(workload)}">
         <section th:each="empEntry : ${workload}" class="employee-section">
-            <h2 th:text="'Medarbejder: ' + ${employeeNames.get(empEntry.key)}"></h2>
+            <h2 th:text="'Medarbejder: ' + ${employeeNames[empEntry.key]}"></h2>
 
-            <div class="bar-container bar-chart">
-                <!-- For each day in this employee's data -->
-                <div th:each="dayEntry : ${empEntry.value}"
-                     th:with="day=${dayEntry.key}, stats=${dayEntry.value}"
-                     class="bar"
-                     th:classappend="${stats.second > 100} ? 'overburdened' : ''"
-                     th:style="'height:' + (${stats.first} * 10) + 'px'"
-                     th:title="${day.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy'))} + ': ' +
-                              ${stats.first} + 't (' + ${stats.second} + '%)'">
-                    <span th:text="${day.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM'))}" />
+            <div style="position: relative;">
+                <div class="axis-label-y">Timer (y-akse)</div>
+
+                <div class="bar-container bar-chart">
+                    <div th:each="dayEntry : ${empEntry.value}"
+                         th:with="
+                   day=${dayEntry.key},
+                   stats=${dayEntry.value},
+                   hours=${stats.first},
+                   pct=${stats.second},
+                   clampedPct=${pct > 100 ? 100 : pct},
+                   overPct=${pct > 100 ? pct - 100 : 0},
+                   normalH=${clampedPct * hours * 10},
+                   overH=${overPct * hours * 10}"
+                         class="bar"
+                         th:title="${day.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy'))} + ': ' + hours + 't (' + pct + '%)'">
+                        <div class="bar-normal"
+                             th:style="'height:' + normalH + 'px'">
+                        </div>
+
+                        <div th:if="${overPct > 0}"
+                             class="bar-over"
+                             th:style="'height:' + overH + 'px'">
+                        </div>
+
+                        <span th:text="${day.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM'))}"></span>                    </div>
                 </div>
+
+                <div class="axis-label-x">Dato (x-akse)</div>
+
             </div>
         </section>
     </div>
@@ -37,5 +59,6 @@
 
 <!-- Footer -->
 <div th:replace="~{fragments/footer :: footer}"></div>
+
 </body>
 </html>

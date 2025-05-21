@@ -1,5 +1,5 @@
 /* ════════════════════════════════════════ */
-/*             LAYOUT UTILITIES             */
+/*            LAYOUT UTILITIES             */
 /* ════════════════════════════════════════ */
 .container {
     max-width: 1200px;
@@ -28,7 +28,7 @@
 }
 
 /* ════════════════════════════════════════ */
-/*               FLEX + GRID                */
+/*              FLEX + GRID                */
 /* ════════════════════════════════════════ */
 .flex {
     display: flex;
@@ -64,24 +64,9 @@
     background: var(--grey-mid);
     border-bottom: 1px solid var(--grey-soft);
 }
-.header-container .logo {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-}
 .nav-logo {
     height: 40px;
 }
-.header-container .nav-logo img {
-    height: 32px;
-    width: auto;
-}
-.header-container h1 {
-    font-size: 1.75rem;
-    margin: 0;
-    white-space: nowrap;
-}
-
 .nav-menu {
     list-style: none;
     margin: 0;
@@ -92,10 +77,6 @@
 .nav-menu a {
     font-weight: bold;
     text-transform: uppercase;
-}
-
-.page-container {
-    padding-top: var(--spacing-xl);
 }
 
 /* ════════════════════════════════════════ */
@@ -126,6 +107,7 @@
 .banner-buttons {
     gap: var(--spacing-sm);
 }
+
 
 /* ───────────────────────────────────────── */
 /*     USER CONTROLS – align name + button   */
@@ -159,16 +141,19 @@ table.form-container th {
     font-weight: bold;
 }
 
+
 /* ════════════════════════════════════════ */
-/*               FOOTER LAYOUT              */
+/*               FOOTER LAYOUT             */
 /* ════════════════════════════════════════ */
 footer {
     background: var(--grey-mid);
     border-top: 1px solid var(--grey-soft);
+    width: 100%;
+    position: relative;
+    background: var(--grey-soft);
     padding: var(--spacing-lg) 0;
 }
 .footer-wrapper {
-    max-width: 1200px;
     width: 100vw;
     position: relative;
     left: 50%;

@@ -29,6 +29,7 @@ public class TaskController {
     private final ProjectService projectService;
     private final SubProjectService subProjectService;
     private final TaskEmployeeService taskEmployeeService;
+    private final EmployeeService employeeService;
     private final EmployeeRepository employeeRepository;
 
     public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeService employeeService, EmployeeRepository employeeRepository) {
@@ -36,6 +37,8 @@ public class TaskController {
         this.projectService = projectService;
         this.subProjectService = subProjectService;
         this.taskEmployeeService = taskEmployeeService;
+        this.employeeService = employeeService;
+
         this.employeeRepository = employeeRepository;
     }
 
