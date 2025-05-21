@@ -92,9 +92,4 @@ public class TaskEmployeeService {
 
         return result;
     }
-
-    public void logHours(long taskId, long employeeId, double hoursWorked) {
-        taskEmployeeRepository.logHours(taskId, employeeId, hoursWorked);
-    }
-
 }

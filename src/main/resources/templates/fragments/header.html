@@ -2,6 +2,12 @@
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="head">
     <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/base.css}">
+    <link rel="stylesheet" th:href="@{/css/componements.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/workload.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${pageTitle}">Projektstyring</title>
 
@@ -13,6 +19,30 @@
 </head>
 
 <header th:fragment="header">
+    <div class="header-container">
+
+        <div class="logo">
+            <a th:href="@{/}"><img th:src="@{/images/logo/AlphaSolutions.png}" alt="Logo" class="nav-logo"></a>
+            <h1>Alpha Solution Projects</h1>
+        </div>
+
+        <nav class="main-nav">
+            <ul class="nav-menu">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/projects}">Projects</a></li>
+<!--                <li><a th:href="@{/subprojects}">Subprojects</a></li>-->
+<!--                <li><a th:href="@{/tasks}">Tasks</a> </li>-->
+                <li><a th:href="@{tasks/workload}">Workload</a></li>
+                <li><a th:href="@{/projects/summary}">Summary</a> </li>
+                <li><a th:href="@{/}">Logs</a> </li>
+            </ul>
+        </nav>
+
+        <!--VIRKER IKKE(session.admin), SKAL RETTES MED RIGTIG INFO I SPRINT 2-->
+        <div class="user-controls">
+            <!-- Ikke logget ind -->
+            <div th:if="${session.admin == null}" class="user-info">
+                <a th:href="@{/login}" class="nav-button">Login</a>
     <div class="header-wrapper">
         <header class="header-container">
             <div class="logo flex">
@@ -28,7 +58,7 @@
                     <li><a th:href="@{/projects}">Projects</a></li>
                     <li><a th:href="@{tasks/workload}">Workload</a></li>
                     <li><a th:href="@{/projects/summary}">Summary</a> </li>
-                    <li><a th:href="@{/logs}">Logs</a> </li>
+                    <li><a th:href="@{/}">Logs</a> </li>
                 </ul>
             </nav>
 

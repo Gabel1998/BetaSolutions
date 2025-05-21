@@ -19,7 +19,10 @@ public class ResourceService {
         return resource.getRe_co2_perHour() * hoursWorked;
     }
 
-    public double calculateTotalCo2ForProject(int projectId) {
-        return resourceRepository.calculateTotalCo2ForProject(projectId);
+    public double calculateTotalCo2ForProject(int projectId, double totalHoursWorked) {
+        List<Resource> resources = resourceRepository.findResourcesByProjectId(projectId);
+        return resources.stream().mapToDouble(resource -> {
+                    double co2PerHour = 8.75;
+                    return co2PerHour * totalHoursWorked;}).sum();
     }
 }
