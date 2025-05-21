@@ -9,14 +9,6 @@
 
 <main class="content">
 
-    <!-- Show Login Prompt if NOT logged in -->
-    <section class="login-prompt text-center card" th:if="${session.user == null}">
-        <p>Please log in to view your projects</p>
-        <a th:href="@{/auth/login}" class="button">Login</a>
-    </section>
-
-    <!-- Show Projects if Logged in -->
-    <section th:if="${session.user != null}">
         <h2>Projects</h2>
 
         <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
@@ -60,8 +52,6 @@
                 + Create New Project
             </a>
         </div>
-
-    </section>
 
 </main>
 

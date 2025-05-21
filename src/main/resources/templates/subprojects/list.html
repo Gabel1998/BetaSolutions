@@ -33,7 +33,7 @@
         <section class="item-list">
             <div th:each="sub : ${subProjects}" class="item-card">
                 <div class="text-center">
-                    <!-- clickable area for details -->
+
                     <a th:href="@{'/tasks?subProjectId=' + ${sub.id}}"
                        class="card-link">
                         <h3 th:text="${sub.name}">Subproject Name</h3>
@@ -61,8 +61,8 @@
         </section>
 
         <div class="two-buttons">
-            <a class="button button--create" th:href="@{/projects/create}">
-                + Create New Subproject
+            <a th:href="@{'/subprojects/create?projectId=' + ${project.id}}" class="button button--create">
+                + CREATE NEW SUBPROJECT
             </a>
         </div>
 
