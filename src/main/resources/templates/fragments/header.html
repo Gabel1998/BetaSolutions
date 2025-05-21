@@ -24,7 +24,7 @@
                 <ul class="nav-menu">
                     <li><a th:href="@{/}">Home</a></li>
                     <li><a th:href="@{/projects}">Projects</a></li>
-                    <li><a th:href="@{tasks/workload}">Workload</a></li>
+                    <li><a th:href="@{/tasks/workload}">Workload</a></li>
                     <li><a th:href="@{/projects/summary}">Summary</a> </li>
                     <li><a th:href="@{/logs}">Logs</a> </li>
                 </ul>
@@ -34,7 +34,7 @@
             <div class="user-controls">
                 <!-- Visible if NOT logged in -->
                 <div th:if="${session.user == null}" class="user-info">
-                    <a th:href="@{/login}" class="button">Login</a>
+                    <a th:href="@{/auth/login}" class="button">Login</a>
                 </div>
 
                 <!-- Visible if logged in -->

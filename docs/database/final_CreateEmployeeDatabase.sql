@@ -8,6 +8,8 @@ CREATE TABLE tb_employees (
                               em_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                               em_first_name VARCHAR(100) NOT NULL,
                               em_last_name VARCHAR(100) NOT NULL,
+                              em_username VARCHAR(100) UNIQUE NOT NULL,
+                              em_password VARCHAR(255) NOT NULL,
                               em_efficiency DECIMAL(3,2),
                               em_max_weekly_hours DECIMAL(5,2),
                               em_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

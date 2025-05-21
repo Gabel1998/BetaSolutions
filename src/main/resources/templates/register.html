@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
+    <title>Register</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <section class="login-container">
+        <h1>Create Account</h1>
+
+        <form th:action="@{/auth/register}" method="post">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" name="firstName" required placeholder="Enter First Name">
+
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" required placeholder="Enter Last Name">
+
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required placeholder="Choose Username">
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required placeholder="Choose Password">
+
+            <button type="submit" class="button button--create">Create User</button>
+        </form>
+
+        <div class="form-footer">
+            <a th:href="@{/auth/login}" class="button">Back to Login</a>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
