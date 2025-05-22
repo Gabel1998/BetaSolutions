@@ -37,6 +37,67 @@
 .yellow-text:hover {
     color: var(--yellow);
 }
+
+.button-yellow-text:hover {
+    background-color: var(--yellow) !important;
+    border-color: var(--yellow) !important;
+    color: var(--nice-black)  !important;
+}
+
+/* ════════════════════════════════════���═══ */
+/*             LOGS DASHBOARD               */
+/* ════════════════════════════════════════ */
+.centered-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: var(--spacing-md) 0;
+}
+
+.logs-table-container {
+    margin-top: var(--spacing-lg);
+    border-top: 1px solid var(--grey-soft);
+    padding-top: var(--spacing-md);
+}
+
+.employee-name {
+    color: var(--pink);
+    font-weight: bold;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--spacing-md) 0;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--grey-soft);
+}
+
+.table th {
+    background-color: var(--grey-mid);
+    font-weight: bold;
+}
+
+.table tr:hover {
+    background-color: rgba(242, 237, 233, 0.4);
+}
+
+.no-logs {
+    text-align: center;
+    padding: var(--spacing-md);
+    color: var(--text-color);
+    font-style: italic;
+}
+
+.buttons-container {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+}
+
 /* ════════════════════════════════════════ */
 /*               FLEX + GRID                */
 /* ════════════════════════════════════════ */
@@ -225,3 +286,4 @@ footer {
     color: var(--blue);
     text-align: center;
 }
+

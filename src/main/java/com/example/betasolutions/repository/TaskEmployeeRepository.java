@@ -98,4 +98,24 @@ public class TaskEmployeeRepository {
                 "WHERE t.project_id = ?";
         return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), projectId);
     }
+
+    public List<TaskEmployee> findByEmployeeId(Long employeeId) {
+        String sql = """
+                SELECT te.*, t.ts_name as task_name, 
+                       p.p_name as project_name, 
+                       sp.sp_name as subproject_name 
+                FROM tb_task_employees te
+                JOIN tb_tasks t ON te.tse_ts_id = t.ts_id
+                LEFT JOIN tb_subprojects sp ON t.ts_sp_id = sp.sp_id
+                LEFT JOIN tb_projects p ON sp.sp_p_id = p.p_id
+                WHERE te.tse_em_id = ?
+                """;
+        return jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), employeeId);
+    }
+
+    public Double getLoggedHoursForTaskAndEmployee(Long taskId, Long employeeId) {
+        String sql = "SELECT SUM(tse_hours_worked) FROM tb_task_employees WHERE tse_ts_id = ? AND tse_em_id = ?";
+        Double result = jdbcTemplate.queryForObject(sql, Double.class, taskId, employeeId);
+        return result != null ? result : 0.0;
+    }
 }

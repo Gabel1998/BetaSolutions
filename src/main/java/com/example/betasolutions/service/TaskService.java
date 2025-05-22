@@ -8,6 +8,7 @@ import com.example.betasolutions.repository.TaskRepository;
 import com.example.betasolutions.utils.DateUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,10 @@ public class TaskService {
         this.taskEmployeeRepository = taskEmployeeRepository;
         this.employeeService = employeeService;
     }
-
+    // timestamp for task creation and update
     public void createTask(Task task) {
+        task.setCreatedAt(LocalDateTime.now());
+        task.setUpdatedAt(LocalDateTime.now());
         taskRepository.save(task);
     }
 
@@ -40,6 +43,7 @@ public class TaskService {
     }
 
     public void updateTask(Task task) {
+        task.setUpdatedAt(LocalDateTime.now());
         taskRepository.update(task);
     }
 
@@ -54,11 +58,11 @@ public class TaskService {
                 .sum();
     }
 
-    public double calculateDailyHours(TaskEmployee employee) {
-        long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
-        if (workdays == 0) return 0;
-        return (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
-    }
+//    public double calculateDailyHours(TaskEmployee employee) {
+//        long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
+//        if (workdays == 0) return 0;
+//        return (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
+//    }
 
     // Calculate total daily hours for a specific task
     public double getTotalDailyHoursForTask(Long taskId) {
@@ -76,14 +80,14 @@ public class TaskService {
         return totalDailyHours;
     }
 
-    // Check if the total daily hours for a list of tasks exceed a given limit
-    public boolean isDailyHoursExceeded(List<Task> tasks, double dailyLimit) {
-        double totalDailyHours = 0;
-        for (Task task : tasks) {
-            totalDailyHours += getTotalDailyHoursForTask(task.getId());
-        }
-        return totalDailyHours > dailyLimit;
-    }
+//    // Check if the total daily hours for a list of tasks exceed a given limit
+//    public boolean isDailyHoursExceeded(List<Task> tasks, double dailyLimit) {
+//        double totalDailyHours = 0;
+//        for (Task task : tasks) {
+//            totalDailyHours += getTotalDailyHoursForTask(task.getId());
+//        }
+//        return totalDailyHours > dailyLimit;
+//    }
 
     public List<Task> getTasksBySubProjectId(int subProjectId) {
         return taskRepository.findBySubProjectId(subProjectId);
@@ -117,9 +121,9 @@ public class TaskService {
             double maxAllowedHours = (employee != null) ? employee.getMaxWeeklyHours() : 40.0;
 
             if (totalHours > maxAllowedHours) {
-                return true;  // Employee exceeded allowed hours
+                return true;
             }
         }
-        return false;  // All employees within limits
+        return false;
     }
 }

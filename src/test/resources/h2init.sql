@@ -35,6 +35,7 @@ CREATE TABLE tb_tasks (
                           ts_actual_hours DECIMAL(5,2),
                           start_date DATE,
                           end_date DATE,
+                          project_id INT,
                           ts_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                           ts_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
