@@ -1,43 +1,71 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/header :: head}">
-  <title>Dashboard Overview</title>
+  <title>Employee Logs Overview</title>
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-
 <main class="content">
   <section class="card">
-    <h1>Overview of Logged Hours</h1>
+    <h1>Logs Dashboard</h1>
 
-    <div th:if="${#lists.isEmpty(overview)}" class="alert-warning">
-      ⚠ No logged hours found for any task.
+    <div class="text-center">
+      <form method="get" th:action="@{/logs/dashboard}" class="centered-form">
+        <div class="form-group">
+          <label for="employeeId">Select Employee:</label>
+          <select name="employeeId" id="employeeId" required>
+            <option th:each="employee : ${employees}"
+                    th:value="${employee.emId}"
+                    th:text="${employee.emFirstName + ' ' + employee.emLastName}">
+              Employee Name
+            </option>
+          </select>
+        </div>
+        <button type="submit" class="button button-yellow-text">View Logs</button>
+      </form>
     </div>
 
-    <h2>Project Subproject Task Hours</h2>
+    <div th:if="${selectedEmployee != null}" class="logs-table-container">
+      <h2>Logged Hours for <span th:text="${selectedEmployee.name}" class="employee-name"></span></h2>
 
-    <table th:if="${!#lists.isEmpty(overview)}" class="form-container">
-      <thead>
-      <tr>
-        <th class="text-left">Project</th>
-        <th class="text-left">Subproject</th>
-        <th class="text-left">Task</th>
-        <th class="text-right">Hours</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="row : ${overview}">
-        <td th:text="${row.projectName}">Project</td>
-        <td th:text="${row.subProjectName}">Subproject</td>
-        <td th:text="${row.taskName}">Task</td>
-        <td class="text-right" th:text="${#numbers.formatDecimal(row.loggedHours, 1, 2)}">0.00</td>
-      </tr>
-      </tbody>
-    </table>
+      <div class="table-wrapper">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Project</th>
+            <th>Subproject</th>
+            <th>Task</th>
+            <th>Hours</th>
+            <th>Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="log : ${loggedHours}">
+            <td th:text="${log.projectName != null ? log.projectName : 'Unknown Project'}"></td>
+            <td th:text="${log.subProjectName}"></td>
+            <td th:text="${log.taskName}"></td>
+            <td th:text="${#numbers.formatDecimal(log.hours, 1, 2)}"></td>
+            <td class="text-center">
+              <form th:action="@{/logs/delete}" method="post" onsubmit="return confirm('Are you sure you want to delete this log entry?');">
+                <input type="hidden" name="logId" th:value="${log.id}" />
+                <input type="hidden" name="employeeId" th:value="${selectedEmployee.id}" />
+                <button type="submit" class="button red">X</button>
+              </form>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(loggedHours)}">
+            <td colspan="5" class="no-logs">No logs found for this employee.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
 
+      <div class="text-center buttons-container">
+        <a th:href="@{/logs}" class="button">Log New Hours</a>
+      </div>
+    </div>
   </section>
 </main>
-
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

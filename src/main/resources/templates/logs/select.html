@@ -10,6 +10,10 @@
     <section class="card">
         <h1>Log Your Hours - Select Employee and Project</h1>
 
+        <div class="text-center">
+            <a th:href="@{/logs/dashboard}" class="two-buttons yellow-text">Log Dashboard</a>
+        </div>
+
         <!-- User-friendly warning, if not found-->
         <div th:if="${param.emptySubprojects}" class="alert-warning">
             ⚠ This project has no subprojects. Please choose another.

@@ -16,12 +16,21 @@ public class TaskEmployeeService {
 
     private final TaskEmployeeRepository taskEmployeeRepository;
     private final EmployeeRepository employeeRepository;
+    private final TaskService taskService;
+    private final SubProjectService subProjectService;
+    private final ProjectService projectService;
 
     public TaskEmployeeService(
             TaskEmployeeRepository taskEmployeeRepository,
-            EmployeeRepository employeeRepository) {
+            EmployeeRepository employeeRepository,
+            TaskService taskService,
+            SubProjectService subProjectService,
+            ProjectService projectService) {
         this.taskEmployeeRepository = taskEmployeeRepository;
         this.employeeRepository = employeeRepository;
+        this.taskService = taskService;
+        this.subProjectService = subProjectService;
+        this.projectService = projectService;
     }
 
     /**
@@ -93,6 +102,54 @@ public class TaskEmployeeService {
         return result;
     }
 
+    /** Retrieves logged hours for a specific employee, formatted for the dashboard display */
+    public List<Map<String, Object>> getLoggedHoursForEmployee(Long employeeId) {
+
+        List<TaskEmployee> assignments = taskEmployeeRepository.findByEmployeeId(employeeId);
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (TaskEmployee assignment : assignments) {
+            Long taskId = assignment.getTaskId();
+            if (taskId == null) continue; // Skip if taskId is null
+
+            // Create result entry
+            Map<String, Object> entry = new HashMap<>();
+            entry.put("id", assignment.getTseId());
+            entry.put("hours", assignment.getHoursWorked());
+
+            // Get task information
+            taskService.getTaskById(taskId).ifPresent(task -> {
+                entry.put("taskName", task.getName());
+
+                // Get subproject information
+                Integer subprojectId = task.getSubProjectId();
+                if (subprojectId != null) {
+                    subProjectService.getSubProjectById(subprojectId).ifPresent(subproject -> {
+                        entry.put("subProjectName", subproject.getName());
+
+                        // Get project information
+                        Integer projectId = subproject.getProjectId();
+                        if (projectId != null) {
+                            projectService.getProjectById(projectId).ifPresent(project ->
+                                entry.put("projectName", project.getName())
+                            );
+                        }
+                    });
+                }
+            });
+
+            // Add default values if any information is missing
+            if (!entry.containsKey("taskName")) entry.put("taskName", "Unknown Task");
+            if (!entry.containsKey("subProjectName")) entry.put("subProjectName", "Unknown Subproject");
+            if (!entry.containsKey("projectName")) entry.put("projectName", "Unknown Project");
+
+            result.add(entry);
+        }
+
+        return result;
+    }
+
+    /** Log hours for a specific task and employee */
     public void logHours(long taskId, long employeeId, double hoursWorked) {
         taskEmployeeRepository.logHours(taskId, employeeId, hoursWorked);
     }

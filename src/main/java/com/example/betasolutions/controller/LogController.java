@@ -1,5 +1,6 @@
 package com.example.betasolutions.controller;
 
+import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.model.Project;
 import com.example.betasolutions.model.SubProject;
 import com.example.betasolutions.model.Task;
@@ -103,8 +104,30 @@ public class LogController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboard(Model model, HttpSession session) {
+    public String showDashboard(@RequestParam(required = false) Long employeeId,
+                               Model model,
+                               HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        // Add employees to dropdown
+        model.addAttribute("employees", employeeService.getAllEmployees());
+
+        if (employeeId != null) {
+            Employees employee = employeeService.getEmployeeById(employeeId);
+            if (employee != null) {
+                // Create a map with the employee data in the format the template expects
+                Map<String, Object> selectedEmployee = new HashMap<>();
+                selectedEmployee.put("id", employee.getEmId());
+                selectedEmployee.put("name", employee.getEmFirstName() + " " + employee.getEmLastName());
+                model.addAttribute("selectedEmployee", selectedEmployee);
+
+                // Get logged hours for the employee
+                List<Map<String, Object>> loggedHours = taskEmployeeService.getLoggedHoursForEmployee(employeeId);
+                model.addAttribute("loggedHours", loggedHours);
+            }
+        }
+
+        // Task overview for all tasks (keep this functionality)
         List<Task> allTasks = taskService.getAllTasks();
 
         List<Map<String, Object>> taskOverview = new ArrayList<>();
@@ -155,5 +178,24 @@ public class LogController {
             }
         });
         return "redirect:/logs?success";
+    }
+
+    // Delete log entry
+    @PostMapping("/delete")
+    public String deleteLog(@RequestParam("logId") Long logId,
+                           @RequestParam(required = false) Long employeeId,
+                           HttpSession session) {
+        if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        if (logId != null) {
+            taskEmployeeRepository.delete(logId);
+        }
+
+        // Redirect back to the dashboard with same employee selected
+        if (employeeId != null) {
+            return "redirect:/logs/dashboard?employeeId=" + employeeId;
+        } else {
+            return "redirect:/logs/dashboard";
+        }
     }
 }
