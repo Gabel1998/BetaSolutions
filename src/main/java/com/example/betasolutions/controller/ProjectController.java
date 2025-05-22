@@ -56,7 +56,11 @@ public class ProjectController {
         Map<Integer, Double> projectCo2 = new HashMap<>();
         for (Project project : projects) {
             double co2 = resourceService.calculateTotalCo2ForProject(project.getId());
-            projectCo2.put(project.getId(), co2);
+            if (co2 > 0) {
+                projectCo2.put(project.getId(), co2); // Only valid values
+            } else {
+                projectCo2.put(project.getId(), -1.0); // Mark as n/a
+            }
         }
 
         Map<Integer, Double> adjustedHours = new HashMap<>();
@@ -155,7 +159,7 @@ public class ProjectController {
 
         project.setId(id);
         projectService.updateProject(project);
-        session.setAttribute("successMessage", "Projekt er blevet opdateret");
+        session.setAttribute("successMessage", "The project has been updated");
         return "redirect:/projects";
     }
 

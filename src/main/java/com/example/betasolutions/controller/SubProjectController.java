@@ -51,7 +51,7 @@ public class SubProjectController {
         //sort subprojects by start date
         List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId)
                 .stream()
-                .sorted(Comparator.comparing(SubProject::getStartDate))
+                .sorted(Comparator.comparing(SubProject::getStartDate, Comparator.nullsLast(Comparator.naturalOrder()))) // sort by start date
                 .toList();
 
 

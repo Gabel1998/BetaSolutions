@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,7 +35,9 @@ public class Task {
     private LocalDate startDate; // ny
     private LocalDate endDate;   // ny
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
 
@@ -131,11 +134,6 @@ public class Task {
             return 0; // Avoid division by zero
         }
         return (int) ((actualHours / estimatedHours) * 100);
-    }
-
-    public String getAssignedTo() {
-        /// Mangler logik til at assigne employee(s) til task
-        return "Assigned to employee"; // placeholder
     }
 
     public double getPrefilledHours() {

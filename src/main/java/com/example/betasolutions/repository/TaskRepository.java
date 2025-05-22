@@ -20,20 +20,8 @@ public class TaskRepository {
 
     // Save new Task in database
     public void save(Task task) {
-        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                task.getSubProjectId(),
-                task.getName(),
-                task.getDescription(),
-                task.getEstimatedHours(),
-                task.getActualHours(),
-                task.getStartDate(),
-                task.getEndDate());
-    }
-
-    public void update(Task task) {
-        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, start_date = ?, end_date = ? WHERE ts_id = ?";
+        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date, project_id, ts_created_at, ts_updated_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 task.getSubProjectId(),
                 task.getName(),
@@ -42,7 +30,26 @@ public class TaskRepository {
                 task.getActualHours(),
                 task.getStartDate(),
                 task.getEndDate(),
-                task.getId());
+                task.getProjectId(),
+                task.getCreatedAt(),
+                task.getUpdatedAt()
+        );
+    }
+
+    public void update(Task task) {
+        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, start_date = ?, end_date = ?, project_id = ?, ts_updated_at = ? WHERE ts_id = ?";
+        jdbcTemplate.update(sql,
+                task.getSubProjectId(),
+                task.getName(),
+                task.getDescription(),
+                task.getEstimatedHours(),
+                task.getActualHours(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getProjectId(),
+                task.getUpdatedAt(),
+                task.getId()
+        );
     }
 
 

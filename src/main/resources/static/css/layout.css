@@ -37,6 +37,12 @@
 .yellow-text:hover {
     color: var(--yellow);
 }
+
+.button-yellow-text:hover {
+    background-color: var(--yellow) !important;
+    border-color: var(--yellow) !important;
+    color: var(--nice-black)  !important;
+}
 /* ════════════════════════════════════════ */
 /*               FLEX + GRID                */
 /* ════════════════════════════════════════ */

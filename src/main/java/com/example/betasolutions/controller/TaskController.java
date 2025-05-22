@@ -31,15 +31,13 @@ public class TaskController {
     private final ProjectService projectService;
     private final SubProjectService subProjectService;
     private final TaskEmployeeService taskEmployeeService;
-    private final EmployeeService employeeService;
     private final EmployeeRepository employeeRepository;
 
-    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeService employeeService, EmployeeRepository employeeRepository) {
+    public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeRepository employeeRepository) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.subProjectService = subProjectService;
         this.taskEmployeeService = taskEmployeeService;
-        this.employeeService = employeeService;
 
         this.employeeRepository = employeeRepository;
     }
@@ -61,7 +59,7 @@ public class TaskController {
         // Sort tasks by start date
         List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId)
                 .stream()
-                .sorted(Comparator.comparing(Task::getStartDate))
+                .sorted(Comparator.comparing(Task::getStartDate, Comparator.nullsLast(Comparator.naturalOrder())))
                 .collect(Collectors.toList());
 
         model.addAttribute("tasks", tasks);
