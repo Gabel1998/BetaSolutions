@@ -1,6 +1,5 @@
 package com.example.betasolutions.model;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,10 +17,8 @@ public class SubProject {
     private String description;
 
     @NotNull(message = "Start date is required.")
-    @FutureOrPresent(message = "Start date must be today or in the future.")
     private LocalDate startDate;
 
-    @NotNull(message = "End date is required.")
     private LocalDate endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

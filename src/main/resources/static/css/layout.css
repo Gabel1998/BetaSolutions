@@ -44,7 +44,7 @@
     color: var(--nice-black)  !important;
 }
 
-/* ════════════════════════════════════���═══ */
+/* ════════════════════════════════════════ */
 /*             LOGS DASHBOARD               */
 /* ════════════════════════════════════════ */
 .centered-form {
@@ -114,7 +114,7 @@
     text-align: center;
 }
 
-/* ───────────────────────────────────────── */
+/* ───────────────────���───────────────────── */
 /*     HEADER – logo + title alignment       */
 /* ───────────────────────────────────────── */
 .header-container {
@@ -287,3 +287,65 @@ footer {
     text-align: center;
 }
 
+/* ════════════════════════════════════════ */
+/*             WORKLOAD VISUALIZATION        */
+/* ════════════════════════════════════════ */
+.employee-multi-select {
+    margin-bottom: var(--spacing-md);
+}
+
+.employee-multi-select select {
+    width: 100%;
+    min-height: 120px;
+    border: 1px solid var(--grey-soft);
+    border-radius: var(--radius);
+    padding: 0.5rem;
+}
+
+.helper-text {
+    font-size: 0.8rem;
+    color: var(--grey-dark);
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
+.chart-container {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+    height: 400px;
+}
+
+.workload-table-container {
+    margin-top: var(--spacing-lg);
+}
+
+.workload-percentage {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.percentage-bar {
+    flex-grow: 1;
+    height: 20px;
+    background-color: var(--grey-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.percentage-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.workload-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.no-data-message {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: var(--grey-dark);
+    font-style: italic;
+}
