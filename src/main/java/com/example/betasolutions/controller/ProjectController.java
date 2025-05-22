@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,7 @@ public class ProjectController {
         this.resourceService = resourceService;
     }
 
-    //Kontrol om bruger er logget ind
+    //check if user is logged in
     private boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
@@ -39,8 +40,12 @@ public class ProjectController {
         if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
+        //sort projects by start date
+        List<Project> projects = projectService.getAllProjects()
+                .stream()
+                .sorted(Comparator.comparing(Project::getStartDate))
+                .collect(Collectors.toList());
 
-        List<Project> projects = projectService.getAllProjects();
 
         List<Integer> projectIds = projects.stream()
                 .map(Project::getId)
@@ -81,7 +86,7 @@ public class ProjectController {
         }
         model.addAttribute("pageTitle", "Opret projekt");
         model.addAttribute("project", new Project());
-        return "projects/create"; //peger på create.html i projects-directory
+        return "projects/create";
     }
 
     @GetMapping("/summary")
@@ -114,7 +119,7 @@ public class ProjectController {
         Project project = projectService.getProjectById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
         model.addAttribute("project", project);
-        return "projects/edit"; //henviser på edit.html i projects directory
+        return "projects/edit";
     }
 
     @GetMapping("/delete/{id}")
@@ -139,7 +144,7 @@ public class ProjectController {
 
         projectService.createProject(project);
         session.setAttribute("successMessage", "Project created successfully");
-        return "redirect:/projects"; //Redirects til lists efter oprettelse
+        return "redirect:/projects";
     }
 
     @PostMapping("/update/{id}")

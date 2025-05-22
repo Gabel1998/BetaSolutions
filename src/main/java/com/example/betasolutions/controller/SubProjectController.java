@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,17 +48,21 @@ public class SubProjectController {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         if (projectId == null) return "redirect:/projects";
+        //sort subprojects by start date
+        List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId)
+                .stream()
+                .sorted(Comparator.comparing(SubProject::getStartDate))
+                .toList();
 
-        List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId);
 
-        // Beregning af total timer af tasks for subprojekter
+        // calculate total task hours for each subproject
         List<Integer> subProjectIds = subProjects.stream()
                 .map(SubProject::getId)
                 .collect(Collectors.toList());
         Map<Integer, Map<String, Double>> subProjectHours = subProjectService.calculateTaskHoursBySubProjectIds(subProjectIds);
 
 
-        model.addAttribute("subProjects", subProjectService.getAllSubProjectsByProjectId(projectId));
+        model.addAttribute("subProjects", subProjects); // sorted list
         model.addAttribute("project", projectService.getProjectById(projectId)
                 .orElseThrow(() -> new RuntimeException("Projekt ikke fundet")));
         model.addAttribute("pageTitle", "Subprojekter for projekt");
@@ -66,7 +71,7 @@ public class SubProjectController {
     }
 
 
-    // Vis create form for subproject
+    // Show create form for subproject
     @GetMapping("/create")
     public String showCreateSubProjectForm(@RequestParam("projectId") Integer projectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -110,16 +115,16 @@ public class SubProjectController {
                 .orElseThrow(() -> new RuntimeException("Subproject not found"));
 
         List<Task> tasks = taskService.getTasksBySubProjectId(id);
-        byte[] imageBytes = ganttService.generateGantt(subProject, tasks); /// PlantUML Skal have byte[] for at generere PNG billedet
+        byte[] imageBytes = ganttService.generateGantt(subProject, tasks); /// PlantUML needs byte[] to generate PNG picture
 
-        String fileName = "gantt_" + subProject.getName().replaceAll("\\s+", "_") + "_" + id + "_" + LocalDate.now() + ".png"; /// filnavn ved generering
+        String fileName = "gantt_" + subProject.getName().replaceAll("\\s+", "_") + "_" + id + "_" + LocalDate.now() + ".png"; /// filename when generating
 
-        response.setContentType("image/png"); /// sætter content type til PNG
-        response.setHeader("Content-Disposition", "attachment; filename=" + fileName); /// sætter header til at downloade billedet
-        response.getOutputStream().write(imageBytes); /// skriver billedet til output stream
+        response.setContentType("image/png"); ///  content type = PNG
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName); /// sets header to download file
+        response.getOutputStream().write(imageBytes); /// write image bytes to output stream
     }
 
-    // Gantt data til frontend [JSON]
+    // Gantt data for frontend [JSON]
     @GetMapping("/api/subprojects/{id}/ganttdata")
     @ResponseBody
     public Map<String, Object> getGanttData(@PathVariable Integer id) {

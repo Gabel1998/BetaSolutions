@@ -17,9 +17,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/tasks")
@@ -56,7 +58,12 @@ public class TaskController {
         SubProject subProject = subProjectService.getSubProjectById(subProjectId)
                 .orElseThrow(() -> new RuntimeException("Subprojekt ikke fundet"));
 
-        List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId);
+        // Sort tasks by start date
+        List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId)
+                .stream()
+                .sorted(Comparator.comparing(Task::getStartDate))
+                .collect(Collectors.toList());
+
         model.addAttribute("tasks", tasks);
         model.addAttribute("subProject", subProject);
 
