@@ -39,35 +39,34 @@ public class ProjectServiceTest {
     }
 
     @Test
-    void testCalculateDagRate() {
+    void testCalculateDailyRate() {
         // Arrange
         Project mockProject = new Project();
         mockProject.setEstimatedHours(100);
-        mockProject.setStartDate(LocalDate.of(2025, 5, 5)); // fx mandag
-        mockProject.setEndDate(LocalDate.of(2025, 5, 9));   // fredag
+        mockProject.setStartDate(LocalDate.of(2025, 5, 5)); // Monday
+        mockProject.setEndDate(LocalDate.of(2025, 5, 9));   // Friday
 
         when(projectRepository.findById(1L)).thenReturn(Optional.of(mockProject));
 
         // Act
-        double result = projectService.calculateDagRate(1L);
+        double result = projectService.calculateDailyRate(1L);
 
         // Assert
-        assertEquals(20.0, result); // 100 timer / 5 dage
+        assertEquals(20.0, result); // 100 hours / 5 days
     }
 
     @Test
-    void testCalculateDagRateWithZeroWorkdays() {
+    void testCalculateDailyRateWithZeroWorkdays() {
         Project mockProject = new Project();
         mockProject.setEstimatedHours(50);
-        mockProject.setStartDate(LocalDate.of(2025, 5, 10)); // lørdag
-        mockProject.setEndDate(LocalDate.of(2025, 5, 11));   // søndag
+        mockProject.setStartDate(LocalDate.of(2025, 5, 10)); // Saturday
+        mockProject.setEndDate(LocalDate.of(2025, 5, 11));   // Sunday
 
         when(projectRepository.findById(2L)).thenReturn(Optional.of(mockProject));
 
-        double result = projectService.calculateDagRate(2L);
+        double result = projectService.calculateDailyRate(2L);
 
         assertEquals(0.0, result);
     }
 }
-
 

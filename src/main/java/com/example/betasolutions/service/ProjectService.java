@@ -51,7 +51,7 @@ public class ProjectService {
         projectRepository.update(project);
     }
 
-    public double calculateDagRate (Long projectId) {
+    public double calculateDailyRate(Long projectId) {
         Optional<Project> projectOpt = projectRepository.findById(projectId);
         if (projectOpt.isEmpty()) return 0;
 

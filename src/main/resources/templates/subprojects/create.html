@@ -14,24 +14,34 @@
             <!-- Formular bound to subproject-objects -->
             <form th:action="@{/subprojects/create}" th:object="${subProject}" method="post" class="form-container">
 
+                <!-- Show validation errors if any -->
+                <div th:if="${#fields.hasErrors()}" class="alert-warning">
+                    Please fix the highlighted errors.
+                </div>
+
                 <!-- hidden field (projectId) -->
                 <input type="hidden" th:field="*{projectId}"/>
+                <div class="status-warning" th:if="${#fields.hasErrors('projectId')}" th:errors="*{projectId}"></div>
 
                 <!--Subproject name-->
                 <label for="name">Name</label>
                 <input type="text" id="name" th:field="*{name}" required>
+                <div class="status-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
                 <!--SubProject description -->
                 <label for="description">Description</label>
                 <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                <div class="status-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
 
                 <!--StartDate-->
                 <label for="startDate">Start</label>
                 <input type="date" id="startDate" th:field="*{startDate}" required>
+                <div class="status-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
 
                 <!--EndDate-->
                 <label for="endDate">End</label>
                 <input type="date" id="endDate" th:field="*{endDate}">
+                <div class="status-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
 
                 <!--Submit-->
                 <button type="submit" class="button button--create">Create</button>

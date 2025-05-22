@@ -34,8 +34,8 @@ public class TaskEmployeeService {
     }
 
     /**
-     * Returnerer belastning pr. medarbejder pr. dag i form af:
-     * Map<MedarbejderID, Map<Dato, Pair<timer, belastningsprocent>>>
+     * Returns the workload per employee per day in the form of:
+     * Map<EmployeeID, Map<Date, Pair<hours, workloadPercentage>>>
      */
     public Map<Long, Map<LocalDate, Pair<Double, Double>>> getEmployeeLoadOverTime() {
         List<TaskEmployee> assignments = taskEmployeeRepository.findAll();
@@ -51,13 +51,12 @@ public class TaskEmployeeService {
 //        List<TaskEmployee> assignments = taskEmployeeRepository.findAll();
         Map<Long, Map<LocalDate, Double>> dailyHoursMap = new HashMap<>();
 
-        // Trin 1: Beregn antal timer per dag for hver medarbejder
+        // Step 1: Calculate hours per day for each employee
         for (TaskEmployee assignment : assignments) {
             Long employeeId = assignment.getEmployeeId();
             LocalDate start = assignment.getStartDate();
             LocalDate end = assignment.getEndDate();
 
-            // Skip this assignment if either date is null
             if (start == null || end == null) {
                 continue;
             }
@@ -76,18 +75,18 @@ public class TaskEmployeeService {
             }
         }
 
-        // Trin 2: Hent maxWeeklyHours og konverter til procent
+        // Step 2: Get maxWeeklyHours and convert to percentage
         Map<Long, Map<LocalDate, Pair<Double, Double>>> result = new HashMap<>();
 
         for (Map.Entry<Long, Map<LocalDate, Double>> entry : dailyHoursMap.entrySet()) {
             long employeeId = entry.getKey();
             Employees emp = employeeRepository.getEmployeeById(employeeId);
             if (emp == null) {
-                System.out.println("⚠️ Skipper medarbejder ID " + employeeId + " fordi den ikke findes i db_employees.");
+                System.out.println("⚠️ Skipping employee ID " + employeeId + " because it doesn't exist in db_employees.");
                 continue;
             }
 
-            double maxPerDay = emp.getMaxWeeklyHours() / 5.0; // antag 5 arbejdsdage
+            double maxPerDay = 8.0; // Standard workday hours
             Map<LocalDate, Pair<Double, Double>> dailyWithPercent = new TreeMap<>();
 
             for (Map.Entry<LocalDate, Double> daily : entry.getValue().entrySet()) {
