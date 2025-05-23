@@ -27,15 +27,6 @@
                 <div class="helper-text">Hold Ctrl/Cmd to select multiple employees</div>
             </div>
 
-            <div class="form-group">
-                <label for="period">Time Period:</label>
-                <select id="period" name="period">
-                    <option value="week" th:selected="${selectedPeriod == 'week'}">Current Week</option>
-                    <option value="month" th:selected="${selectedPeriod == 'month'}">Current Month</option>
-                    <option value="quarter" th:selected="${selectedPeriod == 'quarter'}">Current Quarter</option>
-                </select>
-            </div>
-
             <button type="submit" class="button">View Workload</button>
         </form>
     </div>
@@ -88,7 +79,7 @@
         <!-- Comparison section that shows all selected employees -->
         <section class="comparison-section card" th:if="${workload.size() > 1}">
             <h2>Employee Workload Comparison</h2>
-            <p class="helper-text">Average workload in selected time period</p>
+            <p class="helper-text">Employee Workload Comparison - Yellow bars show normal allocation (≤100%), Pink bars indicate overallocation (>100%)</p>
 
             <div class="comparison-chart">
                 <div th:each="entry : ${avgWorkload}" class="employee-comparison">

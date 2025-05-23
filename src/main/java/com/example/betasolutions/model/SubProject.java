@@ -2,6 +2,7 @@ package com.example.betasolutions.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,8 +18,9 @@ public class SubProject {
     private String description;
 
     @NotNull(message = "Start date is required.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

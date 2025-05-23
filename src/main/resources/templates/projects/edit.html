@@ -29,15 +29,15 @@
         <textarea id="description" th:field="*{description}" rows="4"></textarea>
         <div class="status-warning" th:errors="*{description}"></div>
 
-        <!-- Startdato: hvornår projektet begynder -->
+        <!-- Start Date -->
         <label for="startDate">Start Date</label>
-        <input type="date" id="startDate" th:field="*{startDate}" required>
-        <div class="status-warning" th:errors="*{startDate}"></div>
+        <input type="date" id="startDate" th:field="*{startDate}" required
+               th:value="${project.startDate != null ? #temporals.format(project.startDate, 'yyyy-MM-dd') : ''}" />
 
-        <!-- Slutdato: hvornår projektet forventes afsluttet -->
+        <!-- End Date -->
         <label for="endDate">End Date</label>
-        <input type="date" id="endDate" th:field="*{endDate}">
-        <div class="status-warning" th:errors="*{endDate}"></div>
+        <input type="date" id="endDate" th:field="*{endDate}"
+               th:value="${project.endDate != null ? #temporals.format(project.endDate, 'yyyy-MM-dd') : ''}" />
 
         <!-- Submit-knap -->
         <button type="submit" class="button button-yellow-text">Save Changes</button>

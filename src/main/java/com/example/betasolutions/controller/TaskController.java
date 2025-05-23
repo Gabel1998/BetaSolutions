@@ -115,6 +115,14 @@ public class TaskController {
         Task task = taskService.getTaskById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
 
+        // Set default start and end dates if not provided
+        if (task.getStartDate() == null) {
+            task.setStartDate(LocalDate.now());
+        }
+        if (task.getEndDate() == null) {
+            task.setEndDate(LocalDate.now().plusDays(7));
+        }
+
         SubProject subProject = subProjectService.getSubProjectById(task.getSubProjectId())
                 .orElseThrow(() -> new RuntimeException("Subproject not found"));
 
