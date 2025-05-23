@@ -196,6 +196,7 @@ public class SubProjectController {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         subProject.setId(id);
         subProjectService.updateSubProject(subProject);
-        return "redirect:/subprojects";
+        session.setAttribute("successMessage", "Subproject updated successfully");
+        return "redirect:/subprojects?projectId=" + subProject.getProjectId();
     }
 }

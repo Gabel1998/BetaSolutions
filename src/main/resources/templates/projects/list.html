@@ -11,7 +11,14 @@
 
     <h2>Projects</h2>
 
-    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+    <!-- Success message -->
+    <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+    <!-- Error message -->
+    <div th:if="${param.error}" class="error-message">
+        Please fix the highlighted errors.
+    </div>
 
     <section class="projects">
         <h2>Latest Updated Projects</h2>

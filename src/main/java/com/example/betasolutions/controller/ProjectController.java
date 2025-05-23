@@ -141,7 +141,7 @@ public class ProjectController {
         }
 
         projectService.deleteProject(id);
-        session.setAttribute("successMessage", "Projekt er blevet slettet");
+        session.setAttribute("successMessage", "Project deleted successfully");
         return "redirect:/projects";
     }
 

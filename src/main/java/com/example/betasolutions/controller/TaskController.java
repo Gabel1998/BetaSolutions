@@ -138,15 +138,18 @@ public class TaskController {
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
-        //get task before deleting to retrieve subProjectId
+
+        // Get task before deleting to retrieve subProjectId
         Task task = taskService.getTaskById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
         Integer subProjectId = task.getSubProjectId();
-        //delete task
-        taskService.deleteTask(id);
 
-        // Add success message to session
-        session.setAttribute("successMessage", "Task deleted successfully");
+        try {
+            taskService.deleteTask(id);
+            session.setAttribute("successMessage", "Task deleted successfully");
+        } catch (Exception e) {
+            session.setAttribute("errorMessage", "Unable to delete task: It has associated resources that must be removed first");
+        }
 
         return "redirect:/tasks?subProjectId=" + subProjectId;
     }
@@ -263,10 +266,12 @@ public class TaskController {
         task.setProjectId(Long.valueOf(subProject.getProjectId()));
         taskService.createTask(task);
 
+        //success message
+        session.setAttribute("successMessage", "Task created successfully");
+
         return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
 
-    // Process form submission for updating task
     @PostMapping("/update/{id}")
     public String updateTask(@PathVariable Long id,
                              @ModelAttribute @Valid Task task,
@@ -293,6 +298,10 @@ public class TaskController {
         }
 
         taskService.updateTask(task);
+
+        //success message
+        session.setAttribute("successMessage", "Task updated successfully");
+
         return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
 }

@@ -26,8 +26,14 @@
             <a class="two-buttons yellow-text" th:href="@{'/projects/edit/' + ${project.id}}">Edit Project</a>
         </div>
 
-        <!-- flash message -->
-        <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+        <!-- Success message -->
+        <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+        <!-- error message -->
+        <div th:if="${param.error}" class="error-message">
+            Please fix the highlighted errors.
+        </div>
 
 
         <section class="item-list">
