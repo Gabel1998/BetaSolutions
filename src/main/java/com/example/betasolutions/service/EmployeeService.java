@@ -5,6 +5,7 @@ import com.example.betasolutions.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -27,7 +28,7 @@ public class EmployeeService {
     }
 
     // READ BY ID
-    public Employees getEmployeeById(long id) {
+    public Optional<Employees> getEmployeeById(long id) {
         return employeeRepository.getEmployeeById(id);
     }
 

@@ -117,8 +117,8 @@ public class TaskService {
             double totalHours = entry.getValue();
 
             // Fetch employee from DB to get max allowed weekly hours
-            Employees employee = employeeService.getEmployeeById(employeeId);
-            double maxAllowedHours = (employee != null) ? employee.getMaxWeeklyHours() : 40.0;
+            Optional<Employees> employeeOptional = employeeService.getEmployeeById(employeeId);
+            double maxAllowedHours = employeeOptional.map(Employees::getMaxWeeklyHours).orElse(40.0);
 
             if (totalHours > maxAllowedHours) {
                 return true;

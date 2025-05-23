@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class EmployeeRepository {
@@ -43,24 +44,10 @@ public class EmployeeRepository {
     }
 
     // AUTHENTICATE USER
-    public Employees findByUsername(String username) {
+    public Optional<Employees> findByUsername(String username) {
         String sql = "SELECT * FROM tb_employees WHERE em_username = ?";
         List<Employees> result = jdbcTemplate.query(sql, new EmployeeRowMapper(), username);
-        return result.isEmpty() ? null : result.get(0);
-    }
-
-    public void saveWithCredentials(Employees employee) {
-        String sql = "INSERT INTO tb_employees (em_first_name, em_last_name, em_username, em_password, em_efficiency, em_max_weekly_hours, em_created_at, em_updated_at) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                employee.getEmFirstName(),
-                employee.getEmLastName(),
-                employee.getEmUsername(),
-                employee.getEmPassword(),
-                employee.getEmEfficiency(),
-                employee.getMaxWeeklyHours(),
-                employee.getEmCreatedAt(),
-                employee.getEmUpdatedAt());
+        return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
 
     // READ ALL
@@ -70,15 +57,11 @@ public class EmployeeRepository {
     }
 
     // READ BY ID
-    public Employees getEmployeeById(long id) {
+    public Optional<Employees> getEmployeeById(long id) {
         String sql = "SELECT * FROM tb_employees WHERE em_id = ?";
 
         List<Employees> result = jdbcTemplate.query(sql, new EmployeeRowMapper(), id);
-        if (result.isEmpty()) {
-            System.out.println("⚠ Medarbejder med ID " + id + " ikke fundet i tb_employees.");
-            return null;
-        }
-        return result.get(0);
+        return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
 
     // UPDATE
@@ -97,12 +80,6 @@ public class EmployeeRepository {
     public void deleteEmployee(int id) {
         String sql = "DELETE FROM tb_employees WHERE em_id = ?";
         jdbcTemplate.update(sql, id);
-    }
-
-    // READ MAXIMUM WEEKLY HOURS
-    public double getMaxWeeklyHours(long id) {
-        String sql = "SELECT em_max_weekly_hours FROM tb_employees WHERE em_id = ?";
-        return jdbcTemplate.queryForObject(sql, Double.class, id);
     }
 
     // UPDATE MAXIMUM WEEKLY HOURS

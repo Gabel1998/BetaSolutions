@@ -7,7 +7,6 @@ import com.example.betasolutions.service.ProjectService;
 import com.example.betasolutions.service.SubProjectService;
 import com.example.betasolutions.service.TaskService;
 import com.example.betasolutions.service.TaskEmployeeService;
-import com.example.betasolutions.service.EmployeeService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.data.util.Pair;
@@ -21,8 +20,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Manages task operations and workload visualization for employees.
+ */
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
@@ -33,21 +36,21 @@ public class TaskController {
     private final TaskEmployeeService taskEmployeeService;
     private final EmployeeRepository employeeRepository;
 
+    // Constructor injection
     public TaskController(TaskService taskService, ProjectService projectService, SubProjectService subProjectService, TaskEmployeeService taskEmployeeService, EmployeeRepository employeeRepository) {
         this.taskService = taskService;
         this.projectService = projectService;
         this.subProjectService = subProjectService;
         this.taskEmployeeService = taskEmployeeService;
-
         this.employeeRepository = employeeRepository;
     }
 
-    // Check if user is logged in
+    // Verify user authentication
     private boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
 
-    // GET endpoints for basic CRUD operations
+    // Display tasks for a specific subproject
     @GetMapping
     public String listTasks(@RequestParam(value = "subProjectId", required = false) Integer subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -69,10 +72,17 @@ public class TaskController {
         boolean overLimit = taskService.isEmployeeOverbooked(tasks);
         model.addAttribute("overLimit", overLimit);
 
+        // Handle success message if present in session
+        String successMessage = (String) session.getAttribute("successMessage");
+        if (successMessage != null) {
+            model.addAttribute("successMessage", successMessage);
+            session.removeAttribute("successMessage");
+        }
+
         return "tasks/list";
     }
 
-
+    // Show form for creating a new task
     @GetMapping("/create")
     public String showCreateForm(@RequestParam("subProjectId") Integer subProjectId,
                                  Model model,
@@ -95,6 +105,7 @@ public class TaskController {
         return "tasks/create";
     }
 
+    // Show form for editing an existing task
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -115,6 +126,7 @@ public class TaskController {
         return "tasks/edit";
     }
 
+    // Delete a task and return to task list
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -124,12 +136,17 @@ public class TaskController {
         Integer subProjectId = task.getSubProjectId();
         //delete task
         taskService.deleteTask(id);
+
+        // Add success message to session
+        session.setAttribute("successMessage", "Task deleted successfully");
+
         return "redirect:/tasks?subProjectId=" + subProjectId;
     }
 
+    // View hours logged against a task
     @GetMapping("/task/{id}/hours")
     public String getTaskHours(@PathVariable("id") Long taskId, Model model) {
-       Task task = taskService.getTaskById(taskId)
+        Task task = taskService.getTaskById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
 
         double totalHours = taskService.getTotalHoursForTask(taskId);
@@ -142,11 +159,18 @@ public class TaskController {
         return "tasks/list";
     }
 
+    // Update employee's maximum weekly hours
+    @PostMapping("/update/{id}/hours")
+    public String updateMaxHours(@PathVariable int id, @RequestParam double maxWeeklyHours) {
+        employeeRepository.updateMaxWeeklyHours(id, maxWeeklyHours);
+        return "redirect:/tasks/workload";
+    }
+
+    // Display employee workload visualization
     @GetMapping("/workload")
     public String showWorkload(@RequestParam(required = false) List<Long> employeeIds,
-                              @RequestParam(defaultValue = "week") String period,
-                              Model model,
-                              HttpSession session) {
+                               Model model,
+                               HttpSession session) {
         if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
@@ -154,7 +178,6 @@ public class TaskController {
         // Get all employees for selection dropdown
         List<Employees> allEmployees = employeeRepository.getAllEmployees();
         model.addAttribute("allEmployees", allEmployees);
-        model.addAttribute("selectedPeriod", period);
 
         // Get full workload data from service
         Map<Long, Map<LocalDate, Pair<Double, Double>>> fullWorkload = taskEmployeeService.getEmployeeLoadOverTime();
@@ -181,9 +204,11 @@ public class TaskController {
         Map<Long, Double> avgWorkloadPerEmployee = new HashMap<>();
 
         for (Long employeeId : workload.keySet()) {
-            // Get employee name
-            Employees employee = employeeRepository.getEmployeeById(employeeId);
-            if (employee != null) {
+            // Get employee name using Optional handling
+            Optional<Employees> employeeOptional = employeeRepository.getEmployeeById(employeeId);
+
+            if (employeeOptional.isPresent()) {
+                Employees employee = employeeOptional.get();
                 employeeNames.put(employeeId, employee.getEmFirstName() + " " + employee.getEmLastName());
 
                 // Calculate average percentage for this employee
@@ -208,6 +233,7 @@ public class TaskController {
         return "tasks/workload";
     }
 
+    // Process form submission for new task
     @PostMapping("/create")
     public String createTask(@ModelAttribute @Valid Task task,
                              BindingResult result,
@@ -232,6 +258,7 @@ public class TaskController {
         return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
 
+    // Process form submission for updating task
     @PostMapping("/update/{id}")
     public String updateTask(@PathVariable Long id,
                              @ModelAttribute @Valid Task task,
@@ -252,7 +279,6 @@ public class TaskController {
         task.setProjectId(Long.valueOf(subProject.getProjectId()));
 
         if (result.hasErrors()) {
-            System.out.println(">>> VALIDATION ERRORS");
             model.addAttribute("task", task);
             model.addAttribute("subProject", subProject);
             return "tasks/edit";
