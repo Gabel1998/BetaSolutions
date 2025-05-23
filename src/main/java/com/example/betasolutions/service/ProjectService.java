@@ -132,12 +132,12 @@ public class ProjectService {
         List<TaskEmployee> taskEmployees = taskEmployeeRepository.findByProjectId(projectId);
         double totalEfficiency = taskEmployees.stream()
                 .map(te -> employeeRepository.getEmployeeById(te.getEmployeeId()))
-                .filter(Objects::nonNull)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .mapToDouble(Employees::getEmEfficiency)
                 .sum();
 
         return totalEfficiency > 0 ? totalEstimatedHours / totalEfficiency : totalEstimatedHours;
-
     }
 
 }

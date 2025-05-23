@@ -24,13 +24,15 @@
                 <label for="description">Description</label>
                 <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
-                <!-- Start date for subproject -->
+                <!-- Start Date -->
                 <label for="startDate">Start Date</label>
-                <input type="date" id="startDate" th:field="*{startDate}" required>
+                <input type="date" id="startDate" th:field="*{startDate}" required
+                       th:value="${subProject.startDate != null ? #temporals.format(subProject.startDate, 'yyyy-MM-dd') : ''}" />
 
-                <!-- End date for subproject -->
+                <!-- End Date -->
                 <label for="endDate">End Date</label>
-                <input type="date" id="endDate" th:field="*{endDate}">
+                <input type="date" id="endDate" th:field="*{endDate}"
+                       th:value="${subProject.endDate != null ? #temporals.format(subProject.endDate, 'yyyy-MM-dd') : ''}" />
 
                 <!-- Save button -->
                 <button type="submit" class="button button-yellow-text">Save Changes</button>

@@ -32,7 +32,9 @@ public class Task {
 
     private double prefilledHours;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate; // ny
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;   // ny
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

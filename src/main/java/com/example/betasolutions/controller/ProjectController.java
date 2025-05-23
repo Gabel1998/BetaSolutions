@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Manages project operations including listing, creation, and resource tracking.
+ */
 @Controller
 @RequestMapping("/projects")
 public class ProjectController {
@@ -30,11 +33,12 @@ public class ProjectController {
         this.resourceService = resourceService;
     }
 
-    //check if user is logged in
+    // Verify user authentication
     private boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
 
+    // Display list of all projects with hours and CO2 data
     @GetMapping
     public String listProjects(Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -83,6 +87,7 @@ public class ProjectController {
         return "projects/list";
     }
 
+    // Show form for creating a new project
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -93,6 +98,7 @@ public class ProjectController {
         return "projects/create";
     }
 
+    // Display project summary with actual vs estimated hours
     @GetMapping("/summary")
     public String showProjectSummary(Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -114,6 +120,7 @@ public class ProjectController {
         return "projects/summary";
     }
 
+    // Show form for editing an existing project
     @GetMapping("edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -126,6 +133,7 @@ public class ProjectController {
         return "projects/edit";
     }
 
+    // Delete project and redirect to projects list
     @GetMapping("/delete/{id}")
     public String deleteProject(@PathVariable Integer id, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -133,10 +141,11 @@ public class ProjectController {
         }
 
         projectService.deleteProject(id);
-        session.setAttribute("successMessage", "Projekt er blevet slettet");
+        session.setAttribute("successMessage", "Project deleted successfully");
         return "redirect:/projects";
     }
 
+    // Process form submission for new project
     @PostMapping("/create")
     public String createProject(@ModelAttribute @Valid Project project, BindingResult result, HttpSession session, Model model) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -151,6 +160,7 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
+    // Process form submission for updating project
     @PostMapping("/update/{id}")
     public String updateProject(@PathVariable Integer id, @ModelAttribute Project project, HttpSession session) {
         if (!isLoggedIn(session)) {
@@ -163,6 +173,7 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
+    // Get adjusted estimated hours based on employee efficiency
     @GetMapping("/{id}/projects/list")
     public String getAdjustedEstimatedHours(@PathVariable int id, Model model) {
         double adjustedHours = projectService.adjustEstimatedHoursBasedOnEfficiency(id);

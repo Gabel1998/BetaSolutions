@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
+/**
+ * Manages user authentication, registration and session handling.
+ */
 @Controller
 @RequestMapping("/auth")
 public class LoginController {
@@ -18,27 +23,28 @@ public class LoginController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    // Display login page
+    // Show login screen
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         model.addAttribute("pageTitle", "Login");
         return "login"; // login.html
     }
 
-    // Handle logout
+    // End user session and redirect to login
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/auth/login";
     }
 
+    // Show registration form
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("pageTitle", "Register");
         return "register";
     }
 
-    // Handle registration
+    // Create new user account
     @PostMapping("/register")
     public String registerUser(@RequestParam String username,
                                @RequestParam String password,
@@ -63,14 +69,15 @@ public class LoginController {
         }
     }
 
-    // Handle login
+    // Authenticate user credentials
     @PostMapping("/login")
     public String loginUser(@RequestParam String username,
                             @RequestParam String password,
                             HttpSession session) {
 
-        Employees employee = employeeRepository.findByUsername(username);
-        if (employee != null && employee.getEmPassword().equals(password)) {
+        Optional<Employees> employeeOptional = employeeRepository.findByUsername(username);
+
+        if (employeeOptional.isPresent() && employeeOptional.get().getEmPassword().equals(password)) {
             session.setAttribute("user", username);
             return "redirect:/projects";
         } else {

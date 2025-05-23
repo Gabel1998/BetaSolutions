@@ -40,16 +40,18 @@
                 <textarea id="description" th:field="*{description}" rows="4"></textarea>
             </div>
 
-            <!-- Start Date -->
+
             <div class="form-group">
                 <label for="startDate">Start Date</label>
-                <input type="date" id="startDate" th:field="*{startDate}" />
+                <input type="date" id="startDate" th:field="*{startDate}"
+                       th:value="${task.startDate != null ? #temporals.format(task.startDate, 'yyyy-MM-dd') : ''}" />
             </div>
 
             <!-- End Date -->
             <div class="form-group">
                 <label for="endDate">End Date</label>
-                <input type="date" id="endDate" th:field="*{endDate}" />
+                <input type="date" id="endDate" th:field="*{endDate}"
+                       th:value="${task.endDate != null ? #temporals.format(task.endDate, 'yyyy-MM-dd') : ''}" />
             </div>
 
             <!-- Estimated Hours -->

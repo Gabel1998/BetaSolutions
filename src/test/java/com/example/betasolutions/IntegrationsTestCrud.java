@@ -35,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 // Og at transaktionen bliver rullet tilbage efter testen (så data forbliver ren til næste test)
 @Rollback(true)
-class CrudTest {
+class IntegrationsTestCrud {
 
     @Autowired
     private ProjectRepository projectRepository;

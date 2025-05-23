@@ -1,5 +1,7 @@
 package com.example.betasolutions.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class TaskEmployee {
@@ -9,7 +11,9 @@ public class TaskEmployee {
     private double hoursWorked;
     private double allocatedHours; // = H_allocated
     private double allocationPercentage; // = H_allocated / H_total * 100
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
     public Long getTseId() {

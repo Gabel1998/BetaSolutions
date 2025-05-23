@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Manages subproject operations and gantt chart visualization.
+ */
 @Controller
 @RequestMapping("/subprojects")
 public class SubProjectController {
@@ -29,6 +32,7 @@ public class SubProjectController {
     private final TaskService taskService;
     private final PlantUmlGanttService ganttService;
 
+    // Constructor injection
     public SubProjectController(SubProjectService subProjectService, ProjectService projectService, TaskService taskService, PlantUmlGanttService ganttService) {
         this.subProjectService = subProjectService;
         this.projectService = projectService;
@@ -36,12 +40,12 @@ public class SubProjectController {
         this.ganttService = ganttService;
     }
 
+    // Verify authentication
     private boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
 
-
-    /// STRUKTUR I FØLGE ALEKSANDER(PO): GET, POST, PUT, DELETE
+    // List all subprojects for a project
     @GetMapping
     public String listSubProjects(@RequestParam(value = "projectId", required = false) Integer projectId,
                                   Model model, HttpSession session) {
@@ -67,11 +71,18 @@ public class SubProjectController {
                 .orElseThrow(() -> new RuntimeException("Projekt ikke fundet")));
         model.addAttribute("pageTitle", "Subprojekter for projekt");
         model.addAttribute("subProjectHours", subProjectHours);
+
+        // Handle success message if present in session
+        String successMessage = (String) session.getAttribute("successMessage");
+        if (successMessage != null) {
+            model.addAttribute("successMessage", successMessage);
+            session.removeAttribute("successMessage");
+        }
+
         return "subprojects/list";
     }
 
-
-    // Show create form for subproject
+    // Show form for creating a new subproject
     @GetMapping("/create")
     public String showCreateSubProjectForm(@RequestParam("projectId") Integer projectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -83,13 +94,26 @@ public class SubProjectController {
         return "subprojects/create";
     }
 
+    // Delete a subproject by ID
     @GetMapping("/delete/{id}")
     public String deleteSubProject(@PathVariable Integer id, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
+
+        // Get project ID before deleting the subproject
+        Integer projectId = subProjectService.getSubProjectById(id)
+                .map(SubProject::getProjectId)
+                .orElse(null);
+
         subProjectService.deleteSubProject(id);
-        return "redirect:/subprojects";
+
+        // Add success message to session
+        session.setAttribute("successMessage", "Subproject deleted successfully");
+
+        // Redirect to project's subprojects list if project ID is available, otherwise to projects list
+        return projectId != null ? "redirect:/subprojects?projectId=" + projectId : "redirect:/projects";
     }
 
+    // Show statistics and performance data for a subproject
     @GetMapping("/overview/{subProjectId}")
     public String showSubProjectOverview(@PathVariable int subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -99,6 +123,7 @@ public class SubProjectController {
         return "subprojects/overview";
     }
 
+    // Show form for editing an existing subproject
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -109,6 +134,7 @@ public class SubProjectController {
         return "subprojects/edit";
     }
 
+    // Generate and download Gantt chart visualization
     @GetMapping("/{id}/gantt")
     public void generateGanttDiagram(@PathVariable Integer id, HttpServletResponse response) throws IOException {
         SubProject subProject = subProjectService.getSubProjectById(id)
@@ -124,7 +150,7 @@ public class SubProjectController {
         response.getOutputStream().write(imageBytes); /// write image bytes to output stream
     }
 
-    // Gantt data for frontend [JSON]
+    // Provide JSON data for front-end Gantt chart rendering
     @GetMapping("/api/subprojects/{id}/ganttdata")
     @ResponseBody
     public Map<String, Object> getGanttData(@PathVariable Integer id) {
@@ -153,24 +179,24 @@ public class SubProjectController {
         return response;
     }
 
-
+    // Process form submission for new subproject
     @PostMapping("/create")
     public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         if (result.hasErrors()) return "subprojects/create";
 
         subProjectService.createSubProject(subProject);
-        session.setAttribute("successMessage", "Projekt er blevet oprettet");
+        session.setAttribute("successMessage", "Subproject created successfully");
         return "redirect:/subprojects?projectId=" + subProject.getProjectId();
     }
 
+    // Process form submission for updating subproject
     @PostMapping("/update/{id}")
     public String updateSubProject(@PathVariable Integer id, @ModelAttribute SubProject subProject, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         subProject.setId(id);
         subProjectService.updateSubProject(subProject);
-        return "redirect:/subprojects";
+        session.setAttribute("successMessage", "Subproject updated successfully");
+        return "redirect:/subprojects?projectId=" + subProject.getProjectId();
     }
-
-
 }

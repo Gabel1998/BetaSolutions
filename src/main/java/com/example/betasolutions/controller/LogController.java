@@ -19,7 +19,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+/**
+ * This controller handles the workflow for employees to log hours against tasks,
+ * view logged hours, and manage timesheet entries.
+ */
 @Controller
 @RequestMapping("/logs")
 public class LogController {
@@ -32,9 +37,13 @@ public class LogController {
     private final TaskEmployeeRepository taskEmployeeRepository;
     private final SubProjectService subProjectService;
 
+    // Constructor - dependency injection
     public LogController(TaskEmployeeService taskEmployeeService,
                          EmployeeService employeeService,
-                         ProjectService projectService, TaskService taskService, TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository,
+                         ProjectService projectService,
+                         TaskService taskService,
+                         TaskRepository taskRepository,
+                         TaskEmployeeRepository taskEmployeeRepository,
                          SubProjectService subProjectService) {
         this.taskEmployeeService = taskEmployeeService;
         this.employeeService = employeeService;
@@ -44,12 +53,13 @@ public class LogController {
         this.taskEmployeeRepository = taskEmployeeRepository;
         this.subProjectService = subProjectService;
     }
+
     // Check if user is logged in
     private boolean isLoggedIn(HttpSession session) {
         return session.getAttribute("user") != null;
     }
 
-    // Show employee and project selection
+    // Entry point: select employee and project
     @GetMapping
     public String showLogSelection(Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -59,7 +69,7 @@ public class LogController {
         return "logs/select";
     }
 
-    // Show subprojects after employee and project are selected
+    // Step 2: select subproject for the chosen project
     @GetMapping("/select")
     public String showSubprojectsAndTasks(@RequestParam long employeeId,
                                           @RequestParam int projectId,
@@ -80,7 +90,7 @@ public class LogController {
         return "logs/subproject-selection";
     }
 
-    // Show tasks after subproject is selected
+    // Step 3: show tasks and log hours form
     @GetMapping("/fill")
     public String showTaskLogForm(@RequestParam int subProjectId,
                                   Model model,
@@ -96,38 +106,35 @@ public class LogController {
             task.setPrefilledHours(logged == null ? 0.0 : logged);
         }
         if (tasks.isEmpty()) {
-                return "redirect:/logs/select?employeeId=" + employeeId + "&projectId=" + session.getAttribute("projectId") + "&emptyTasks=true";
-            }
+            return "redirect:/logs/select?employeeId=" + employeeId + "&projectId=" + session.getAttribute("projectId") + "&emptyTasks=true";
+        }
 
         model.addAttribute("tasks", tasks);
         return "logs/list";
     }
 
+    // Dashboard: view logged hours with optional employee filter
     @GetMapping("/dashboard")
     public String showDashboard(@RequestParam(required = false) Long employeeId,
-                               Model model,
-                               HttpSession session) {
+                                Model model,
+                                HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         // Add employees to dropdown
         model.addAttribute("employees", employeeService.getAllEmployees());
 
         if (employeeId != null) {
-            Employees employee = employeeService.getEmployeeById(employeeId);
-            if (employee != null) {
+            Optional<Employees> employeeOptional = employeeService.getEmployeeById(employeeId);
+            employeeOptional.ifPresent(employee -> {
                 // Create a map with the employee data in the format the template expects
                 Map<String, Object> selectedEmployee = new HashMap<>();
                 selectedEmployee.put("id", employee.getEmId());
                 selectedEmployee.put("name", employee.getEmFirstName() + " " + employee.getEmLastName());
                 model.addAttribute("selectedEmployee", selectedEmployee);
-
-                // Get logged hours for the employee
-                List<Map<String, Object>> loggedHours = taskEmployeeService.getLoggedHoursForEmployee(employeeId);
-                model.addAttribute("loggedHours", loggedHours);
-            }
+            });
         }
 
-        // Task overview for all tasks (keep this functionality)
+        // Task overview for all tasks
         List<Task> allTasks = taskService.getAllTasks();
 
         List<Map<String, Object>> taskOverview = new ArrayList<>();
@@ -160,8 +167,7 @@ public class LogController {
         return "logs/dashboard";
     }
 
-
-    // Submit the logged hours
+    // Save logged hours from form submission
     @PostMapping
     public String submitLog(@RequestParam Map<String, String> params, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -180,11 +186,11 @@ public class LogController {
         return "redirect:/logs?success";
     }
 
-    // Delete log entry
+    // Delete a time log entry
     @PostMapping("/delete")
     public String deleteLog(@RequestParam("logId") Long logId,
-                           @RequestParam(required = false) Long employeeId,
-                           HttpSession session) {
+                            @RequestParam(required = false) Long employeeId,
+                            HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         if (logId != null) {

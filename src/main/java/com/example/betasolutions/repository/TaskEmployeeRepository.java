@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Repository
 public class TaskEmployeeRepository {
@@ -35,15 +36,16 @@ public class TaskEmployeeRepository {
 
         return employeeIds.stream()
                 .map(employeeRepository::getEmployeeById)
-                .filter(emp -> emp != null)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .map(emp -> emp.getEmFirstName() + " " + emp.getEmLastName())
                 .collect(Collectors.toList());
     }
 
-    public TaskEmployee findById(Long id) {
+    public Optional<TaskEmployee> findById(Long id) {
         String sql = "SELECT * FROM tb_task_employees WHERE tse_id = ?";
         List<TaskEmployee> results = jdbcTemplate.query(sql, new TaskEmployeeRowMapper(), id);
-        return results.isEmpty() ? null : results.get(0);
+        return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
     }
 
     public void save(TaskEmployee taskEmployee) {

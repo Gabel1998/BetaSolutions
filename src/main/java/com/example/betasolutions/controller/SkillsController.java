@@ -7,36 +7,44 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-    @RestController
-    @RequestMapping("/skills")
-    public class SkillsController {
+/**
+ * API for managing skill definitions.
+ */
+@RestController
+@RequestMapping("/skills")
+public class SkillsController {
 
-        @Autowired
-        private SkillsService skillsService;
+    @Autowired
+    private SkillsService skillsService;
 
-        @PostMapping
-        public void addSkill(@RequestBody Skills skills) {
-            skillsService.addSkill(skills);
-        }
-
-        @GetMapping
-        public List<Skills> getAllSkills() {
-            return skillsService.getAllSkills();
-        }
-
-        @GetMapping("/{id}")
-        public Skills getSkillById(@PathVariable Integer skId) {
-            return skillsService.getSkillById(skId);
-        }
-
-        @PutMapping("/{id}")
-        public void updateSkill(@PathVariable Integer skId, @RequestBody Skills skills) {
-            skills.setId(skId);
-            skillsService.updateSkill(skills);
-        }
-
-        @DeleteMapping("/{id}")
-        public void deleteSkill(@PathVariable Integer skId) {
-            skillsService.deleteSkill(skId);
-        }
+    // Create new skill
+    @PostMapping
+    public void addSkill(@RequestBody Skills skills) {
+        skillsService.addSkill(skills);
     }
+
+    // Get all defined skills
+    @GetMapping
+    public List<Skills> getAllSkills() {
+        return skillsService.getAllSkills();
+    }
+
+    // Get skill by ID
+    @GetMapping("/{id}")
+    public Skills getSkillById(@PathVariable Integer skId) {
+        return skillsService.getSkillById(skId);
+    }
+
+    // Update existing skill
+    @PutMapping("/{id}")
+    public void updateSkill(@PathVariable Integer skId, @RequestBody Skills skills) {
+        skills.setId(skId);
+        skillsService.updateSkill(skills);
+    }
+
+    // Delete a skill
+    @DeleteMapping("/{id}")
+    public void deleteSkill(@PathVariable Integer skId) {
+        skillsService.deleteSkill(skId);
+    }
+}

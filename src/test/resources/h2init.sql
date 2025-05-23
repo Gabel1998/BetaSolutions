@@ -1,6 +1,5 @@
+DROP TABLE IF EXISTS tb_tasks_resources;
 DROP TABLE IF EXISTS tb_task_employees;
-
-
 DROP TABLE IF EXISTS tb_tasks;
 DROP TABLE IF EXISTS tb_subprojects;
 DROP TABLE IF EXISTS tb_projects;
@@ -47,9 +46,19 @@ CREATE TABLE tb_task_employees (
                                    FOREIGN KEY (tse_ts_id) REFERENCES tb_tasks(ts_id) ON DELETE CASCADE
 );
 
+-- Create tasks_resources table that was missing
+CREATE TABLE tb_tasks_resources (
+                               tsre_id BIGINT PRIMARY KEY AUTO_INCREMENT,
+                               tsre_ts_id BIGINT,
+                               tsre_re_id BIGINT,
+                               tsre_hours_used DECIMAL(5,2),
+                               FOREIGN KEY (tsre_ts_id) REFERENCES tb_tasks(ts_id) ON DELETE CASCADE
+);
+
 -- Insert test data
 INSERT INTO tb_projects (p_name, p_description, p_start_date, p_end_date)
 VALUES ('Test Projekt', 'Beskrivelse', '2025-01-01', '2025-06-01');
 
 INSERT INTO tb_subprojects (sp_p_id, sp_name, sp_description, start_date, end_date)
 VALUES (1, 'Subprojekt A', 'Test sub', '2025-01-10', '2025-02-10');
+

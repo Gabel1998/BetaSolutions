@@ -39,16 +39,6 @@ public class TaskEmployeeService {
      */
     public Map<Long, Map<LocalDate, Pair<Double, Double>>> getEmployeeLoadOverTime() {
         List<TaskEmployee> assignments = taskEmployeeRepository.findAll();
-        System.out.println("🔍 Found " + assignments.size() + " task-employee rows:");
-        for (TaskEmployee a : assignments) {
-            System.out.println("   ▶ " + a.getTseId()
-                    + " emp=" + a.getEmployeeId()
-                    + " hrs=" + a.getHoursWorked()
-                    + " start=" + a.getStartDate()
-                    + " end=" + a.getEndDate());
-        }
-
-//        List<TaskEmployee> assignments = taskEmployeeRepository.findAll();
         Map<Long, Map<LocalDate, Double>> dailyHoursMap = new HashMap<>();
 
         // Step 1: Calculate hours per day for each employee
@@ -80,13 +70,18 @@ public class TaskEmployeeService {
 
         for (Map.Entry<Long, Map<LocalDate, Double>> entry : dailyHoursMap.entrySet()) {
             long employeeId = entry.getKey();
-            Employees emp = employeeRepository.getEmployeeById(employeeId);
-            if (emp == null) {
-                System.out.println("⚠️ Skipping employee ID " + employeeId + " because it doesn't exist in db_employees.");
+            Optional<Employees> empOptional = employeeRepository.getEmployeeById(employeeId);
+
+            if (empOptional.isEmpty()) {
                 continue;
             }
 
-            double maxPerDay = 8.0; // Standard workday hours
+            Employees emp = empOptional.get();
+
+            // Assuming a standard 5-day work week to convert from weekly to daily
+            double maxWeeklyHours = emp.getMaxWeeklyHours();
+            double maxPerDay = maxWeeklyHours / 5.0; // Convert weekly hours to daily hours
+
             Map<LocalDate, Pair<Double, Double>> dailyWithPercent = new TreeMap<>();
 
             for (Map.Entry<LocalDate, Double> daily : entry.getValue().entrySet()) {
