@@ -73,7 +73,7 @@ public class ProjectController {
             adjustedHours.put(project.getId(), adjusted);
         }
 
-        model.addAttribute("pageTitle", "Alle projekter");
+        model.addAttribute("pageTitle", "All Projects");
         model.addAttribute("projects", projects);
         model.addAttribute("projectHours", projectHours);
         model.addAttribute("projectCo2", projectCo2);
@@ -93,7 +93,7 @@ public class ProjectController {
         if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
-        model.addAttribute("pageTitle", "Opret projekt");
+        model.addAttribute("pageTitle", "Create Project");
         model.addAttribute("project", new Project());
         return "projects/create";
     }
@@ -131,7 +131,7 @@ public class ProjectController {
         if (!isLoggedIn(session)) {
             return "redirect:/auth/login";
         }
-        model.addAttribute("pageTitle", "Rediger projekt");
+        model.addAttribute("pageTitle", "Edit Project");
         Project project = projectService.getProjectById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
         model.addAttribute("project", project);
@@ -178,12 +178,4 @@ public class ProjectController {
         return "redirect:/projects";
     }
 
-    // Get adjusted estimated hours based on employee efficiency
-    @GetMapping("/{id}/projects/list")
-    public String getAdjustedEstimatedHours(@PathVariable int id, Model model) {
-        double adjustedHours = projectService.adjustEstimatedHoursBasedOnEfficiency(id);
-        model.addAttribute("adjustedHours", adjustedHours);
-        return "projects/list";
-
-    }
 }

@@ -12,7 +12,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    // konstruktør
+    // constructor
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
