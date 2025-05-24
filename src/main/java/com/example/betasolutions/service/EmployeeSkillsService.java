@@ -11,7 +11,7 @@ public class EmployeeSkillsService {
 
     private final EmployeeSkillsRepository employeeSkillsRepository;
 
-    // Kontruktør
+    // CONSTRUCTOR
     public EmployeeSkillsService(EmployeeSkillsRepository employeeSkillsRepository) {
         this.employeeSkillsRepository = employeeSkillsRepository;
     }
@@ -26,7 +26,7 @@ public class EmployeeSkillsService {
         return employeeSkillsRepository.getAllEmployeeSkills();
     }
 
-    // DELETE (En bestemt skill fraa employee)
+    // DELETE (skill from employee)
     public void deleteEmployeeSkill(int emskEmId, int emskSkId) {
         employeeSkillsRepository.deleteEmployeeSkill(emskEmId, emskSkId);
     }

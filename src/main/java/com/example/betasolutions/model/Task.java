@@ -13,8 +13,8 @@ public class Task {
     private Long id; //Primary Key
 
     @NotNull(message = "Project ID is required")
-    private Long projectId; //foreign key til projects
-    private Integer subProjectId; //foreign key til subProjects
+    private Long projectId; //foreign key for projects
+    private Integer subProjectId; //foreign key for subProjects
 
     @NotBlank(message = "Task name cannot be empty")
     @Size(max = 100, message = "Task name must be under 100 characters")
@@ -33,15 +33,17 @@ public class Task {
     private double prefilledHours;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate; // ny
+    private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;   // ny
+    private LocalDate endDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createdAt;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
+
+    // ─────────── Getters and Setters ───────────
 
     public LocalDate getStartDate() {
         return startDate;
@@ -129,13 +131,6 @@ public class Task {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
-    }
-
-    public int getPercentComplete() {
-        if (estimatedHours == 0) {
-            return 0; // Avoid division by zero
-        }
-        return (int) ((actualHours / estimatedHours) * 100);
     }
 
     public double getPrefilledHours() {

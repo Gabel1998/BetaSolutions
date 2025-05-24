@@ -13,7 +13,7 @@
         <div class="card">
             <form th:action="@{'/subprojects/update/' + ${subProject.id}}" th:object="${subProject}" method="post" class="form-container">
 
-                <!-- Hidden field: ID of the parent project -->
+                <!-- ID of the parent project -->
                 <input type="hidden" th:field="*{projectId}"/>
 
                 <!-- Subproject name -->
@@ -34,7 +34,7 @@
                 <input type="date" id="endDate" th:field="*{endDate}"
                        th:value="${subProject.endDate != null ? #temporals.format(subProject.endDate, 'yyyy-MM-dd') : ''}" />
 
-                <!-- Save button -->
+
                 <button type="submit" class="button button-yellow-text">Save Changes</button>
             </form>
         </div>

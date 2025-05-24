@@ -5,45 +5,45 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
-  <main class="content">
-    <section class="card">
-      <h1>Log Your Hours</h1>
+<main class="content">
+  <section class="card">
+    <h1>Log Your Hours</h1>
 
-      <!-- User-friendly warning, if not found-->
-      <div th:if="${param.emptySubprojects}" class="alert-warning">
-        ⚠ This project has no subprojects. Please select another.
+    <!-- User-friendly warning, if not found-->
+    <div th:if="${param.emptySubprojects}" class="alert-warning">
+      ⚠ This project has no subprojects. Please select another.
+    </div>
+    <div th:if="${param.emptyTasks}" class="alert-warning">
+      ⚠ The selected subproject has no tasks. Please choose another.
+    </div>
+
+
+    <form th:action="@{/logs}" method="post" class="form-container">
+      <div th:if="${#lists.isEmpty(tasks)}">
+        <p class="alert-warning">⚠ This subproject has no tasks to log hours for.</p>
       </div>
-      <div th:if="${param.emptyTasks}" class="alert-warning">
-        ⚠ The selected subproject has no tasks. Please choose another.
+
+      <div th:each="task : ${tasks}" class="form-group" th:if="${!#lists.isEmpty(tasks)}">
+        <label th:for="${'hours_' + task.id}" th:text="${task.name}"></label>
+        <label>
+          <input type="number" step="0.25" min="0"
+                 th:name="${'hours_' + task.id}"
+                 th:id="${'hours_' + task.id}"
+                 placeholder="Enter hours" />
+        </label>
+        <div class="logged-info"
+             th:if="${task.prefilledHours != null and task.prefilledHours > 0}"
+             th:text="'Logged hours: ' + ${task.prefilledHours}">
+        </div>
       </div>
 
+      <div class="two-buttons">
+        <button type="submit" class="button button--create" th:if="${!#lists.isEmpty(tasks)}">Submit Hours</button>
+      </div>
+    </form>
 
-      <form th:action="@{/logs}" method="post" class="form-container">
-        <div th:if="${#lists.isEmpty(tasks)}">
-          <p class="alert-warning">⚠ This subproject has no tasks to log hours for.</p>
-        </div>
-
-        <div th:each="task : ${tasks}" class="form-group" th:if="${!#lists.isEmpty(tasks)}">
-          <label th:for="${'hours_' + task.id}" th:text="${task.name}"></label>
-          <label>
-            <input type="number" step="0.25" min="0"
-                   th:name="${'hours_' + task.id}"
-                   th:id="${'hours_' + task.id}"
-                   placeholder="Enter hours" />
-          </label>
-          <div class="logged-info"
-               th:if="${task.prefilledHours != null and task.prefilledHours > 0}"
-               th:text="'Logged hours: ' + ${task.prefilledHours}">
-          </div>
-        </div>
-
-        <div class="two-buttons">
-          <button type="submit" class="button button--create" th:if="${!#lists.isEmpty(tasks)}">Submit Hours</button>
-        </div>
-      </form>
-
-    </section>
-  </main>
+  </section>
+</main>
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

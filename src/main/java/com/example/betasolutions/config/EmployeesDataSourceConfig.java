@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+
+/**
+ * Configuration for Employees db connection.
+ * This class sets up the data source for employee-related operations.
+ */
 @Profile("!test")
 @Configuration
 public class EmployeesDataSourceConfig {

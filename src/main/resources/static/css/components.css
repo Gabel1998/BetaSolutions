@@ -130,7 +130,7 @@ section h2 {
 }
 
 /* ════════════════════════════════════════ */
-/*           SUBPROJECT CARD               */
+/*            SUBPROJECT CARD               */
 /* ════════════════════════════════════════ */
 .item-card {
     background: var(--card-bg);
@@ -152,8 +152,9 @@ section h2 {
     text-decoration: none;
     flex: 1;
 }
+
 /* ════════════════════════════════════════ */
-/*           DOWNLOAD BUTTON               */
+/*            DOWNLOAD BUTTON               */
 /* ════════════════════════════════════════ */
 .download-btn {
     margin-top: var(--spacing-md);
@@ -173,8 +174,9 @@ section h2 {
     border-color: var(--pink);
     color: var(--white);
 }
+
 /* ════════════════════════════════════════ */
-/*           LOGIN-CARD STYLES             */
+/*            LOGIN-CARD STYLES             */
 /* ════════════════════════════════════════ */
 .login-container {
     max-width: 700px;
@@ -238,7 +240,7 @@ section h2 {
 }
 
 /* ════════════════════════════════════════ */
-/*            EDIT-TASK FORM FIXUP         */
+/*             EDIT-TASK FORM FIXUP         */
 /* ════════════════════════════════════════ */
 .form-container {
     display: flex;
@@ -285,6 +287,7 @@ input[type="password"]:focus {
     box-shadow: 0 0 5px rgba(255, 50, 90, 0.2);
     outline: none;
 }
+
 /* ════════════════════════════════════════ */
 /*                 EMPLOYEE LOGS            */
 /* ════════════════════════════════════════ */
@@ -310,6 +313,7 @@ input[type="password"]:focus {
     margin-left: 0.2rem;
     opacity: 0.75;
 }
+
 /* ════════════════════════════════════════ */
 /*                ERROR PAGE                */
 /* ════════════════════════════════════════ */

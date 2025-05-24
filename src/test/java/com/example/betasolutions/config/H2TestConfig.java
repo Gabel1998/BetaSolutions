@@ -11,6 +11,11 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
+/**
+ * Test configuration that sets up H2 in-memory databases for testing.
+ * This configuration replaces the real db connections during tests.
+ * Only active when the "test" profile is active.
+ */
 @TestConfiguration
 @Profile("test")
 public class H2TestConfig {

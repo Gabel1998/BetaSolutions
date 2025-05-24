@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS db_projects;
 CREATE DATABASE db_projects;
 USE db_projects;
 
--- Projekter
+-- Projects
 CREATE TABLE tb_projects (
     p_id INT PRIMARY KEY AUTO_INCREMENT,
     p_name VARCHAR(100) NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE tb_projects (
     p_updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) AUTO_INCREMENT=1000;
 
--- Delprojekter
+-- Subprojects
 CREATE TABLE tb_subprojects (
     sp_id INT PRIMARY KEY AUTO_INCREMENT,
     sp_p_id INT,
@@ -54,7 +54,7 @@ CREATE TABLE tb_task_employees (
     FOREIGN KEY (tse_ts_id) REFERENCES tb_tasks(ts_id)
 ) AUTO_INCREMENT=500000;
 
--- Ressourcer til opgaver JOIN tabel
+-- Ressourcer for tasks
 CREATE TABLE tb_tasks_resources (
     tsre_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     tsre_ts_id BIGINT,
@@ -63,7 +63,7 @@ CREATE TABLE tb_tasks_resources (
     FOREIGN KEY (tsre_ts_id) REFERENCES tb_tasks(ts_id)
 ) AUTO_INCREMENT=600000;
 
--- Ressourcer tabel
+-- Ressources table
 CREATE TABLE tb_resources (
     re_id BIGINT PRIMARY KEY AUTO_INCREMENT,
     re_name VARCHAR(55) NOT NULL,

@@ -4,20 +4,20 @@
     <title>Alpha Solutions</title>
 </head>
 <body>
-<!-- Header -->
+
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="container">
-    <!-- Banner -->
+
     <section class="banner">
         <h1>Alpha Solutions</h1>
         <p class="motto">Without people, technology solves nothing.</p>
-    <section th:if="${session.user != null}">
-        <div class="banner-buttons">
-            <a href="/projects" class="button">Go to Projects</a>
-            <a href="/projects/create" class="button button--create">Create Project</a>
-        </div>
-    </section>
+        <section th:if="${session.user != null}">
+            <div class="banner-buttons">
+                <a href="/projects" class="button">Go to Projects</a>
+                <a href="/projects/create" class="button button--create">Create Project</a>
+            </div>
+        </section>
     </section>
 
 
@@ -48,7 +48,7 @@
     </section>
 </main>
 
-<!-- Footer -->
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

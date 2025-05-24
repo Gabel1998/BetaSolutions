@@ -3,7 +3,7 @@ DROP DATABASE IF EXISTS db_employees;
 CREATE DATABASE db_employees;
 USE db_employees;
 
--- Medarbejdere
+-- Employees
 CREATE TABLE tb_employees (
                               em_id BIGINT PRIMARY KEY AUTO_INCREMENT,
                               em_first_name VARCHAR(100) NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE tb_skills (
                            sk_name VARCHAR(100) NOT NULL
 ) AUTO_INCREMENT=8000;
 
--- Kompetencer
+-- Employee Skills
 CREATE TABLE tb_employee_skills (
                                     emsk_em_id BIGINT,
                                     emsk_sk_id BIGINT,

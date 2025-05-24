@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// Service-lag for SubProject – håndterer logik mellem controller og repository
+// Service layer for SubProject – handles logic between the controller and the repository
 @Service
 public class SubProjectService {
 
@@ -20,36 +20,24 @@ public class SubProjectService {
     private final TaskRepository taskRepository;
     private final TaskService taskService;
 
+    // Constructor
     public SubProjectService(SubProjectRepository subProjectRepository, TaskRepository taskRepository, TaskService taskService) {
         this.subProjectRepository = subProjectRepository;
         this.taskRepository = taskRepository;
         this.taskService = taskService;
     }
 
+    // CREATE
     public void createSubProject(SubProject subProject) {
         subProjectRepository.save(subProject);
     }
 
-    public List<SubProject> getAllSubProjects() {
-        return subProjectRepository.findAll();
-    }
-
+    // READ BY ID
     public Optional<SubProject> getSubProjectById(Integer id) {
         return subProjectRepository.findById(id);
     }
 
-    public void updateSubProject(SubProject subProject) {
-        subProjectRepository.update(subProject);
-    }
-
-    public void deleteSubProject(Integer id) {
-        subProjectRepository.delete(id);
-    }
-
-    public Optional<SubProject> findSubProjectById(int subProjectId) {
-        return subProjectRepository.findById(subProjectId);
-    }
-
+    // Calculate overview for a specific sub-project
     public Map<String, Object> calculateSubProjectOverview(int subProjectId) {
         List<Task> tasks = taskRepository.findBySubProjectId(subProjectId);
 
@@ -79,11 +67,12 @@ public class SubProjectService {
         return result;
     }
 
+    // READ ALL sub-projects by project ID
     public List<SubProject> getAllSubProjectsByProjectId(Integer projectId) {
         return subProjectRepository.findAllByProjectId(projectId);
     }
 
-    /// Beregn timer for tasks i subprojekter
+    // Calculate total estimated and actual hours for tasks in multiple sub-projects
     public Map<Integer, Map<String, Double>> calculateTaskHoursBySubProjectIds(List<Integer> subProjectIds) {
         Map<Integer, Map<String, Double>> result = new HashMap<>();
 
@@ -104,5 +93,15 @@ public class SubProjectService {
             result.put(subProjectId, hours);
         }
         return result;
+    }
+
+    // UPDATE
+    public void updateSubProject(SubProject subProject) {
+        subProjectRepository.update(subProject);
+    }
+
+    // DELETE
+    public void deleteSubProject(Integer id) {
+        subProjectRepository.delete(id);
     }
 }

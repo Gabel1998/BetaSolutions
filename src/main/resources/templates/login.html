@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/header :: head}">
     <title>Login</title>
 </head>
@@ -36,7 +36,7 @@
                     placeholder="Enter Password"
                     minlength="8"
                     pattern="^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$"
-                    title="Mindst 8 tegn, både bogstaver & tal"
+                    title="Minimum 8 characters, at least one letter and one number"
             />
 
             <button type="submit" class="button">LOGIN</button>

@@ -5,26 +5,23 @@
 </head>
 <body>
 
-<!-- Fælles header -->
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
     <h2>Edit Project</h2>
 
-    <!-- Form: sender ændringer til /projects/update/{id} -->
+    <!-- Form: sends updates to /projects/update/{id} -->
     <form th:action="@{'/projects/update/' + ${project.id}}" th:object="${project}" method="post" class="form-container card">
 
-        <!-- Fejlmeddelelser vises her -->
+        <!-- Error -->
         <div th:if="${#fields.hasErrors()}" class="status-warning">
             Please fix the highlighted errors.
         </div>
 
-        <!-- Projektnavn: kort tekst -->
         <label for="name">Project Name</label>
         <input type="text" id="name" th:field="*{name}" required>
         <div class="status-warning" th:errors="*{name}"></div>
 
-        <!-- Projektbeskrivelse: længere fritekst -->
         <label for="description">Description</label>
         <textarea id="description" th:field="*{description}" rows="4"></textarea>
         <div class="status-warning" th:errors="*{description}"></div>
@@ -39,13 +36,11 @@
         <input type="date" id="endDate" th:field="*{endDate}"
                th:value="${project.endDate != null ? #temporals.format(project.endDate, 'yyyy-MM-dd') : ''}" />
 
-        <!-- Submit-knap -->
         <button type="submit" class="button button-yellow-text">Save Changes</button>
     </form>
 </main>
 
 
-<!-- Fælles footer -->
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
