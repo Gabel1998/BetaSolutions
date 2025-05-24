@@ -39,7 +39,7 @@
 
                 <!-- Visible if logged in -->
                 <div th:if="${session.user != null}" class="user-info flex">
-                    <span th:text="${session.user}">Username</span>
+                    <a th:href="@{/users/settings}" class="yellow-text" th:text="${session.user}">Username</a>
                     <a th:href="@{/auth/logout}" class="button">Logout</a>
                 </div>
             </div>

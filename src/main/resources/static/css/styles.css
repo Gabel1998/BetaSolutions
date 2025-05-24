@@ -21,3 +21,22 @@ html, body {
 .content {
     flex: 1;
 }
+
+/* ════════════════════════════════════════ */
+/*                USER CONTROLS             */
+/* ════════════════════════════════════════ */
+.username-link {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.username-link:hover {
+    background-color: rgba(0, 102, 204, 0.1);
+    text-decoration: underline;
+}
+
