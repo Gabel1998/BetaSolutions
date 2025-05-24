@@ -23,17 +23,17 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// Starter hele Spring Boot-applikationen i test-kontekst
+// Starts the entire Spring Boot application in test context
 @SpringBootTest
 @ActiveProfiles("test")
 @Import(H2TestConfig.class)
-// Kører SQL-scriptet som ligger i src/test/resources før hver testmetode
+// Runs the SQL script located in src/test/resources before each test method
 @Sql(scripts = "classpath:h2init.sql")
-// Sørger for at konteksten nulstilles efter hver test (sletter alt i H2)
+// Ensures the context is reset after each test (deletes everything in H2)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-// Sørger for at alle testmetoder kører i en transaktion
+// Ensures all test methods run in a transaction
 @Transactional
-// Og at transaktionen bliver rullet tilbage efter testen (så data forbliver ren til næste test)
+// And that the transaction is rolled back after the test (so data remains clean for the next test)
 @Rollback(true)
 class IntegrationsTestCrud {
 
@@ -67,12 +67,18 @@ class IntegrationsTestCrud {
                 .findFirst()
                 .orElseThrow();
         assertThat(foundProject).isNotNull();
+        assertThat(foundProject.getId()).isPositive(); // Verify ID was generated
+        assertThat(foundProject.getDescription()).isEqualTo("Integration test project"); // Verify description
+        assertThat(foundProject.getStartDate()).isEqualTo(LocalDate.now()); // Verify start date
+        assertThat(foundProject.getEndDate()).isEqualTo(LocalDate.now().plusMonths(1)); // Verify end date
 
         // Update
         foundProject.setName("Updated Project");
+        foundProject.setDescription("Updated description");
         projectRepository.update(foundProject);
         Project updatedProject = projectRepository.findById(foundProject.getId()).orElseThrow();
         assertThat(updatedProject.getName()).isEqualTo("Updated Project");
+        assertThat(updatedProject.getDescription()).isEqualTo("Updated description"); // Verify multiple fields
 
         // Delete
         projectRepository.delete(foundProject.getId());
@@ -104,12 +110,22 @@ class IntegrationsTestCrud {
                 .findFirst()
                 .orElseThrow();
         assertThat(foundSubProject).isNotNull();
+        assertThat(foundSubProject.getId()).isPositive(); // Verify ID was generated
+        assertThat(foundSubProject.getProjectId()).isEqualTo(projectId); // Verify relationship
+        assertThat(foundSubProject.getDescription()).isEqualTo("Integration test subproject");
+        assertThat(foundSubProject.getStartDate()).isEqualTo(LocalDate.now());
+        assertThat(foundSubProject.getEndDate()).isEqualTo(LocalDate.now().plusMonths(1));
 
         // Update
         foundSubProject.setName("Updated SubProject");
+        foundSubProject.setDescription("Updated subproject description");
         subProjectRepository.update(foundSubProject);
         SubProject updatedSubProject = subProjectRepository.findById(foundSubProject.getId()).orElseThrow();
         assertThat(updatedSubProject.getName()).isEqualTo("Updated SubProject");
+        assertThat(updatedSubProject.getDescription()).isEqualTo("Updated subproject description");
+
+        // Verify relationship integrity is maintained
+        assertThat(updatedSubProject.getProjectId()).isEqualTo(projectId);
 
         // Delete
         subProjectRepository.delete(foundSubProject.getId());
@@ -143,16 +159,30 @@ class IntegrationsTestCrud {
                 .findFirst()
                 .orElseThrow();
         assertThat(foundTask).isNotNull();
+        assertThat(foundTask.getId()).isPositive();
+        assertThat(foundTask.getSubProjectId()).isEqualTo(subProjectId);
+        assertThat(foundTask.getDescription()).isEqualTo("Integration test task");
 
-        // ✅ Assert start og slutdato
+        // Verify task-specific properties
+        assertThat(foundTask.getEstimatedHours()).isEqualTo(50.0);
+        assertThat(foundTask.getActualHours()).isEqualTo(45.0);
+
+        // Assert start and end date
         assertThat(foundTask.getStartDate()).isEqualTo(LocalDate.of(2024, 1, 1));
         assertThat(foundTask.getEndDate()).isEqualTo(LocalDate.of(2024, 1, 31));
 
         // Update
         foundTask.setName("Updated Task");
+        foundTask.setEstimatedHours(60.0);
+        foundTask.setDescription("Updated task description");
         taskRepository.update(foundTask);
         Task updatedTask = taskRepository.findById(foundTask.getId()).orElseThrow();
         assertThat(updatedTask.getName()).isEqualTo("Updated Task");
+        assertThat(updatedTask.getDescription()).isEqualTo("Updated task description");
+        assertThat(updatedTask.getEstimatedHours()).isEqualTo(60.0); // Verify updated hours
+
+        // Verify relationship integrity is maintained
+        assertThat(updatedTask.getSubProjectId()).isEqualTo(subProjectId);
 
         // Delete
         taskRepository.delete(foundTask.getId());
