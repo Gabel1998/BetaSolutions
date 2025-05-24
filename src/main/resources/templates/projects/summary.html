@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="da">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head th:replace="~{fragments/header :: head}">
     <title>Project Summary</title>
 </head>
@@ -7,14 +7,14 @@
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
-    <h1>Summeret tidsforbrug per projekt</h1>
+    <h1>Project Time Summary</h1>
 
     <section class="project-list">
-        <div class="project-card" th:each="project : ${projects}">
-            <h2 th:text="${project.name}">Projekt Navn</h2>
-            <p th:text="'Total est. timer: ' + ${projectEstimatedMap[project.id]} + ' timer'">0 timer</p>
-            <p th:text="'Total timer brugt: ' + ${projectHoursMap[project.id]} + ' timer'">0 timer</p>
-        </div>
+        <a class="project-card" th:each="project : ${projects}" th:href="@{'/subprojects?projectId=' + ${project.id}}">
+            <h2 th:text="${project.name}">Project Name</h2>
+            <p th:text="'Total est. hours: ' + ${projectEstimatedMap[project.id]} + ' hours'">0 hours</p>
+            <p th:text="'Total hours used: ' + ${projectHoursMap[project.id]} + ' hours'">0 hours</p>
+        </a>
     </section>
 </main>
 
