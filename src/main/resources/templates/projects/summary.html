@@ -12,8 +12,9 @@
     <section class="project-list">
         <a class="project-card" th:each="project : ${projects}" th:href="@{'/subprojects?projectId=' + ${project.id}}">
             <h2 th:text="${project.name}">Project Name</h2>
-            <p th:text="'Total est. hours: ' + ${projectEstimatedMap[project.id]} + ' hours'">0 hours</p>
-            <p th:text="'Total hours used: ' + ${projectHoursMap[project.id]} + ' hours'">0 hours</p>
+            <p th:text="'Total estimated hours: ' + ${#numbers.formatDecimal(projectEstimatedMap[project.id], 1, 2)} + ' hours'">0.00 hours</p>
+            <p th:text="'Total hours used: ' + ${#numbers.formatDecimal(projectHoursMap[project.id], 1, 2)} + ' hours'">0.00 hours</p>
+            <p th:text="'Total adjusted hours: ' + ${#numbers.formatDecimal(adjustedHours[project.id], 1, 2)} + ' hours'">0.00 hours</p>
         </a>
     </section>
 </main>
