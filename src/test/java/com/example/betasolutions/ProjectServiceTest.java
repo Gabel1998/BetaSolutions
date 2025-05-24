@@ -53,6 +53,7 @@ public class ProjectServiceTest {
 
         // Assert
         assertEquals(20.0, result); // 100 hours / 5 days
+        verify(projectRepository).findById(1L);
     }
 
     @Test
@@ -67,6 +68,38 @@ public class ProjectServiceTest {
         double result = projectService.calculateDailyRate(2L);
 
         assertEquals(0.0, result);
+        verify(projectRepository).findById(2L);
+    }
+
+    @Test
+    void testCalculateDailyRateWithProjectNotFound() {
+        // Arrange
+        when(projectRepository.findById(999L)).thenReturn(Optional.empty());
+
+        // Act
+        double result = projectService.calculateDailyRate(999L);
+
+        // Assert
+        assertEquals(0.0, result);
+        verify(projectRepository).findById(999L);
+    }
+
+    @Test
+    void testCountWorkdays() {
+        // Test with a full work week (Monday to Friday)
+        LocalDate start = LocalDate.of(2025, 5, 5); // Monday
+        LocalDate end = LocalDate.of(2025, 5, 9);   // Friday
+        long workdays = projectService.countWorkdays(start, end);
+        assertEquals(5, workdays);
+
+        // Test with a period that includes weekend days
+        start = LocalDate.of(2025, 5, 5);  // Monday
+        end = LocalDate.of(2025, 5, 12);   // Next Monday (includes weekend)
+        workdays = projectService.countWorkdays(start, end);
+        assertEquals(6, workdays); // 5 days from first week + Monday from second week
+
+        // Test with just one day
+        workdays = projectService.countWorkdays(start, start);
+        assertEquals(1, workdays);
     }
 }
-
