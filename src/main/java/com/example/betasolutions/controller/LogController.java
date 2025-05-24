@@ -113,7 +113,7 @@ public class LogController {
         return "logs/list";
     }
 
-    // Dashboard: view logged hours with optional employee filter
+    // Dashboard -> view logged hours with optional employee filter
     @GetMapping("/dashboard")
     public String showDashboard(@RequestParam(required = false) Long employeeId,
                                 Model model,
