@@ -14,8 +14,23 @@
         <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
         <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
 
+        <!-- Employee selection dropdown -->
+        <div class="employee-selector">
+            <form th:action="@{/users/settings}" method="get" class="form-inline">
+                <label for="employeeId">Select employee to edit:</label>
+                <select id="employeeId" name="employeeId" class="form-control" onchange="this.form.submit()">
+                    <option value="">Choose an employee...</option>
+                    <option th:each="emp : ${allEmployees}"
+                            th:value="${emp.emId}"
+                            th:text="${emp.emFirstName + ' ' + emp.emLastName + ' (' + emp.emUsername + ')'}"
+                            th:selected="${emp.emId == employee.emId}">
+                    </option>
+                </select>
+            </form>
+        </div>
+
         <form th:action="@{/users/update}" method="post">
-            <input type="hidden" id="userId" name="userId" th:value="${employee.emId}">
+            <input type="hidden" id="selectedEmployeeId" name="employeeId" th:value="${employee.emId}">
 
             <label for="firstName">First Name</label>
             <input type="text" id="firstName" name="firstName" th:value="${employee.emFirstName}" required>
@@ -32,34 +47,38 @@
 
             <fieldset class="efficiency-selection">
                 <legend>Employee Efficiency Level</legend>
-                <p class="form-help">Choose efficiency level.<br> Affects project time estimates.</p>
+                <p class="form-help">Select the efficiency level that best describes this employee. This affects project time calculations.</p>
 
                 <div class="radio-group">
                     <div class="radio-option">
-                        <input type="radio" id="efficiency-trainee" name="emEfficiency" value="0.7" />
-                        <label for="efficiency-trainee">Trainee (0.7) - 70% efficiency</label>
+                        <input type="radio" id="efficiency-trainee" name="emEfficiency" value="0.7" th:checked="${employee.emEfficiency == 0.7}" />
+                        <label for="efficiency-trainee">Trainee (0.7)</label>
+                        <p class="option-description">New team member still learning systems and processes. Tasks typically take longer than standard estimates. Projects with trainees will show increased adjusted hours.</p>
                     </div>
 
                     <div class="radio-option">
-                        <input type="radio" id="efficiency-standard" name="emEfficiency" value="1.0" checked />
-                        <label for="efficiency-standard">Standard (1.0) - 100% efficiency</label>
+                        <input type="radio" id="efficiency-standard" name="emEfficiency" value="1.0" th:checked="${employee.emEfficiency == 1.0}" />
+                        <label for="efficiency-standard">Standard (1.0)</label>
+                        <p class="option-description">Average productivity level. Completes tasks at the expected pace. Estimated hours match adjusted hours with standard employees.</p>
                     </div>
 
                     <div class="radio-option">
-                        <input type="radio" id="efficiency-experienced" name="emEfficiency" value="1.3" />
-                        <label for="efficiency-experienced">Experienced (1.3) - 130% efficiency</label>
+                        <input type="radio" id="efficiency-experienced" name="emEfficiency" value="1.3" th:checked="${employee.emEfficiency == 1.3}" />
+                        <label for="efficiency-experienced">Experienced (1.3)</label>
+                        <p class="option-description">Skilled employee who works faster than average. Tasks often completed ahead of schedule. Projects with experienced employees will show reduced adjusted hours.</p>
                     </div>
 
                     <div class="radio-option">
-                        <input type="radio" id="efficiency-expert" name="emEfficiency" value="1.5" />
-                        <label for="efficiency-expert">Expert (1.5) - 150% efficiency</label>
+                        <input type="radio" id="efficiency-expert" name="emEfficiency" value="1.5" th:checked="${employee.emEfficiency == 1.5}" />
+                        <label for="efficiency-expert">Expert (1.5)</label>
+                        <p class="option-description">Highly proficient employee who works significantly faster. Can complete tasks in much less time than standard estimates. Projects with experts will show substantially reduced adjusted hours.</p>
                     </div>
                 </div>
             </fieldset>
 
             <label for="maxWeeklyHours">Max Weekly Hours</label>
             <input type="number" id="maxWeeklyHours" name="maxWeeklyHours" min="1" max="168" step="0.5" th:value="${employee.maxWeeklyHours}" required>
-            <p class="form-help">Maximum number of hours you can work per week (standard full-time is 40.0).</p>
+            <p class="form-help">Maximum number of hours this employee can work per week (standard full-time is 40.0).</p>
 
             <button type="submit" class="button button--create">Save Changes</button>
         </form>
