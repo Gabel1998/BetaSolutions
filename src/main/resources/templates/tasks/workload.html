@@ -46,31 +46,31 @@
                 <h3>Daily Workload</h3>
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Hours</th>
-                            <th>Workload</th>
-                        </tr>
+                    <tr>
+                        <th>Date</th>
+                        <th>Hours</th>
+                        <th>Workload</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="dayEntry : ${empEntry.value}">
-                            <td th:text="${dayEntry.key.format(T(java.time.format.DateTimeFormatter).ofPattern('MM/dd/yyyy'))}"></td>
-                            <td th:text="${#numbers.formatDecimal(dayEntry.value.first, 1, 1)}"></td>
-                            <td>
-                                <div class="percentage-container">
-                                    <div class="percentage-bar">
-                                        <div class="percentage-fill"
-                                             th:style="'width:' + ${dayEntry.value.second > 100 ? 100 : dayEntry.value.second} + '%; background-color:' + ${dayEntry.value.second > 100 ? 'var(--pink)' : 'var(--yellow)'}">
-                                        </div>
+                    <tr th:each="dayEntry : ${empEntry.value}">
+                        <td th:text="${dayEntry.key.format(T(java.time.format.DateTimeFormatter).ofPattern('MM/dd/yyyy'))}"></td>
+                        <td th:text="${#numbers.formatDecimal(dayEntry.value.first, 1, 1)}"></td>
+                        <td>
+                            <div class="percentage-container">
+                                <div class="percentage-bar">
+                                    <div class="percentage-fill"
+                                         th:style="'width:' + ${dayEntry.value.second > 100 ? 100 : dayEntry.value.second} + '%; background-color:' + ${dayEntry.value.second > 100 ? 'var(--pink)' : 'var(--yellow)'}">
                                     </div>
-                                    <span th:text="${#numbers.formatDecimal(dayEntry.value.second, 1, 1) + '%'}"
-                                          th:classappend="${dayEntry.value.second > 100 ? 'overloaded' : ''}"></span>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr th:if="${empEntry.value.isEmpty()}">
-                            <td colspan="3" class="no-data">No workload data available for this employee</td>
-                        </tr>
+                                <span th:text="${#numbers.formatDecimal(dayEntry.value.second, 1, 1) + '%'}"
+                                      th:classappend="${dayEntry.value.second > 100 ? 'overloaded' : ''}"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${empEntry.value.isEmpty()}">
+                        <td colspan="3" class="no-data">No workload data available for this employee</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

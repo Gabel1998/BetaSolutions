@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// Service-lag for Task – håndterer logik mellem controller og repository
+// Service layer for Task – handles logic between the controller and the repository
 @Service
 public class TaskService {
 
@@ -22,6 +22,7 @@ public class TaskService {
     private final TaskEmployeeRepository taskEmployeeRepository;
     private final EmployeeService employeeService;
 
+    // Constructor
     public TaskService(TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository, EmployeeService employeeService) {
         this.taskRepository = taskRepository;
         this.taskEmployeeRepository = taskEmployeeRepository;
@@ -34,23 +35,17 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    // READ ALL
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
+    // READ BY ID
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
 
-    public void updateTask(Task task) {
-        task.setUpdatedAt(LocalDateTime.now());
-        taskRepository.update(task);
-    }
-
-    public void deleteTask(Long id) {
-        taskRepository.delete(id);
-    }
-
+    // Calculate total hours worked for a specific task
     public double getTotalHoursForTask(Long taskId) {
         List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
         return employees.stream()
@@ -58,45 +53,17 @@ public class TaskService {
                 .sum();
     }
 
-//    public double calculateDailyHours(TaskEmployee employee) {
-//        long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
-//        if (workdays == 0) return 0;
-//        return (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
-//    }
-
-    // Calculate total daily hours for a specific task
-    public double getTotalDailyHoursForTask(Long taskId) {
-        List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
-
-        double totalDailyHours = 0.0;
-        for (TaskEmployee employee : employees) {
-            long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
-            if(workdays > 0) {
-                double dailyHours = (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
-                totalDailyHours += dailyHours;
-            }
-        }
-
-        return totalDailyHours;
-    }
-
-//    // Check if the total daily hours for a list of tasks exceed a given limit
-//    public boolean isDailyHoursExceeded(List<Task> tasks, double dailyLimit) {
-//        double totalDailyHours = 0;
-//        for (Task task : tasks) {
-//            totalDailyHours += getTotalDailyHoursForTask(task.getId());
-//        }
-//        return totalDailyHours > dailyLimit;
-//    }
-
+    // Calculate total hours worked for all tasks in a sub-project
     public List<Task> getTasksBySubProjectId(int subProjectId) {
         return taskRepository.findBySubProjectId(subProjectId);
     }
 
+    // Get all tasks assigned to a specific employee
     public List<String> getAssignedEmployeeNames (Integer taskId) {
         return taskEmployeeRepository.findAssignedEmployeeNamesByTaskId(taskId);
     }
 
+    // Check if any employee is overbooked based on their allocated hours across tasks
     public boolean isEmployeeOverbooked(List<Task> tasks) {
         Map<Long, Double> employeeTotalHours = new HashMap<>();
 
@@ -125,5 +92,16 @@ public class TaskService {
             }
         }
         return false;
+    }
+
+    // UPDATE
+    public void updateTask(Task task) {
+        task.setUpdatedAt(LocalDateTime.now());
+        taskRepository.update(task);
+    }
+
+    // DELETE
+    public void deleteTask(Long id) {
+        taskRepository.delete(id);
     }
 }

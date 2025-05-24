@@ -4,7 +4,9 @@ public class EmployeeSkills {
     private Integer emskEmId; //composite key
     private Integer emskSkId; //composite key
 
-    //getters og setters
+
+    // ─────────── Getters and Setters ───────────
+
     public void setEmskEmId(Integer emskEmId) {
         this.emskEmId = emskEmId;
     }

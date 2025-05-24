@@ -17,18 +17,20 @@ public class ProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // CREATE
     public void save(Project project) {
         String sql = "INSERT INTO tb_projects (p_name, p_description, p_start_date, p_end_date) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate());
     }
 
+    // READ ALL
     public List<Project> findAll() {
         String sql = "SELECT * FROM tb_projects";
         return jdbcTemplate.query(sql, new ProjectRowMapper());
 
     }
 
-//    Optional betyder: "Der kan være noget. Men der kan også være ingenting." Hjælper med nullPointerExceptions
+    //    Optional means: "There may be something. But there could also be nothing." Helps with avoiding nullPointerExceptions
     public Optional<Project> findById(long id) {
         String sql = "SELECT * FROM tb_projects WHERE p_id = ?";
         return jdbcTemplate.query(sql, new ProjectRowMapper(), id)
@@ -36,13 +38,16 @@ public class ProjectRepository {
                 .findFirst();
     }
 
+    // UPDATE
+    public void update(Project project) {
+        String sql = "UPDATE tb_projects SET p_name = ?, p_description = ?, p_start_date = ?, p_end_date = ? WHERE p_id = ?";
+        jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate(), project.getId());
+    }
+
+    // DELETE
     public void delete(Integer id) {
         String sql = "DELETE FROM tb_projects WHERE p_id = ?";
         jdbcTemplate.update(sql, id);
     }
 
-    public void update(Project project) {
-        String sql = "UPDATE tb_projects SET p_name = ?, p_description = ?, p_start_date = ?, p_end_date = ? WHERE p_id = ?";
-        jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(), project.getEndDate(), project.getId());
-    }
 }

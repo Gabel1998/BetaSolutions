@@ -6,8 +6,8 @@ import java.time.LocalDate;
 
 public class TaskEmployee {
     private Long tseId; //Primary Key
-    private Long taskId; //foreign key til Task
-    private Long employeeId; //foreign key til Employee
+    private Long taskId; //foreign key for Task
+    private Long employeeId; //foreign key for Employee
     private double hoursWorked;
     private double allocatedHours; // = H_allocated
     private double allocationPercentage; // = H_allocated / H_total * 100
@@ -15,6 +15,9 @@ public class TaskEmployee {
     private LocalDate startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
+
+    // ─────────── Getters and Setters ───────────
 
     public Long getTseId() {
         return tseId;
@@ -52,16 +55,8 @@ public class TaskEmployee {
         return allocatedHours;
     }
 
-    public void setAllocatedHours(double allocatedHours) {
-        this.allocatedHours = allocatedHours;
-    }
-
     public double getAllocationPercentage() {
         return allocationPercentage;
-    }
-
-    public void setAllocationPercentage(double allocationPercentage) {
-        this.allocationPercentage = allocationPercentage;
     }
 
     public LocalDate getStartDate() {

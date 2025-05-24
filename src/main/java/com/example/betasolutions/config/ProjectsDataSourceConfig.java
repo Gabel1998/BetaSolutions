@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
+
+/**
+ * Configuration for Projects db connection.
+ * This class sets up the primary data source for project-related operations.
+ */
 @Profile("!test")
 @Configuration
 public class ProjectsDataSourceConfig {

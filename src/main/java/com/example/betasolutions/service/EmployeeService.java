@@ -12,7 +12,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    // constructor
+    // CONSTRUCTOR
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
@@ -32,6 +32,11 @@ public class EmployeeService {
         return employeeRepository.getEmployeeById(id);
     }
 
+    // FIND BY USERNAME
+    public Optional<Employees> findByUsername(String username) {
+        return employeeRepository.findByUsername(username);
+    }
+
     // UPDATE
     public void updateEmployee(Employees employee) {
         employeeRepository.updateEmployee(employee);
@@ -40,10 +45,5 @@ public class EmployeeService {
     // DELETE
     public void deleteEmployee(int id) {
         employeeRepository.deleteEmployee(id);
-    }
-
-    // FIND BY USERNAME
-    public Optional<Employees> findByUsername(String username) {
-        return employeeRepository.findByUsername(username);
     }
 }

@@ -11,7 +11,7 @@ public class SkillsService {
 
     private final SkillsRepository skillsRepository;
 
-    // konstruktør
+    // CONSTRUCTOR
     public SkillsService(SkillsRepository skillsRepository) {
         this.skillsRepository = skillsRepository;
     }

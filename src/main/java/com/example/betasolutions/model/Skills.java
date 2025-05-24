@@ -4,7 +4,9 @@ public class Skills {
     private Integer skId;
     private String skName;
 
-    //getters og setters skills
+
+    // ─────────── Getters and Setters ───────────
+
     public void setSkId(Integer skId) {
         this.skId = skId;
     }
@@ -20,7 +22,6 @@ public class Skills {
     public String getSkName() {
         return skName;
     }
-
 
     public void setId(int id) {
     }

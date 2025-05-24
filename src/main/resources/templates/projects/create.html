@@ -4,7 +4,6 @@
     <title>Create Project</title></head>
 <body>
 
-<!-- Fælles header -->
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
@@ -33,12 +32,12 @@
         <input type="date" id="startDate" th:field="*{startDate}" required>
         <div class="status-warning" th:errors="*{startDate}"></div>
 
-        <!-- Enddate -->
+        <!-- End Date -->
         <label for="endDate">End Date</label>
         <input type="date" id="endDate" th:field="*{endDate}">
         <div class="status-warning" th:errors="*{endDate}"></div>
 
-        <!-- Submit-button -->
+
         <button type="submit" class="button button--create">Create</button>
     </form>
 </main>

@@ -12,16 +12,11 @@ import java.util.List;
 public class MockEmployeeRepository extends EmployeeRepository {
 
     public MockEmployeeRepository() {
-        super(null); // Pass null since we don't actually need the JdbcTemplate
+        super(null); // Pass null since we don't need JdbcTemplate
     }
 
     @Override
     public List<Employees> getAllEmployees() {
         return Collections.emptyList();
     }
-
-//    @Override
-//    public Employees getEmployeeById(int employeeId) {
-//        return new Employees(); // Return a dummy employee object
-//    }
 }

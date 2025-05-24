@@ -15,7 +15,7 @@
         <div class="card">
             <form th:action="@{/tasks/create}" th:object="${task}" method="post" class="form-container">
 
-                <!-- hidden fields for subProjectId and projectId -->
+                <!-- subProjectId and projectId -->
                 <input type="hidden" th:field="*{subProjectId}"/>
                 <input type="hidden" th:field="*{projectId}"/>
 
@@ -43,7 +43,7 @@
                 <label for="actualHours">Actual Hours</label>
                 <input type="number" step="0.1" id="actualHours" th:field="*{actualHours}">
 
-                <!-- Submit -->
+
                 <button type="submit" class="button button--create">Submit</button>
             </form>
         </div>

@@ -31,26 +31,22 @@ public class ProjectService {
         this.employeeRepository = employeeRepository;
     }
 
+    // CREATE
     public void createProject(Project project) {
         projectRepository.save(project);
     }
 
+    // READ
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
     }
 
+    // READ BY ID
     public Optional<Project> getProjectById(int id) {
         return projectRepository.findById(id);
     }
 
-    public void deleteProject(int id) {
-        projectRepository.delete(id);
-    }
-
-    public void updateProject(Project project) {
-        projectRepository.update(project);
-    }
-
+    // Calculate daily rate based on estimated hours and workdays
     public double calculateDailyRate(Long projectId) {
         Optional<Project> projectOpt = projectRepository.findById(projectId);
         if (projectOpt.isEmpty()) return 0;
@@ -63,6 +59,7 @@ public class ProjectService {
         return (workdays == 0) ? 0 : totalHours / workdays;
     }
 
+    // Count workdays between two dates, excluding weekends
     public long countWorkdays(LocalDate start, LocalDate end) {
         return start.datesUntil(end.plusDays(1))
                 .filter(d -> !d.getDayOfWeek().equals(DayOfWeek.SATURDAY) &&
@@ -70,11 +67,7 @@ public class ProjectService {
                 .count();
     }
 
-    public Object findSubProjectById(int subProjectId) {
-        return projectRepository.findById(subProjectId)
-                .orElseThrow(() -> new IllegalArgumentException("SubProject not found with id: " + subProjectId));
-    }
-
+    // Calculate total actual and estimated hours for a project, including sub-projects
     public double getTotalActualHoursForProject(int projectId) {
         return taskRepository.findAll().stream()
                 .filter(task ->
@@ -88,7 +81,7 @@ public class ProjectService {
                 .sum();
     }
 
-
+    // Calculate total estimated hours for a project, including sub-projects
     public double getTotalEstimatedHoursForProject(Integer id) {
         return taskRepository.findAll().stream()
                 .filter(task ->
@@ -102,7 +95,7 @@ public class ProjectService {
                 .sum();
     }
 
-    /// Vi nester Map<> i Map<> til at nemt kunne trække og beregne 2x key value pairs (est. og actual) i én metode
+    // Nesting a Map inside another Map to easily retrieve and calculate two sets of key-value pairs (estimated and actual) in one method
     public Map<Integer, Map<String, Double>> calculateProjectHoursByProjectIds(List<Integer> projectIds) {
         Map<Integer, Map<String, Double>> result = new HashMap<>();
 
@@ -121,11 +114,13 @@ public class ProjectService {
     }
 
 
+    // Get project by ID, returns empty Optional if ID is null
     public Optional<Project> getProjectById(Long id) {
         if (id == null) return Optional.empty();
         return projectRepository.findById(id.intValue());
     }
 
+    // Adjust estimated hours based on employee efficiency
     public double adjustEstimatedHoursBasedOnEfficiency(int projectId) {
         double totalEstimatedHours = getTotalEstimatedHoursForProject(projectId);
 
@@ -144,6 +139,16 @@ public class ProjectService {
                 .orElse(1.0); // Default to 1.0 if no valid efficiencies found
 
         return averageEfficiency > 0 ? totalEstimatedHours / averageEfficiency : totalEstimatedHours;
+    }
+
+    // UPDATE
+    public void updateProject(Project project) {
+        projectRepository.update(project);
+    }
+
+    // DELETE
+    public void deleteProject(int id) {
+        projectRepository.delete(id);
     }
 
 }

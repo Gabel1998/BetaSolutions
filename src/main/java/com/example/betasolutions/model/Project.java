@@ -27,6 +27,8 @@ public class Project {
     private LocalDateTime updatedAt;
 
 
+    // ─────────── Getters and Setters ───────────
+
     public Integer getId() {
         return id;
     }
@@ -67,16 +69,8 @@ public class Project {
         this.endDate = endDate;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {

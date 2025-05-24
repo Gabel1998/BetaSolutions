@@ -18,7 +18,7 @@ public class TaskRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Save new Task in database
+    // CREATE
     public void save(Task task) {
         String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date, project_id, ts_created_at, ts_updated_at) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -36,6 +36,7 @@ public class TaskRepository {
         );
     }
 
+    // UPDATE
     public void update(Task task) {
         String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, start_date = ?, end_date = ?, project_id = ?, ts_updated_at = ? WHERE ts_id = ?";
         jdbcTemplate.update(sql,
@@ -53,7 +54,7 @@ public class TaskRepository {
     }
 
 
-    // Fetch all Tasks
+    // READ ALL
     public List<Task> findAll() {
         String sql = "SELECT * FROM tb_tasks";
         return jdbcTemplate.query(sql, new TaskRowMapper());
@@ -67,7 +68,13 @@ public class TaskRepository {
                 .findFirst();
     }
 
-    // Delete task
+    // Fetch all Tasks for a given SubProject ID
+    public List<Task> findBySubProjectId(int subProjectId) {
+        String sql = "SELECT * FROM tb_tasks WHERE ts_sp_id = ?";
+        return jdbcTemplate.query(sql, new TaskRowMapper(), subProjectId);
+    }
+
+    // DELETE
     public void delete(Long id) {
         try {
             // First delete related records in tb_tasks_resources
@@ -94,11 +101,5 @@ public class TaskRepository {
         } catch (Exception e) {
             throw e; // re-throw to let service layer handle it
         }
-    }
-
-    // Fetch all Tasks for a given SubProject ID
-    public List<Task> findBySubProjectId(int subProjectId) {
-        String sql = "SELECT * FROM tb_tasks WHERE ts_sp_id = ?";
-        return jdbcTemplate.query(sql, new TaskRowMapper(), subProjectId);
     }
 }
