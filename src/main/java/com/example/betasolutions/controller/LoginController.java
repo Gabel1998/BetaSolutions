@@ -50,6 +50,8 @@ public class LoginController {
                                @RequestParam String password,
                                @RequestParam(required = false) String firstName,
                                @RequestParam(required = false) String lastName,
+                               @RequestParam(defaultValue = "1.0") Double emEfficiency,
+                               @RequestParam(defaultValue = "40.0") Double maxWeeklyHours,
                                HttpSession session) {
 
         if (firstName != null) {
@@ -58,8 +60,8 @@ public class LoginController {
             newUser.setEmPassword(password); // TODO: hash password!
             newUser.setEmFirstName(firstName);
             newUser.setEmLastName(lastName);
-            newUser.setEmEfficiency(1.0);
-            newUser.setMaxWeeklyHours(40);
+            newUser.setEmEfficiency(emEfficiency);
+            newUser.setMaxWeeklyHours(maxWeeklyHours);
 
             employeeRepository.registerNewUser(newUser);
             return "redirect:/auth/login";

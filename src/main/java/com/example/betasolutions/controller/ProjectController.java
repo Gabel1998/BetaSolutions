@@ -98,7 +98,7 @@ public class ProjectController {
         return "projects/create";
     }
 
-    // Display project summary with actual vs estimated hours
+    // Display project summary with actual, estimated and adjusted hours
     @GetMapping("/summary")
     public String showProjectSummary(Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -106,17 +106,22 @@ public class ProjectController {
 
         Map<Integer, Double> projectActualHoursMap = new HashMap<>();
         Map<Integer, Double> projectEstimatedHoursMap = new HashMap<>();
+        Map<Integer, Double> adjustedHours = new HashMap<>();
 
         for (Project p : projects) {
             double actual = projectService.getTotalActualHoursForProject(p.getId());
             double estimated = projectService.getTotalEstimatedHoursForProject(p.getId());
+            double adjusted = projectService.adjustEstimatedHoursBasedOnEfficiency(p.getId());
+
             projectActualHoursMap.put(p.getId(), actual);
             projectEstimatedHoursMap.put(p.getId(), estimated);
+            adjustedHours.put(p.getId(), adjusted);
         }
 
         model.addAttribute("projects", projects);
         model.addAttribute("projectHoursMap", projectActualHoursMap);
         model.addAttribute("projectEstimatedMap", projectEstimatedHoursMap);
+        model.addAttribute("adjustedHours", adjustedHours);
         return "projects/summary";
     }
 

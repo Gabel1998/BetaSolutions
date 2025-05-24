@@ -130,14 +130,20 @@ public class ProjectService {
         double totalEstimatedHours = getTotalEstimatedHoursForProject(projectId);
 
         List<TaskEmployee> taskEmployees = taskEmployeeRepository.findByProjectId(projectId);
-        double totalEfficiency = taskEmployees.stream()
+
+        if (taskEmployees.isEmpty()) {
+            return totalEstimatedHours; // No employees assigned, return original estimate
+        }
+
+        double averageEfficiency = taskEmployees.stream()
                 .map(te -> employeeRepository.getEmployeeById(te.getEmployeeId()))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .mapToDouble(Employees::getEmEfficiency)
-                .sum();
+                .average()
+                .orElse(1.0); // Default to 1.0 if no valid efficiencies found
 
-        return totalEfficiency > 0 ? totalEstimatedHours / totalEfficiency : totalEstimatedHours;
+        return averageEfficiency > 0 ? totalEstimatedHours / averageEfficiency : totalEstimatedHours;
     }
 
 }
