@@ -9,12 +9,14 @@ import com.example.betasolutions.repository.ProjectRepository;
 import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@Transactional(readOnly = true)
 public class ProjectService {
 
     private final SubProjectService subProjectService;
@@ -32,6 +34,7 @@ public class ProjectService {
     }
 
     // CREATE
+    @Transactional
     public void createProject(Project project) {
         projectRepository.save(project);
     }
@@ -142,11 +145,13 @@ public class ProjectService {
     }
 
     // UPDATE
+    @Transactional
     public void updateProject(Project project) {
         projectRepository.update(project);
     }
 
     // DELETE
+    @Transactional
     public void deleteProject(int id) {
         projectRepository.delete(id);
     }

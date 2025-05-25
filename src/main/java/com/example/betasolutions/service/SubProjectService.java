@@ -6,6 +6,7 @@ import com.example.betasolutions.repository.SubProjectRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import com.example.betasolutions.utils.DateUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 // Service layer for SubProject – handles logic between the controller and the repository
 @Service
+@Transactional(readOnly = true)
 public class SubProjectService {
 
     private final SubProjectRepository subProjectRepository;
@@ -28,6 +30,7 @@ public class SubProjectService {
     }
 
     // CREATE
+    @Transactional
     public void createSubProject(SubProject subProject) {
         subProjectRepository.save(subProject);
     }
@@ -96,11 +99,13 @@ public class SubProjectService {
     }
 
     // UPDATE
+    @Transactional
     public void updateSubProject(SubProject subProject) {
         subProjectRepository.update(subProject);
     }
 
     // DELETE
+    @Transactional
     public void deleteSubProject(Integer id) {
         subProjectRepository.delete(id);
     }
