@@ -43,14 +43,14 @@ public class TaskServiceIntegrationTests {
     private TaskService taskService;
 
     @Test
-    @DisplayName("Get all tasks")
+//  Get all tasks
     void testGetAllTasks() {
         List<Task> tasks = taskService.getAllTasks();
         assertThat(tasks).hasSize(3);
     }
 
     @Test
-    @DisplayName("Get task by ID")
+//  Get task by ID
     void testGetTaskById() {
         Optional<Task> maybe = taskService.getTaskById(100001L);
         assertThat(maybe).isPresent();
@@ -58,28 +58,28 @@ public class TaskServiceIntegrationTests {
     }
 
     @Test
-    @DisplayName("Get tasks by subproject ID")
+//  Get tasks by subproject ID
     void testGetTasksBySubProject() {
         List<Task> tasks = taskService.getTasksBySubProjectId(2000);
         assertThat(tasks).anyMatch(t -> "Montering af solpaneler".equals(t.getName()));
     }
 
     @Test
-    @DisplayName("Calculate total hours for a task")
+//  Calculate total hours for a task
     void testGetTotalHoursForTask() {
         double hours = taskService.getTotalHoursForTask(100000L);
         assertThat(hours).isEqualTo(50.0);
     }
 
     @Test
-    @DisplayName("Get assigned employee names for a task")
+//  Get assigned employee names for a task
     void testGetAssignedEmployeeNames() {
         List<String> names = taskService.getAssignedEmployeeNames(100000);
         assertThat(names).isNotEmpty();
     }
 
     @Test
-    @DisplayName("Check overbooking")
+//  Check overbooking
     void testIsEmployeeOverbooked() {
         boolean overbooked = taskService.isEmployeeOverbooked(taskService.getAllTasks());
         assertThat(overbooked).isFalse();
