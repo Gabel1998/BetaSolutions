@@ -5,8 +5,8 @@ import com.example.betasolutions.model.Task;
 import com.example.betasolutions.model.TaskEmployee;
 import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
-import com.example.betasolutions.utils.DateUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -16,6 +16,7 @@ import java.util.Optional;
 
 // Service layer for Task – handles logic between the controller and the repository
 @Service
+@Transactional(readOnly = true) // Default to read-only transactions
 public class TaskService {
 
     private final TaskRepository taskRepository;
@@ -29,6 +30,7 @@ public class TaskService {
         this.employeeService = employeeService;
     }
     // timestamp for task creation and update
+    @Transactional // Override to make this method fully transactional (read-write)
     public void createTask(Task task) {
         task.setCreatedAt(LocalDateTime.now());
         task.setUpdatedAt(LocalDateTime.now());
@@ -95,12 +97,14 @@ public class TaskService {
     }
 
     // UPDATE
+    @Transactional
     public void updateTask(Task task) {
         task.setUpdatedAt(LocalDateTime.now());
         taskRepository.update(task);
     }
 
     // DELETE
+    @Transactional
     public void deleteTask(Long id) {
         taskRepository.delete(id);
     }
