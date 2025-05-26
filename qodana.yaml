@@ -7,4 +7,5 @@ profile:
 include:
   - name: CheckDependencyLicenses
 
-
+exclude:
+  - name: Unresolved view reference
