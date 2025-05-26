@@ -7,9 +7,4 @@ profile:
 include:
   - name: CheckDependencyLicenses
 
-exclude:
-  - inspectionId: SpringUnresolvedViewInspection
-  - inspectionId: FieldMayBeFinal
-  - inspectionId: UnusedImport
-  - inspectionId: JavaStyleIssuesInspection
 
