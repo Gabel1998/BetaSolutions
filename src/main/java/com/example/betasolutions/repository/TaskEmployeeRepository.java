@@ -78,7 +78,7 @@ public class TaskEmployeeRepository {
         String sql = """
                 SELECT te.*, t.ts_name as task_name,
                        p.p_name as project_name, 
-                       sp.sp_name as subproject_name 
+                       sp.sp_name as subproject_name
                 FROM tb_task_employees te
                 JOIN tb_tasks t ON te.tse_ts_id = t.ts_id
                 LEFT JOIN tb_subprojects sp ON t.ts_sp_id = sp.sp_id

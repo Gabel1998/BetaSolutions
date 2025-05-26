@@ -1,9 +1,7 @@
 package com.example.betasolutions.service;
 
-import com.example.betasolutions.model.Resource;
 import com.example.betasolutions.repository.ResourceRepository;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Service
 public class ResourceService {

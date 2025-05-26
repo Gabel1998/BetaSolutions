@@ -75,7 +75,7 @@ public class HomeController {
         String username = (String) session.getAttribute("user");
         Optional<Employees> currentUserOptional = employeeService.findByUsername(username);
 
-        if (!currentUserOptional.isPresent()) {
+        if (currentUserOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "User not found");
             //noinspection SpringMVCViewInspection
             return "redirect:/";
