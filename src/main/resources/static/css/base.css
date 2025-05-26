@@ -1,42 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
 /* ════════════════════════════════════════ */
 /*      GLOBAL VARIABLES + ROOT COLORS      */
 /* ════════════════════════════════════════ */
 :root {
-    --black: #000000;
-    --white: #ffffff;
-    --blue: #0000EE;
-    --grey-light: #dedede;
-    --grey-soft: #bdcfd8;
-    --pink: #ff325a;
+    --black:            #000000;
+    --nice-black:       #303633;
+    --white:            #ffffff;
+    --blue:             #0000EE;
+    --grey-light:       #dedede;
+    --grey-soft:        #bdcfd8;
+    --grey-mid:         #f0efec;
+    --grey-dark:        #4a4a4a;
+    --pink:             #ff325a;
+    --green:            #2ecc71;
+    --yellow:           #ffc800;
+    --text-color:       #333333;
+    --accent-pink:      var(--pink);
+    --accent-blue:      var(--blue);
+    --background-beige: #f2ede9;
+    --card-bg:          #fcfaf8;
+    --radius:           16px;
 
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 2rem;
-    --radius: 8px;
+    --spacing-xs:      0.250rem;
+    --spacing-sm:       0.5rem;
+    --spacing-md:       1rem;
+    --spacing-lg:       2rem;
+    --spacing-xl:       3rem;
+
 }
 
 /* ════════════════════════════════════════ */
 /*      BASE TYPOGRAPHY & HTML RESET        */
 /* ════════════════════════════════════════ */
 body {
+    display: flex;
+    flex-direction: column;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     font-weight: 400;
-    color: var(--black);
-    background-color: var(--white);
+    background-color: var(--background-beige);
+    color: var(--text-color);
+    line-height: 1.6;
     margin: 0;
     padding: 0;
+    min-height: 100vh;
+}
+main {
+    flex: 1;
 }
 
 a {
-    color: var(--blue);
+    color: var(--nice-black);
+    font-weight: 600;
     text-decoration: none;
 }
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    color: var(--pink);
 }
 
 h1, h2, h3 {
-    font-weight: 800;
-    color: var(--black);
+    font-weight: 700;
+    color: var(--nice-black);
+    text-align: center;
 }

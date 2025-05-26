@@ -1,16 +1,23 @@
 package com.example.betasolutions.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 
 public class TaskEmployee {
     private Long tseId; //Primary Key
-    private Long taskId; //foreign key til Task
-    private String employeeId; //foreign key til Employee
+    private Long taskId; //foreign key for Task
+    private Long employeeId; //foreign key for Employee
     private double hoursWorked;
     private double allocatedHours; // = H_allocated
     private double allocationPercentage; // = H_allocated / H_total * 100
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
+
+    // ─────────── Getters and Setters ───────────
 
     public Long getTseId() {
         return tseId;
@@ -28,11 +35,11 @@ public class TaskEmployee {
         this.taskId = taskId;
     }
 
-    public String getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(String employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -48,16 +55,8 @@ public class TaskEmployee {
         return allocatedHours;
     }
 
-    public void setAllocatedHours(double allocatedHours) {
-        this.allocatedHours = allocatedHours;
-    }
-
     public double getAllocationPercentage() {
         return allocationPercentage;
-    }
-
-    public void setAllocationPercentage(double allocationPercentage) {
-        this.allocationPercentage = allocationPercentage;
     }
 
     public LocalDate getStartDate() {

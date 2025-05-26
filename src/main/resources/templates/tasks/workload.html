@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
+    <title>Workload Employees</title>
+    <link rel="stylesheet" th:href="@{/css/workload.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <h1>Employee Workload</h1>
+
+    <!-- Selection form -->
+    <div class="card">
+        <form method="get" th:action="@{/tasks/workload}" class="form-container">
+            <div class="form-group">
+                <label for="employeeIds">Select Employees:</label>
+                <select id="employeeIds" name="employeeIds" multiple size="5">
+                    <option th:each="employee : ${allEmployees}"
+                            th:value="${employee.emId}"
+                            th:text="${employee.emFirstName + ' ' + employee.emLastName}"
+                            th:selected="${selectedEmployeeIds != null && selectedEmployeeIds.contains(employee.emId)}">
+                        Employee Name
+                    </option>
+                </select>
+                <div class="helper-text">Hold Ctrl/Cmd to select multiple employees</div>
+            </div>
+
+            <button type="submit" class="button">View Workload</button>
+        </form>
+    </div>
+
+    <!--if no data -->
+    <p th:if="${workload == null or #lists.isEmpty(workload)}" class="no-data-message">
+        No data to display. Please select at least one employee.
+    </p>
+
+    <!-- For each employee-->
+    <div th:if="${workload != null and !#lists.isEmpty(workload)}">
+        <section th:each="empEntry : ${workload}" class="employee-section card">
+            <h2 th:text="'Employee: ' + ${employeeNames[empEntry.key]}"></h2>
+
+            <!-- Detailed workload percentage table -->
+            <div class="workload-table">
+                <h3>Daily Workload</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Hours</th>
+                        <th>Workload</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="dayEntry : ${empEntry.value}">
+                        <td th:text="${dayEntry.key.format(T(java.time.format.DateTimeFormatter).ofPattern('MM/dd/yyyy'))}"></td>
+                        <td th:text="${#numbers.formatDecimal(dayEntry.value.first, 1, 1)}"></td>
+                        <td>
+                            <div class="percentage-container">
+                                <div class="percentage-bar">
+                                    <div class="percentage-fill"
+                                         th:style="'width:' + ${dayEntry.value.second > 100 ? 100 : dayEntry.value.second} + '%; background-color:' + ${dayEntry.value.second > 100 ? 'var(--pink)' : 'var(--yellow)'}">
+                                    </div>
+                                </div>
+                                <span th:text="${#numbers.formatDecimal(dayEntry.value.second, 1, 1) + '%'}"
+                                      th:classappend="${dayEntry.value.second > 100 ? 'overloaded' : ''}"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:if="${empEntry.value.isEmpty()}">
+                        <td colspan="3" class="no-data">No workload data available for this employee</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Comparison section that shows all selected employees -->
+        <section class="comparison-section card" th:if="${workload.size() > 1}">
+            <h2>Employee Workload Comparison</h2>
+            <p class="helper-text">Employee Workload Comparison - Yellow bars show normal allocation (≤100%), Pink bars indicate overallocation (>100%)</p>
+
+            <div class="comparison-chart">
+                <div th:each="entry : ${avgWorkload}" class="employee-comparison">
+                    <div class="employee-bar">
+                        <div class="employee-name" th:text="${employeeNames[entry.key]}"></div>
+                        <div class="percentage-container">
+                            <div class="percentage-bar">
+                                <div class="percentage-fill"
+                                     th:style="'width:' + ${entry.value > 100 ? 100 : entry.value} + '%; background-color:' + ${entry.value > 100 ? 'var(--pink)' : 'var(--yellow)'}">
+                                </div>
+                            </div>
+                            <span th:text="${#numbers.formatDecimal(entry.value, 1, 1) + '%'}"
+                                  th:classappend="${entry.value > 100 ? 'overloaded' : ''}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+</body>
+</html>

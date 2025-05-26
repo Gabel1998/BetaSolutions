@@ -6,48 +6,41 @@ import com.example.betasolutions.repository.SubProjectRepository;
 import com.example.betasolutions.repository.TaskRepository;
 import com.example.betasolutions.utils.DateUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-// Service-lag for SubProject – håndterer logik mellem controller og repository
+// Service layer for SubProject – handles logic between the controller and the repository
 @Service
+@Transactional(readOnly = true)
 public class SubProjectService {
 
     private final SubProjectRepository subProjectRepository;
     private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    public SubProjectService(SubProjectRepository subProjectRepository, TaskRepository taskRepository) {
+    // Constructor
+    public SubProjectService(SubProjectRepository subProjectRepository, TaskRepository taskRepository, TaskService taskService) {
         this.subProjectRepository = subProjectRepository;
         this.taskRepository = taskRepository;
+        this.taskService = taskService;
     }
 
+    // CREATE
+    @Transactional
     public void createSubProject(SubProject subProject) {
         subProjectRepository.save(subProject);
     }
 
-    public List<SubProject> getAllSubProjects() {
-        return subProjectRepository.findAll();
-    }
-
+    // READ BY ID
     public Optional<SubProject> getSubProjectById(Integer id) {
         return subProjectRepository.findById(id);
     }
 
-    public void updateSubProject(SubProject subProject) {
-        subProjectRepository.update(subProject);
-    }
-
-    public void deleteSubProject(Integer id) {
-        subProjectRepository.delete(id);
-    }
-
-    public Optional<SubProject> findSubProjectById(int subProjectId) {
-        return subProjectRepository.findById(subProjectId);
-    }
-
+    // Calculate overview for a specific sub-project
     public Map<String, Object> calculateSubProjectOverview(int subProjectId) {
         List<Task> tasks = taskRepository.findBySubProjectId(subProjectId);
 
@@ -77,7 +70,43 @@ public class SubProjectService {
         return result;
     }
 
+    // READ ALL sub-projects by project ID
     public List<SubProject> getAllSubProjectsByProjectId(Integer projectId) {
         return subProjectRepository.findAllByProjectId(projectId);
+    }
+
+    // Calculate total estimated and actual hours for tasks in multiple sub-projects
+    public Map<Integer, Map<String, Double>> calculateTaskHoursBySubProjectIds(List<Integer> subProjectIds) {
+        Map<Integer, Map<String, Double>> result = new HashMap<>();
+
+        for(Integer subProjectId : subProjectIds) {
+            double totalEstimatedHours = 0;
+            double totalActualHours = 0;
+
+            List<Task> tasks = taskService.getTasksBySubProjectId(subProjectId);
+            for (Task task : tasks) {
+                totalEstimatedHours += task.getEstimatedHours();
+                totalActualHours += task.getActualHours();
+            }
+
+            Map<String, Double> hours = new HashMap<>();
+            hours.put("estimatedHours", totalEstimatedHours);
+            hours.put("actualHours", totalActualHours);
+
+            result.put(subProjectId, hours);
+        }
+        return result;
+    }
+
+    // UPDATE
+    @Transactional
+    public void updateSubProject(SubProject subProject) {
+        subProjectRepository.update(subProject);
+    }
+
+    // DELETE
+    @Transactional
+    public void deleteSubProject(Integer id) {
+        subProjectRepository.delete(id);
     }
 }

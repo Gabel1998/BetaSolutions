@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-// Repository for at arbejde med Task-data via JDBC
+// Repository to work with Task data via JDBC
 @Repository
 public class TaskRepository {
 
@@ -18,22 +18,10 @@ public class TaskRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Gemmer en ny Task i databasen
+    // CREATE
     public void save(Task task) {
-        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                task.getSubProjectId(),
-                task.getName(),
-                task.getDescription(),
-                task.getEstimatedHours(),
-                task.getActualHours(),
-                task.getStartDate(),
-                task.getEndDate());
-    }
-
-    public void update(Task task) {
-        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, start_date = ?, end_date = ? WHERE ts_id = ?";
+        String sql = "INSERT INTO tb_tasks (ts_sp_id, ts_name, ts_description, ts_estimated_hours, ts_actual_hours, start_date, end_date, project_id, ts_created_at, ts_updated_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 task.getSubProjectId(),
                 task.getName(),
@@ -42,17 +30,37 @@ public class TaskRepository {
                 task.getActualHours(),
                 task.getStartDate(),
                 task.getEndDate(),
-                task.getId());
+                task.getProjectId(),
+                task.getCreatedAt(),
+                task.getUpdatedAt()
+        );
+    }
+
+    // UPDATE
+    public void update(Task task) {
+        String sql = "UPDATE tb_tasks SET ts_sp_id = ?, ts_name = ?, ts_description = ?, ts_estimated_hours = ?, ts_actual_hours = ?, start_date = ?, end_date = ?, project_id = ?, ts_updated_at = ? WHERE ts_id = ?";
+        jdbcTemplate.update(sql,
+                task.getSubProjectId(),
+                task.getName(),
+                task.getDescription(),
+                task.getEstimatedHours(),
+                task.getActualHours(),
+                task.getStartDate(),
+                task.getEndDate(),
+                task.getProjectId(),
+                task.getUpdatedAt(),
+                task.getId()
+        );
     }
 
 
-    // Henter alle Tasks
+    // READ ALL
     public List<Task> findAll() {
         String sql = "SELECT * FROM tb_tasks";
         return jdbcTemplate.query(sql, new TaskRowMapper());
     }
 
-    // Finder en Task på ID
+    // Find Task on ID
     public Optional<Task> findById(Long id) {
         String sql = "SELECT * FROM tb_tasks WHERE ts_id = ?";
         return jdbcTemplate.query(sql, new TaskRowMapper(), id)
@@ -60,15 +68,40 @@ public class TaskRepository {
                 .findFirst();
     }
 
-    // Sletter en Task
-    public void delete(Long id) {
-        String sql = "DELETE FROM tb_tasks WHERE ts_id = ?";
-        jdbcTemplate.update(sql, id);
-    }
-
-    // Henter alle Tasks for et givet SubProject ID
+    // Fetch all Tasks for a given SubProject ID
     public List<Task> findBySubProjectId(int subProjectId) {
         String sql = "SELECT * FROM tb_tasks WHERE ts_sp_id = ?";
         return jdbcTemplate.query(sql, new TaskRowMapper(), subProjectId);
+    }
+
+    // DELETE
+    public void delete(Long id) {
+        try {
+            // First delete related records in tb_tasks_resources
+            String deleteResourcesSql = "DELETE FROM tb_tasks_resources WHERE tsre_ts_id = ?";
+            jdbcTemplate.update(deleteResourcesSql, id);
+
+            // Then delete related records in tb_task_employees
+            String deleteEmployeesSql = "DELETE FROM tb_task_employees WHERE tse_ts_id = ?";
+            jdbcTemplate.update(deleteEmployeesSql, id);
+
+            // Check if tb_task_logs table exists before trying to delete from it
+            try {
+                jdbcTemplate.queryForObject("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = 'tb_task_logs'", Integer.class);
+
+
+                String deleteLogsSql = "DELETE FROM tb_task_logs WHERE log_ts_id = ?";
+                jdbcTemplate.update(deleteLogsSql, id);
+            } catch (Exception e) {
+                // If the table does not exist, we can ignore this step
+                System.out.println("Table tb_task_logs does not exist, skipping deletion.");
+            }
+
+            // Finally delete the task itself
+            String sql = "DELETE FROM tb_tasks WHERE ts_id = ?";
+            jdbcTemplate.update(sql, id);
+        } catch (Exception e) {
+            throw e; // re-throw to let service layer handle it
+        }
     }
 }

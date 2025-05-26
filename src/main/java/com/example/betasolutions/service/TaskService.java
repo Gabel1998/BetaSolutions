@@ -1,47 +1,53 @@
 package com.example.betasolutions.service;
 
+import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.model.Task;
 import com.example.betasolutions.model.TaskEmployee;
 import com.example.betasolutions.repository.TaskEmployeeRepository;
 import com.example.betasolutions.repository.TaskRepository;
-import com.example.betasolutions.utils.DateUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-// Service-lag for Task – håndterer logik mellem controller og repository
+// Service layer for Task – handles logic between the controller and the repository
 @Service
+@Transactional(readOnly = true) // Default to read-only transactions
 public class TaskService {
 
     private final TaskRepository taskRepository;
     private final TaskEmployeeRepository taskEmployeeRepository;
+    private final EmployeeService employeeService;
 
-    public TaskService(TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository) {
+    // Constructor
+    public TaskService(TaskRepository taskRepository, TaskEmployeeRepository taskEmployeeRepository, EmployeeService employeeService) {
         this.taskRepository = taskRepository;
         this.taskEmployeeRepository = taskEmployeeRepository;
+        this.employeeService = employeeService;
     }
-
+    // timestamp for task creation and update
+    @Transactional // Override to make this method fully transactional (read-write)
     public void createTask(Task task) {
+        task.setCreatedAt(LocalDateTime.now());
+        task.setUpdatedAt(LocalDateTime.now());
         taskRepository.save(task);
     }
 
+    // READ ALL
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
+    // READ BY ID
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }
 
-    public void updateTask(Task task) {
-        taskRepository.update(task);
-    }
-
-    public void deleteTask(Long id) {
-        taskRepository.delete(id);
-    }
-
+    // Calculate total hours worked for a specific task
     public double getTotalHoursForTask(Long taskId) {
         List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
         return employees.stream()
@@ -49,28 +55,57 @@ public class TaskService {
                 .sum();
     }
 
-    public double calculateDailyHours(TaskEmployee employee) {
-        long workdays = DateUtils.countWorkdays(employee.getStartDate(), employee.getEndDate());
-        if (workdays == 0) return 0;
-        return (employee.getAllocatedHours() * employee.getAllocationPercentage()) / workdays;
-    }
-
-    public double getTotalDailyHoursForTask(Long taskId) {
-        List<TaskEmployee> employees = taskEmployeeRepository.findByTaskId(taskId);
-        return employees.stream()
-                .mapToDouble(this::calculateDailyHours)
-                .sum();
-    }
-
-    public boolean isDailyHoursExceeded(List<Task> tasks, double dailyLimit) {
-        double totalHours = 0;
-        for (Task task : tasks) {
-            totalHours += task.getActualHours();
-        }
-        return totalHours > dailyLimit;
-    }
-
+    // Calculate total hours worked for all tasks in a sub-project
     public List<Task> getTasksBySubProjectId(int subProjectId) {
         return taskRepository.findBySubProjectId(subProjectId);
+    }
+
+    // Get all tasks assigned to a specific employee
+    public List<String> getAssignedEmployeeNames (Integer taskId) {
+        return taskEmployeeRepository.findAssignedEmployeeNamesByTaskId(taskId);
+    }
+
+    // Check if any employee is overbooked based on their allocated hours across tasks
+    public boolean isEmployeeOverbooked(List<Task> tasks) {
+        Map<Long, Double> employeeTotalHours = new HashMap<>();
+
+        // Loop through each task and its assigned employees
+        for (Task task : tasks) {
+            List<TaskEmployee> taskEmployees = taskEmployeeRepository.findByTaskId(task.getId());
+            // Loop through each employee assigned to task
+            for (TaskEmployee te : taskEmployees) {
+                Long employeeId = te.getEmployeeId();
+                // Add hours to employee's total
+                double currentTotal = employeeTotalHours.getOrDefault(employeeId, 0.0);
+                employeeTotalHours.put(employeeId, currentTotal + te.getAllocatedHours());
+            }
+        }
+        // Validate if any employee exceeds their max allowed hours
+        for (Map.Entry<Long, Double> entry : employeeTotalHours.entrySet()) {
+            long employeeId = entry.getKey();
+            double totalHours = entry.getValue();
+
+            // Fetch employee from DB to get max allowed weekly hours
+            Optional<Employees> employeeOptional = employeeService.getEmployeeById(employeeId);
+            double maxAllowedHours = employeeOptional.map(Employees::getMaxWeeklyHours).orElse(40.0);
+
+            if (totalHours > maxAllowedHours) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // UPDATE
+    @Transactional
+    public void updateTask(Task task) {
+        task.setUpdatedAt(LocalDateTime.now());
+        taskRepository.update(task);
+    }
+
+    // DELETE
+    @Transactional
+    public void deleteTask(Long id) {
+        taskRepository.delete(id);
     }
 }

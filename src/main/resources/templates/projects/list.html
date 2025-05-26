@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header :: header}">
+<head th:replace="~{fragments/header :: head}">
     <title>Overview</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body>
 
@@ -10,28 +9,61 @@
 
 <main class="content">
 
-    <h2>Projekter</h2>
+    <h2>Projects</h2>
 
-    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+    <!-- Success message -->
+    <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
+    <!-- Error message -->
+    <div th:if="${param.error}" class="error-message">
+        Please fix the highlighted errors.
+    </div>
 
     <section class="projects">
-        <h2>Seneste opdateret Projekter</h2>
+        <h2>Latest Updated Projects</h2>
         <div class="project-list">
             <a th:each="project : ${projects}"
                th:href="@{'/subprojects?projectId=' + ${project.id}}"
                class="project-card">
 
-                <h3 th:text="${project.name}">Projektnavn</h3>
-                <p th:text="${project.description}">Beskrivelse</p>
-                <p>Start: <span th:text="${project.startDate}"></span></p>
-                <p>Slut: <span th:text="${project.endDate}"></span></p>
+                <h3 th:text="${project.name}">Project Name</h3>
+                <p th:text="${project.description}">Description</p>
 
+                <p th:if="${projectHours != null and projectHours.containsKey(project.id)}">
+                    Estimated hours:
+                    <span th:text="${#numbers.formatDecimal(projectHours.get(project.id).get('estimatedHours'), 1, 1)}">0.0</span>
+                </p>
+                <p th:if="${projectHours != null and projectHours.containsKey(project.id)}">
+                    Actual hours:
+                    <span th:text="${#numbers.formatDecimal(projectHours.get(project.id).get('actualHours'), 1, 1)}">0.0</span>
+                </p>
+                <p th:if="${adjustedHours != null and adjustedHours.containsKey(project.id)}">
+                    Adjusted hours:
+                    <span th:text="${#numbers.formatDecimal(adjustedHours.get(project.id), 1, 1)}">0.0</span>
+                </p>
+
+                <!-- CO2 tooltip on hover -->
+                <p th:if="${projectCo2.get(project.id) != null and projectCo2.get(project.id) > 0}">
+                    CO₂ usage: <span th:text="${#numbers.formatDecimal(projectCo2.get(project.id), 1, 1)}"></span> kg
+                </p>
+
+                <!-- Fallback if not available -->
+                <p th:if="${projectCo2.get(project.id) == -1}">
+                    CO₂ usage: <span class="missing-data">Not available</span>
+                </p>
+
+                <form th:action="@{'/projects/delete/' + ${project.id}}" method="get">
+                    <button class="button" type="submit" onclick="return confirm('Are you sure you want to delete this project?');">Delete Project</button>
+                </form>
             </a>
         </div>
     </section>
 
-    <div class="create-button-container">
-        <a class="button" th:href="@{/projects/create}">+ Opret nyt projekt</a>
+    <div class="two-buttons">
+        <a class="button button--create" th:href="@{/projects/create}">
+            + Create New Project
+        </a>
     </div>
 
 </main>

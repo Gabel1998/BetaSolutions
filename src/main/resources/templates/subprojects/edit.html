@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header :: header}"><title>Edit</title></head>
+<head th:replace="~{fragments/header :: head}">
+    <title>Edit</title>
+</head>
 <body>
 
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
-    <h2>Rediger subprojekt</h2>
+    <h2>Edit Subproject</h2>
+    <div class="container">
+        <div class="card">
+            <form th:action="@{'/subprojects/update/' + ${subProject.id}}" th:object="${subProject}" method="post" class="form-container">
 
-    <!-- Form: sender ændringer til /subprojects/update/{id} -->
-    <form th:action="@{'/subprojects/update/' + ${subProject.id}}" th:object="${subProject}" method="post" class="form-container">
+                <!-- ID of the parent project -->
+                <input type="hidden" th:field="*{projectId}"/>
 
-        <!-- Skjult felt: ID på det overordnede projekt -->
-        <input type="hidden" th:field="*{projectId}"/>
+                <!-- Subproject name -->
+                <label for="name">Name</label>
+                <input type="text" id="name" th:field="*{name}" required>
 
-        <!-- Subprojektnavn -->
-        <label for="name">Navn</label>
-        <input type="text" id="name" th:field="*{name}" required>
+                <!-- Description of the subproject -->
+                <label for="description">Description</label>
+                <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
-        <!-- Beskrivelse af subprojektet -->
-        <label for="description">Beskrivelse</label>
-        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                <!-- Start Date -->
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" th:field="*{startDate}" required
+                       th:value="${subProject.startDate != null ? #temporals.format(subProject.startDate, 'yyyy-MM-dd') : ''}" />
 
-        <!-- Startdato for subprojekt -->
-        <label for="startDate">Startdato</label>
-        <input type="date" id="startDate" th:field="*{startDate}" required>
+                <!-- End Date -->
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" th:field="*{endDate}"
+                       th:value="${subProject.endDate != null ? #temporals.format(subProject.endDate, 'yyyy-MM-dd') : ''}" />
 
-        <!-- Slutdato for subprojekt -->
-        <label for="endDate">Slutdato</label>
-        <input type="date" id="endDate" th:field="*{endDate}">
 
-        <!-- Gem-knap -->
-        <button type="submit" class="button">Gem ændringer</button>
-    </form>
+                <button type="submit" class="button button-yellow-text">Save Changes</button>
+            </form>
+        </div>
+    </div>
 </main>
 
 <div th:replace="~{fragments/footer :: footer}"></div>

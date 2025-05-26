@@ -1,55 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:replace="~{fragments/header :: head}">
     <title>Create Task</title>
 </head>
 <body>
 
-<!-- Fælles header -->
-<div th:replace="~{fragments/header :: header}"></div>
+
+<div th:replace="~{fragments/header :: head}"></div>
 
 <main class="content">
 
-    <h2>Opret ny task</h2>
+    <h2>Create New Task</h2>
+    <div class="container">
+        <div class="card">
+            <form th:action="@{/tasks/create}" th:object="${task}" method="post" class="form-container">
 
-    <form th:action="@{/tasks/create}" th:object="${task}" method="post" class="form-container">
+                <!-- subProjectId and projectId -->
+                <input type="hidden" th:field="*{subProjectId}"/>
+                <input type="hidden" th:field="*{projectId}"/>
 
-        <!-- FK til subproject (og projekt) -->
-        <input type="hidden" th:field="*{subProjectId}"/>
-        <input type="hidden" th:field="*{projectId}"/>
+                <!-- Name -->
+                <label for="name">Name</label>
+                <input type="text" id="name" th:field="*{name}" required>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
-        <!-- Navn -->
-        <label for="name">Navn</label>
-        <input type="text" id="name" th:field="*{name}" required>
-        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                <!-- Description -->
+                <label for="description">Description</label>
+                <textarea id="description" th:field="*{description}" rows="4"></textarea>
 
-        <!-- Beskrivelse -->
-        <label for="description">Beskrivelse</label>
-        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                <!-- Dates -->
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" th:field="*{startDate}">
 
-        <!-- Datoer -->
-        <label for="startDate">Startdato</label>
-        <input type="date" id="startDate" th:field="*{startDate}">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" th:field="*{endDate}">
 
-        <label for="endDate">Slutdato</label>
-        <input type="date" id="endDate" th:field="*{endDate}">
+                <!-- Hours -->
+                <label for="estimatedHours">Estimated Hours</label>
+                <input type="number" step="0.1" id="estimatedHours" th:field="*{estimatedHours}" required>
+                <div th:if="${#fields.hasErrors('estimatedHours')}" th:errors="*{estimatedHours}"></div>
 
-        <!-- Timer -->
-        <label for="estimatedHours">Estimerede timer</label>
-        <input type="number" step="0.1" id="estimatedHours" th:field="*{estimatedHours}" required>
-        <div th:if="${#fields.hasErrors('estimatedHours')}" th:errors="*{estimatedHours}"></div>
+                <label for="actualHours">Actual Hours</label>
+                <input type="number" step="0.1" id="actualHours" th:field="*{actualHours}">
 
-        <label for="actualHours">Faktiske timer</label>
-        <input type="number" step="0.1" id="actualHours" th:field="*{actualHours}">
 
-        <!-- Submit -->
-        <button type="submit" class="button">Opret</button>
-    </form>
-
+                <button type="submit" class="button button--create">Submit</button>
+            </form>
+        </div>
+    </div>
 </main>
 
-<!-- Fælles footer -->
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

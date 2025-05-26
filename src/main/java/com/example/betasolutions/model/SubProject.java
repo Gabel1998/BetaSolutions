@@ -1,8 +1,8 @@
 package com.example.betasolutions.model;
 
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,13 +18,15 @@ public class SubProject {
     private String description;
 
     @NotNull(message = "Start date is required.")
-    @FutureOrPresent(message = "Start date must be today or in the future.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
-
-    @NotNull(message = "End date is required.")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+
+    // ─────────── Getters and Setters ───────────
 
     public Integer getId() {
         return id;
@@ -74,16 +76,8 @@ public class SubProject {
         this.endDate = endDate;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
     }
 
     public void setUpdatedAt(LocalDateTime updatedAt) {

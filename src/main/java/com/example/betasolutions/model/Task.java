@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,8 +13,8 @@ public class Task {
     private Long id; //Primary Key
 
     @NotNull(message = "Project ID is required")
-    private Long projectId; //foreign key til projects
-    private Integer subProjectId; //foreign key til subProjects
+    private Long projectId; //foreign key for projects
+    private Integer subProjectId; //foreign key for subProjects
 
     @NotBlank(message = "Task name cannot be empty")
     @Size(max = 100, message = "Task name must be under 100 characters")
@@ -29,12 +30,20 @@ public class Task {
     @PositiveOrZero(message = "Actual hours must be 0 or more")
     private double actualHours;
 
-    private LocalDate startDate; // ny
-    private LocalDate endDate;   // ny
+    private double prefilledHours;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
+
+    // ─────────── Getters and Setters ───────────
 
     public LocalDate getStartDate() {
         return startDate;
@@ -122,5 +131,13 @@ public class Task {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
+    }
+
+    public double getPrefilledHours() {
+        return prefilledHours;
+    }
+
+    public void setPrefilledHours(double prefilledHours) {
+        this.prefilledHours = prefilledHours;
     }
 }

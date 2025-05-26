@@ -1,0 +1,159 @@
+/* ════════════════════════════════════════ */
+/*            WORKLOAD CSS CLASS            */
+/* ════════════════════════════════════════ */
+.employee-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--grey-soft);
+    overflow: hidden;
+}
+
+.bar-container {
+    display: flex;
+    align-items: flex-end;
+    height: 200px;
+    margin: 1.5rem 0;
+    border-bottom: 1px solid var(--grey-soft);
+    padding-bottom: 2rem;
+    padding-top: 1rem;
+    position: relative;
+    overflow-x: auto;
+}
+
+.bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0.5rem;
+    position: relative;
+    min-width: 30px;
+    max-width: 30px;
+}
+
+.bar-normal {
+    width: 20px;
+    background-color: var(--yellow);
+    margin-bottom: 0;
+    max-height: 180px;
+}
+
+.bar-over {
+    width: 20px;
+    background-color: var(--pink);
+    margin-bottom: 0;
+    max-height: 50px;
+}
+
+.bar span {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    transform: rotate(-45deg);
+    position: absolute;
+    bottom: -25px;
+    width: 40px;
+    text-align: left;
+    overflow: visible;
+}
+
+.axis-label-y {
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: rotate(-90deg) translateX(50%);
+    font-size: 0.8rem;
+    color: var(--grey-dark);
+}
+
+.axis-label-x {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    color: var(--grey-dark);
+}
+
+.workload-table {
+    margin-top: 2rem;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.percentage-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.percentage-bar {
+    height: 20px;
+    background-color: var(--grey-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+    flex-grow: 1;
+    max-width: 200px;
+}
+
+.percentage-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.overloaded {
+    color: var(--pink);
+    font-weight: bold;
+}
+
+.helper-text {
+    font-size: 0.8rem;
+    color: var(--grey-dark);
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
+select[multiple] {
+    min-height: 120px;
+    width: 100%;
+}
+
+.date-range-info {
+    margin: 1rem 0;
+    font-style: italic;
+    color: var(--grey-dark);
+}
+
+.no-data-message {
+    text-align: center;
+    padding: 2rem;
+    font-style: italic;
+    color: var(--grey-dark);
+}
+
+.comparison-section {
+    margin-top: 2rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.comparison-chart {
+    margin-top: 1rem;
+}
+
+.employee-comparison {
+    margin-bottom: 1rem;
+}
+
+.employee-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.employee-name {
+    width: 150px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

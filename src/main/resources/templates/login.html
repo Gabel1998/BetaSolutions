@@ -3,40 +3,52 @@
 <head th:replace="~{fragments/header :: head}">
     <title>Login</title>
 </head>
-
 <body>
-<!-- ======== HEADER TEMPLATE ======== -->
+
 <div th:replace="~{fragments/header :: header}"></div>
 
-<!-- ======== MAIN CONTENT ======== -->
-<div class="page-container">
-    <div class="login-container">
+<main class="container">
+    <section class="login-container">
         <h1>Login</h1>
 
-        <!-- ======== ERROR HANDLER ======== -->
-        <div th:if="${errorMessage != null}">
-            <p style="color: red;" th:text="${errorMessage}"></p>
+        <div th:if="${errorMessage}">
+            <p class="status-warning" th:text="${errorMessage}"></p>
         </div>
 
-        <!-- ======== LOGIN FORM ======== -->
+        <!-- Form -->
         <form th:action="@{/auth/login}" method="post">
-            <label for="username">Brugernavn</label>
-            <input type="text" id="username" name="username" required placeholder="Indtast brugernavn" maxlength="50"
-                   title="Indtast dit brugernavn">
+            <label for="username">Username</label>
+            <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    required
+                    placeholder="Enter Username"
+                    maxlength="50"
+            />
 
-            <label for="password">Adgangskode</label>
-            <input type="password" id="password" name="password" required placeholder="Indtast adgangskode" minlength="8"
-                   pattern="^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$"
-                   title="Adgangskoden skal være mindst 8 tegn og indeholde både bogstaver og tal.">
+            <label for="password">Password</label>
+            <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    placeholder="Enter Password"
+                    minlength="8"
+                    pattern="^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$"
+                    title="Minimum 8 characters, at least one letter and one number"
+            />
 
-            <button type="submit" class="btn">Login</button>
+            <button type="submit" class="button">LOGIN</button>
         </form>
 
-        <p>Har du ikke en konto? <a href="/register" class="register-link">Opret en her</a></p>
-    </div>
-</div>
+        <div class="form-footer">
+            <span>Need access?</span>
+            <a th:href="@{/auth/register}" class="button button--create">Create User</a>
+        </div>
+    </section>
+</main>
 
-<!-- ======== FOOTER ======== -->
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

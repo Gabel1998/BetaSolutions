@@ -1,42 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head th:replace="~{fragments/header :: header}"><title>Create</title></head>
+<head th:replace="~{fragments/header :: head}">
+    <title>Create</title>
+</head>
 <body>
 
-<!-- Fælles header -->
 <div th:replace="~{fragments/header :: header}"></div>
 
 <main class="content">
-    <h2>Opret nyt subprojekt</h2>
+    <h2>Create Subproject</h2>
+    <div class="container">
+        <div class="card">
+            <!-- Formular bound to subproject-objects -->
+            <form th:action="@{/subprojects/create}" th:object="${subProject}" method="post" class="form-container">
 
-    <!-- Formular bundet til SubProject-objekt -->
-    <form th:action="@{/subprojects/create}" th:object="${subProject}" method="post" class="form-container">
+                <!-- Show validation errors if any -->
+                <div th:if="${#fields.hasErrors()}" class="alert-warning">
+                    Please fix the highlighted errors.
+                </div>
 
-        <!-- Skjult felt: ID på det overordnede projekt -->
-        <input type="hidden" th:field="*{projectId}"/>
+                <!-- hidden field (projectId) -->
+                <input type="hidden" th:field="*{projectId}"/>
+                <div class="status-warning" th:if="${#fields.hasErrors('projectId')}" th:errors="*{projectId}"></div>
 
-        <!--Subproject navn: kort fritekst-->
-        <label for="name">Navn</label>
-        <input type="text" id="name" th:field="*{name}" required>
+                <!--Subproject name-->
+                <label for="name">Name</label>
+                <input type="text" id="name" th:field="*{name}" required>
+                <div class="status-warning" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
 
-        <!--SubProject beskrivelse: længere fritekst-->
-        <label for="description">Beskrivelse</label>
-        <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                <!--SubProject description -->
+                <label for="description">Description</label>
+                <textarea id="description" th:field="*{description}" rows="4"></textarea>
+                <div class="status-warning" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
 
-        <!--StartDato: hvornår subprojektet begynder-->
-        <label for="startDate">Startdato</label>
-        <input type="date" id="startDate" th:field="*{startDate}" required>
+                <!--StartDate-->
+                <label for="startDate">Start</label>
+                <input type="date" id="startDate" th:field="*{startDate}" required>
+                <div class="status-warning" th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></div>
 
-        <!--SlutDato: hvornår projektet forventes afsluttet-->
-        <label for="endDate">Slutdato</label>
-        <input type="date" id="endDate" th:field="*{endDate}">
+                <!--EndDate-->
+                <label for="endDate">End</label>
+                <input type="date" id="endDate" th:field="*{endDate}">
+                <div class="status-warning" th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}"></div>
 
-        <!--Submit knap-->
-        <button type="submit" class="button">Opret</button>
-    </form>
+
+                <button type="submit" class="button button--create">Create</button>
+            </form>
+        </div>
+    </div>
 </main>
 
-<!--Fælles footer-->
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

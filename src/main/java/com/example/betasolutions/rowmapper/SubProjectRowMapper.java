@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-//Mapper en database-række til et SubProjekt-objekt
+// Maps a database row to a SubProject object
 public class SubProjectRowMapper implements RowMapper<SubProject> {
 
     @Override

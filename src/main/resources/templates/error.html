@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments/header :: head}">
+    <title>Error</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main class="container">
+    <section class="card">
+        <div class="text-center">
+            <h1>Woah! You are lost.</h1>
+
+            <div class="banner">
+                <h2 th:text="${status + ' - ' + error}" class="text-danger">500 - Internal Server Error</h2>
+                <p class="motto" th:text="${message}">An unexpected error occurred</p>
+
+                <div th:if="${timestamp}" class="form-help">
+                    <p>This happened at <span th:text="${#dates.format(timestamp, 'dd-MM-yyyy HH:mm')}">01-01-2025 12:00</span></p>
+                </div>
+            </div>
+
+            <div class="banner-buttons">
+                <a href="/" class="button">Return to Home</a>
+            </div>
+
+            <div class="login-prompt">
+                <p class="motto">Without people, technology solves nothing.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
