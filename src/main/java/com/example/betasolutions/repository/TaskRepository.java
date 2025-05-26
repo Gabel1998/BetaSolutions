@@ -93,6 +93,8 @@ public class TaskRepository {
                 String deleteLogsSql = "DELETE FROM tb_task_logs WHERE log_ts_id = ?";
                 jdbcTemplate.update(deleteLogsSql, id);
             } catch (Exception e) {
+                // If the table does not exist, we can ignore this step
+                System.out.println("Table tb_task_logs does not exist, skipping deletion.");
             }
 
             // Finally delete the task itself

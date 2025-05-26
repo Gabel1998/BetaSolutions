@@ -31,20 +31,20 @@ public class SkillsController {
 
     // Get skill by ID
     @GetMapping("/{id}")
-    public Skills getSkillById(@PathVariable Integer skId) {
+    public Skills getSkillById(@PathVariable("id") Integer skId) {
         return skillsService.getSkillById(skId);
     }
 
     // Update existing skill
     @PutMapping("/{id}")
-    public void updateSkill(@PathVariable Integer skId, @RequestBody Skills skills) {
+    public void updateSkill(@PathVariable("id") Integer skId, @RequestBody Skills skills) {
         skills.setId(skId);
         skillsService.updateSkill(skills);
     }
 
     // Delete a skill
     @DeleteMapping("/{id}")
-    public void deleteSkill(@PathVariable Integer skId) {
+    public void deleteSkill(@PathVariable("id") Integer skId) {
         skillsService.deleteSkill(skId);
     }
 }
