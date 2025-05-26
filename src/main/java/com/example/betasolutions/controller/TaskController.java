@@ -55,6 +55,7 @@ public class TaskController {
     @GetMapping
     public String listTasks(@RequestParam(value = "subProjectId", required = false) Integer subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringViewInspection
             return "redirect:/auth/login";
         }
 
