@@ -19,7 +19,7 @@ public class EmployeeService {
 
     // CREATE
     public void addEmployee(Employees employee) {
-        employeeRepository.addEmployee(employee);
+        employeeRepository.registerNewUser(employee);
     }
 
     // READ ALL
