@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/tasks")
-@SuppressWarnings("SpringViewInspection")
 public class TaskController {
 
     private final TaskService taskService;
@@ -48,6 +47,7 @@ public class TaskController {
 
     // Verify user authentication
     private boolean isLoggedIn(HttpSession session) {
+        //noinspection SpringMVCViewInspection
         return session.getAttribute("user") != null;
     }
 
@@ -55,7 +55,7 @@ public class TaskController {
     @GetMapping
     public String listTasks(@RequestParam(value = "subProjectId", required = false) Integer subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
-            //noinspection SpringViewInspection
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
@@ -80,7 +80,7 @@ public class TaskController {
             model.addAttribute("successMessage", successMessage);
             session.removeAttribute("successMessage");
         }
-
+        //noinspection SpringMVCViewInspection
         return "tasks/list";
     }
 
@@ -91,6 +91,7 @@ public class TaskController {
                                  HttpSession session) {
 
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
@@ -103,7 +104,7 @@ public class TaskController {
 
         model.addAttribute("task", task);
         model.addAttribute("subProject", subProject);
-
+        //noinspection SpringMVCViewInspection
         return "tasks/create";
     }
 
@@ -111,6 +112,7 @@ public class TaskController {
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
@@ -132,13 +134,14 @@ public class TaskController {
 
         model.addAttribute("task", task);
         model.addAttribute("subProject", subProject);
-
+        //noinspection SpringMVCViewInspection
         return "tasks/edit";
     }
 
     // Delete a task and return to task list
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable Long id, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         // Get task before deleting to retrieve subProjectId
@@ -152,7 +155,7 @@ public class TaskController {
         } catch (Exception e) {
             session.setAttribute("errorMessage", "Unable to delete task: It has associated resources that must be removed first");
         }
-
+        //noinspection SpringMVCViewInspection
         return "redirect:/tasks?subProjectId=" + subProjectId;
     }
 
@@ -168,7 +171,7 @@ public class TaskController {
         model.addAttribute("totalHours", totalHours);
         model.addAttribute("dailyRate", dailyRate);
         model.addAttribute("status", totalHours >= dailyRate ? "OK" : "⚠ Under daily rate: (" + dailyRate + ") ⚠");
-
+        //noinspection SpringMVCViewInspection
         return "tasks/list";
     }
 
@@ -176,6 +179,7 @@ public class TaskController {
     @PostMapping("/update/{id}/hours")
     public String updateMaxHours(@PathVariable int id, @RequestParam double maxWeeklyHours) {
         employeeRepository.updateMaxWeeklyHours(id, maxWeeklyHours);
+        //noinspection SpringMVCViewInspection
         return "redirect:/tasks/workload";
     }
 
@@ -185,6 +189,7 @@ public class TaskController {
                                Model model,
                                HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
@@ -242,7 +247,7 @@ public class TaskController {
         model.addAttribute("workload", workload);
         model.addAttribute("employeeNames", employeeNames);
         model.addAttribute("avgWorkload", avgWorkloadPerEmployee);
-
+        //noinspection SpringMVCViewInspection
         return "tasks/workload";
     }
 
@@ -254,11 +259,13 @@ public class TaskController {
                              HttpSession session) {
 
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
         if (result.hasErrors()) {
             model.addAttribute("task", task);
+            //noinspection SpringMVCViewInspection
             return "tasks/create";
         }
 
@@ -270,7 +277,7 @@ public class TaskController {
 
         //success message
         session.setAttribute("successMessage", "Task created successfully");
-
+        //noinspection SpringMVCViewInspection
         return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
 
@@ -282,6 +289,7 @@ public class TaskController {
                              HttpSession session) {
 
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
@@ -296,6 +304,7 @@ public class TaskController {
         if (result.hasErrors()) {
             model.addAttribute("task", task);
             model.addAttribute("subProject", subProject);
+            //noinspection SpringMVCViewInspection
             return "tasks/edit";
         }
 
@@ -303,7 +312,7 @@ public class TaskController {
 
         //success message
         session.setAttribute("successMessage", "Task updated successfully");
-
+        //noinspection SpringMVCViewInspection
         return "redirect:/tasks?subProjectId=" + task.getSubProjectId();
     }
 }
