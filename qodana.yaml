@@ -13,5 +13,3 @@ exclude:
   - inspectionId: UnusedImport
   - inspectionId: JavaStyleIssuesInspection
 
-cache:
-  path: .qodana/cache
