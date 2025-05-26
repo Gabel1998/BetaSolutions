@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/subprojects")
-@SuppressWarnings("SpringViewInspection")
 public class SubProjectController {
 
     private final ProjectService projectService;
@@ -48,6 +47,7 @@ public class SubProjectController {
 
     // List all subprojects for a project
     @GetMapping
+    //noinspection SpringMVCViewInspection
     public String listSubProjects(@RequestParam(value = "projectId", required = false) Integer projectId,
                                   Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
@@ -85,6 +85,7 @@ public class SubProjectController {
 
     // Show form for creating a new subproject
     @GetMapping("/create")
+    //noinspection SpringMVCViewInspection
     public String showCreateSubProjectForm(@RequestParam("projectId") Integer projectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
@@ -97,6 +98,7 @@ public class SubProjectController {
 
     // Delete a subproject by ID
     @GetMapping("/delete/{id}")
+    //noinspection SpringMVCViewInspection
     public String deleteSubProject(@PathVariable Integer id, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
@@ -116,6 +118,7 @@ public class SubProjectController {
 
     // Show statistics and performance data for a subproject
     @GetMapping("/overview/{subProjectId}")
+    //noinspection SpringMVCViewInspection
     public String showSubProjectOverview(@PathVariable int subProjectId, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
@@ -126,6 +129,7 @@ public class SubProjectController {
 
     // Show form for editing an existing subproject
     @GetMapping("/edit/{id}")
+    //noinspection SpringMVCViewInspection
     public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         model.addAttribute("pageTitle", "Rediger subprojekt");
@@ -137,6 +141,7 @@ public class SubProjectController {
 
     // Generate and download Gantt chart visualization
     @GetMapping("/{id}/gantt")
+    //noinspection SpringMVCViewInspection
     public void generateGanttDiagram(@PathVariable Integer id, HttpServletResponse response) throws IOException {
         SubProject subProject = subProjectService.getSubProjectById(id)
                 .orElseThrow(() -> new RuntimeException("Subproject not found"));
@@ -154,6 +159,7 @@ public class SubProjectController {
     // Provide JSON data for front-end Gantt chart rendering
     @GetMapping("/api/subprojects/{id}/ganttdata")
     @ResponseBody
+    //noinspection SpringMVCViewInspection
     public Map<String, Object> getGanttData(@PathVariable Integer id) {
         SubProject subProject = subProjectService.getSubProjectById(id)
                 .orElseThrow(() -> new RuntimeException("Subproject not found"));
@@ -182,6 +188,7 @@ public class SubProjectController {
 
     // Process form submission for new subproject
     @PostMapping("/create")
+    //noinspection SpringMVCViewInspection
     public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         if (result.hasErrors()) return "subprojects/create";
@@ -193,6 +200,7 @@ public class SubProjectController {
 
     // Process form submission for updating subproject
     @PostMapping("/update/{id}")
+    //noinspection SpringMVCViewInspection
     public String updateSubProject(@PathVariable Integer id, @ModelAttribute SubProject subProject, HttpSession session) {
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         subProject.setId(id);
