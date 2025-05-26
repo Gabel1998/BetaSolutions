@@ -35,18 +35,21 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model, HttpSession session) {
         model.addAttribute("projects", projectService.getAllProjects());
+        //noinspection SpringMVCViewInspection
         return "index";
     }
 
     // Cookie policy page
     @GetMapping("/cookies")
     public String cookies() {
+        //noinspection SpringMVCViewInspection
         return "cookies";
     }
 
     // Privacy policy page
     @GetMapping("/privacy")
     public String privacy() {
+        //noinspection SpringMVCViewInspection
         return "privacy";
     }
 
@@ -64,6 +67,7 @@ public class HomeController {
             RedirectAttributes redirectAttributes) {
 
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
@@ -71,8 +75,9 @@ public class HomeController {
         String username = (String) session.getAttribute("user");
         Optional<Employees> currentUserOptional = employeeService.findByUsername(username);
 
-        if (!currentUserOptional.isPresent()) {
+        if (currentUserOptional.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "User not found");
+            //noinspection SpringMVCViewInspection
             return "redirect:/";
         }
 
@@ -97,6 +102,7 @@ public class HomeController {
 
         model.addAttribute("employee", employeeToEdit);
         model.addAttribute("pageTitle", "User Settings");
+        //noinspection SpringMVCViewInspection
         return "users/settings";
     }
 
@@ -113,6 +119,7 @@ public class HomeController {
             RedirectAttributes redirectAttributes) {
 
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
@@ -139,10 +146,11 @@ public class HomeController {
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("errorMessage", "Error updating employee: " + e.getMessage());
             }
-
+            //noinspection SpringMVCViewInspection
             return "redirect:/users/settings?employeeId=" + employeeId;
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "Employee not found");
+            //noinspection SpringMVCViewInspection
             return "redirect:/users/settings";
         }
     }

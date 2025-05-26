@@ -1,7 +1,6 @@
 package com.example.betasolutions.controller;
 
 import com.example.betasolutions.model.EmployeeSkills;
-import com.example.betasolutions.repository.EmployeeSkillsRepository;
 import com.example.betasolutions.service.EmployeeSkillsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

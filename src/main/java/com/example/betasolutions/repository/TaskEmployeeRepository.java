@@ -1,7 +1,6 @@
 package com.example.betasolutions.repository;
 
 import com.example.betasolutions.model.TaskEmployee;
-import com.example.betasolutions.model.Employees;
 import com.example.betasolutions.rowmapper.TaskEmployeeRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -77,9 +76,9 @@ public class TaskEmployeeRepository {
     // Find TaskEmployee by ID
     public List<TaskEmployee> findByEmployeeId(Long employeeId) {
         String sql = """
-                SELECT te.*, t.ts_name as task_name, 
+                SELECT te.*, t.ts_name as task_name,
                        p.p_name as project_name, 
-                       sp.sp_name as subproject_name 
+                       sp.sp_name as subproject_name
                 FROM tb_task_employees te
                 JOIN tb_tasks t ON te.tse_ts_id = t.ts_id
                 LEFT JOIN tb_subprojects sp ON t.ts_sp_id = sp.sp_id
@@ -99,7 +98,7 @@ public class TaskEmployeeRepository {
     // UPDATE
     public void update(TaskEmployee taskEmployee) {
         String sql = """
-                UPDATE tb_task_employees 
+                UPDATE tb_task_employees
                 SET tse_ts_id = ?, tse_em_id = ?, tse_hours_worked = ?, start_date = ?, end_date = ?
                 WHERE tse_id = ?
                 """;

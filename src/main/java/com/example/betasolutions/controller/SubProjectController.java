@@ -49,8 +49,9 @@ public class SubProjectController {
     @GetMapping
     public String listSubProjects(@RequestParam(value = "projectId", required = false) Integer projectId,
                                   Model model, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
-
+        //noinspection SpringMVCViewInspection
         if (projectId == null) return "redirect:/projects";
         //sort subprojects by start date
         List<SubProject> subProjects = subProjectService.getAllSubProjectsByProjectId(projectId)
@@ -78,25 +79,30 @@ public class SubProjectController {
             model.addAttribute("successMessage", successMessage);
             session.removeAttribute("successMessage");
         }
-
+        //noinspection SpringMVCViewInspection
         return "subprojects/list";
     }
 
     // Show form for creating a new subproject
     @GetMapping("/create")
+    //noinspection SpringMVCViewInspection
     public String showCreateSubProjectForm(@RequestParam("projectId") Integer projectId, Model model, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         SubProject subProject = new SubProject();
         subProject.setProjectId(projectId);
         model.addAttribute("subProject", subProject);
 
+        //noinspection SpringMVCViewInspection
         return "subprojects/create";
     }
 
     // Delete a subproject by ID
     @GetMapping("/delete/{id}")
+    //noinspection SpringMVCViewInspection
     public String deleteSubProject(@PathVariable Integer id, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         // Get project ID before deleting the subproject
@@ -110,27 +116,36 @@ public class SubProjectController {
         session.setAttribute("successMessage", "Subproject deleted successfully");
 
         // Redirect to project's subprojects list if project ID is available, otherwise to projects list
+        //noinspection SpringMVCViewInspection
         return projectId != null ? "redirect:/subprojects?projectId=" + projectId : "redirect:/projects";
     }
 
     // Show statistics and performance data for a subproject
     @GetMapping("/overview/{subProjectId}")
+    //noinspection SpringMVCViewInspection
     public String showSubProjectOverview(@PathVariable int subProjectId, Model model, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (!isLoggedIn(session))
+            //noinspection SpringMVCViewInspection
+            return "redirect:/auth/login";
 
         Map<String, Object> overview = subProjectService.calculateSubProjectOverview(subProjectId);
         model.addAllAttributes(overview);
+        //noinspection SpringMVCViewInspection
         return "subprojects/overview";
     }
 
     // Show form for editing an existing subproject
     @GetMapping("/edit/{id}")
+    //noinspection SpringMVCViewInspection
     public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
+        if (!isLoggedIn(session))
+            //noinspection SpringMVCViewInspection
+            return "redirect:/auth/login";
         model.addAttribute("pageTitle", "Rediger subprojekt");
         SubProject subProject = subProjectService.getSubProjectById(id)
                 .orElseThrow(() -> new RuntimeException("SubProject not found"));
         model.addAttribute("subProject", subProject);
+        //noinspection SpringMVCViewInspection
         return "subprojects/edit";
     }
 
@@ -153,6 +168,7 @@ public class SubProjectController {
     // Provide JSON data for front-end Gantt chart rendering
     @GetMapping("/api/subprojects/{id}/ganttdata")
     @ResponseBody
+    //noinspection SpringMVCViewInspection
     public Map<String, Object> getGanttData(@PathVariable Integer id) {
         SubProject subProject = subProjectService.getSubProjectById(id)
                 .orElseThrow(() -> new RuntimeException("Subproject not found"));
@@ -181,22 +197,30 @@ public class SubProjectController {
 
     // Process form submission for new subproject
     @PostMapping("/create")
+    //noinspection SpringMVCViewInspection
     public String createSubProject(@ModelAttribute @Valid SubProject subProject, BindingResult result, HttpSession session) {
-        if (!isLoggedIn(session)) return "redirect:/auth/login";
-        if (result.hasErrors()) return "subprojects/create";
+        if (!isLoggedIn(session))
+            //noinspection SpringMVCViewInspection
+            return "redirect:/auth/login";
+        if (result.hasErrors())
+            //noinspection SpringMVCViewInspection
+            return "subprojects/create";
 
         subProjectService.createSubProject(subProject);
         session.setAttribute("successMessage", "Subproject created successfully");
+        //noinspection SpringMVCViewInspection
         return "redirect:/subprojects?projectId=" + subProject.getProjectId();
     }
 
     // Process form submission for updating subproject
     @PostMapping("/update/{id}")
     public String updateSubProject(@PathVariable Integer id, @ModelAttribute SubProject subProject, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         subProject.setId(id);
         subProjectService.updateSubProject(subProject);
         session.setAttribute("successMessage", "Subproject updated successfully");
+        //noinspection SpringMVCViewInspection
         return "redirect:/subprojects?projectId=" + subProject.getProjectId();
     }
 }

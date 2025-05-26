@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 /**
  * This controller handles the workflow for employees to log hours against tasks,
  * view logged hours, and manage timesheet entries.
@@ -62,10 +63,12 @@ public class LogController {
     // Entry point: select employee and project
     @GetMapping
     public String showLogSelection(Model model, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         model.addAttribute("employees", employeeService.getAllEmployees());
         model.addAttribute("projects", projectService.getAllProjects());
+        //noinspection SpringMVCViewInspection
         return "logs/select";
     }
 
@@ -75,18 +78,21 @@ public class LogController {
                                           @RequestParam int projectId,
                                           Model model,
                                           HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         session.setAttribute("employeeId", employeeId);
         session.setAttribute("projectId", projectId);
 
         List<SubProject> subprojects = subProjectService.getAllSubProjectsByProjectId(projectId);
         if (subprojects.isEmpty()) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/logs?emptySubprojects";
         }
 
         model.addAttribute("employeeId", employeeId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("subprojects", subprojects);
+        //noinspection SpringMVCViewInspection
         return "logs/subproject-selection";
     }
 
@@ -97,6 +103,7 @@ public class LogController {
                                   HttpSession session) {
         Long employeeId = (Long) session.getAttribute("employeeId");
         if (employeeId == null) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/logs";
         }
 
@@ -106,10 +113,12 @@ public class LogController {
             task.setPrefilledHours(logged == null ? 0.0 : logged);
         }
         if (tasks.isEmpty()) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/logs/select?employeeId=" + employeeId + "&projectId=" + session.getAttribute("projectId") + "&emptyTasks=true";
         }
 
         model.addAttribute("tasks", tasks);
+        //noinspection SpringMVCViewInspection
         return "logs/list";
     }
 
@@ -118,6 +127,7 @@ public class LogController {
     public String showDashboard(@RequestParam(required = false) Long employeeId,
                                 Model model,
                                 HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         // Add employees to dropdown
@@ -164,15 +174,18 @@ public class LogController {
         }
 
         model.addAttribute("overview", taskOverview);
+        //noinspection SpringMVCViewInspection
         return "logs/dashboard";
     }
 
     // Save logged hours from form submission
     @PostMapping
     public String submitLog(@RequestParam Map<String, String> params, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         Long employeeId = (Long) session.getAttribute("employeeId");
         if (employeeId == null) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/logs";
         }
 
@@ -183,6 +196,7 @@ public class LogController {
                 taskEmployeeService.logHours(taskId, employeeId, hoursWorked);
             }
         });
+        //noinspection SpringMVCViewInspection
         return "redirect:/logs?success";
     }
 
@@ -191,6 +205,7 @@ public class LogController {
     public String deleteLog(@RequestParam("logId") Long logId,
                             @RequestParam(required = false) Long employeeId,
                             HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         if (logId != null) {
@@ -199,8 +214,10 @@ public class LogController {
 
         // Redirect back to the dashboard with same employee selected
         if (employeeId != null) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/logs/dashboard?employeeId=" + employeeId;
         } else {
+            //noinspection SpringMVCViewInspection
             return "redirect:/logs/dashboard";
         }
     }
