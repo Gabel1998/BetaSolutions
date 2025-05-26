@@ -11,7 +11,6 @@ import java.util.List;
  * API for managing employee skill relationships.
  */
 @RestController
-@SuppressWarnings("SpringViewInspection")
 @RequestMapping("/employee-skills")
 public class EmployeeSkillsController {
 

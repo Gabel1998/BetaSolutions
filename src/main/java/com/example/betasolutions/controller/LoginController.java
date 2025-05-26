@@ -18,7 +18,6 @@ import java.util.Optional;
  */
 @Controller
 @RequestMapping("/auth")
-@SuppressWarnings("SpringViewInspection")
 public class LoginController {
 
     @Autowired
@@ -28,6 +27,7 @@ public class LoginController {
     @GetMapping("/login")
     public String showLoginForm(Model model) {
         model.addAttribute("pageTitle", "Login");
+        //noinspection SpringMVCViewInspection
         return "login"; // login.html
     }
 
@@ -35,6 +35,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
+        //noinspection SpringMVCViewInspection
         return "redirect:/auth/login";
     }
 
@@ -42,6 +43,7 @@ public class LoginController {
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("pageTitle", "Register");
+        //noinspection SpringMVCViewInspection
         return "register";
     }
 
@@ -65,9 +67,11 @@ public class LoginController {
             newUser.setMaxWeeklyHours(maxWeeklyHours);
 
             employeeRepository.registerNewUser(newUser);
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         } else {
             session.setAttribute("user", username);
+            //noinspection SpringMVCViewInspection
             return "redirect:/projects";
         }
     }
@@ -82,9 +86,11 @@ public class LoginController {
 
         if (employeeOptional.isPresent() && employeeOptional.get().getEmPassword().equals(password)) {
             session.setAttribute("user", username);
+            //noinspection SpringMVCViewInspection
             return "redirect:/projects";
         } else {
             session.setAttribute("errorMessage", "Invalid credentials");
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
     }

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/projects")
-@SuppressWarnings("SpringViewInspection")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -43,6 +42,7 @@ public class ProjectController {
     @GetMapping
     public String listProjects(Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
         //sort projects by start date
@@ -85,6 +85,7 @@ public class ProjectController {
             model.addAttribute("successMessage", succesMessage);
             session.removeAttribute("successMessage");
         }
+        //noinspection SpringMVCViewInspection
         return "projects/list";
     }
 
@@ -92,16 +93,19 @@ public class ProjectController {
     @GetMapping("/create")
     public String showCreateForm(Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
         model.addAttribute("pageTitle", "Create Project");
         model.addAttribute("project", new Project());
+        //noinspection SpringMVCViewInspection
         return "projects/create";
     }
 
     // Display project summary with actual, estimated and adjusted hours
     @GetMapping("/summary")
     public String showProjectSummary(Model model, HttpSession session) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
         List<Project> projects = projectService.getAllProjects();
 
@@ -123,6 +127,7 @@ public class ProjectController {
         model.addAttribute("projectHoursMap", projectActualHoursMap);
         model.addAttribute("projectEstimatedMap", projectEstimatedHoursMap);
         model.addAttribute("adjustedHours", adjustedHours);
+        //noinspection SpringMVCViewInspection
         return "projects/summary";
     }
 
@@ -130,12 +135,14 @@ public class ProjectController {
     @GetMapping("edit/{id}")
     public String showEditForm(@PathVariable Integer id, Model model, HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
         model.addAttribute("pageTitle", "Edit Project");
         Project project = projectService.getProjectById(id)
                 .orElseThrow(() -> new RuntimeException("Project not found"));
         model.addAttribute("project", project);
+        //noinspection SpringMVCViewInspection
         return "projects/edit";
     }
 
@@ -143,26 +150,31 @@ public class ProjectController {
     @GetMapping("/delete/{id}")
     public String deleteProject(@PathVariable Integer id, HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
         projectService.deleteProject(id);
         session.setAttribute("successMessage", "Project deleted successfully");
+        //noinspection SpringMVCViewInspection
         return "redirect:/projects";
     }
 
     // Process form submission for new project
     @PostMapping("/create")
     public String createProject(@ModelAttribute @Valid Project project, BindingResult result, HttpSession session, Model model) {
+        //noinspection SpringMVCViewInspection
         if (!isLoggedIn(session)) return "redirect:/auth/login";
 
         if (result.hasErrors()) {
             model.addAttribute("pageTitle", "Create Project");
+            //noinspection SpringMVCViewInspection
             return "projects/create";
         }
 
         projectService.createProject(project);
         session.setAttribute("successMessage", "Project created successfully");
+        //noinspection SpringMVCViewInspection
         return "redirect:/projects";
     }
 
@@ -170,12 +182,15 @@ public class ProjectController {
     @PostMapping("/update/{id}")
     public String updateProject(@PathVariable Integer id, @ModelAttribute Project project, HttpSession session) {
         if (!isLoggedIn(session)) {
+            //noinspection SpringMVCViewInspection
             return "redirect:/auth/login";
         }
 
         project.setId(id);
         projectService.updateProject(project);
         session.setAttribute("successMessage", "The project has been updated");
+        //noinspection SpringMVCViewInspection
+
         return "redirect:/projects";
     }
 

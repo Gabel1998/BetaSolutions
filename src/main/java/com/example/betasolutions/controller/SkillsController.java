@@ -12,7 +12,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/skills")
-@SuppressWarnings("SpringViewInspection")
 public class SkillsController {
 
     @Autowired
