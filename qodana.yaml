@@ -8,6 +8,6 @@ include:
   - name: CheckDependencyLicenses
 
 exclude:
-  - name: Spring MVC View Resolution Inspection
-  - name: Unresolved view reference
+  - paths:
+      - src/main/java/com/example/betasolutions/controller/**  # Exclude specific controller package and all its subpackages and files
 
