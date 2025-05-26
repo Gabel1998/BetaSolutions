@@ -18,6 +18,7 @@ import java.util.Optional;
  */
 @Controller
 @RequestMapping("/auth")
+@SuppressWarnings("SpringViewInspection")
 public class LoginController {
 
     @Autowired

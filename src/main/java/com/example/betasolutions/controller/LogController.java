@@ -21,12 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 /**
  * This controller handles the workflow for employees to log hours against tasks,
  * view logged hours, and manage timesheet entries.
  */
 @Controller
 @RequestMapping("/logs")
+@SuppressWarnings("SpringViewInspection")
 public class LogController {
 
     private final TaskEmployeeService taskEmployeeService;

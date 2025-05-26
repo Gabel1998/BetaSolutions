@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/tasks")
+@SuppressWarnings("SpringViewInspection")
 public class TaskController {
 
     private final TaskService taskService;

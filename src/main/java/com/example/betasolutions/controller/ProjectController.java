@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  */
 @Controller
 @RequestMapping("/projects")
+@SuppressWarnings("SpringViewInspection")
 public class ProjectController {
 
     private final ProjectService projectService;

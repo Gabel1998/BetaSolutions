@@ -12,6 +12,7 @@ import java.util.List;
  * REST API for managing employees - provides CRUD endpoints for employee data.
  */
 @RestController
+@SuppressWarnings("SpringViewInspection")
 @RequestMapping("/employees")
 public class EmployeeController {
 
