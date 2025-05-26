@@ -8,4 +8,6 @@ include:
   - name: CheckDependencyLicenses
 
 exclude:
+  - name: Spring MVC View Resolution Inspection
   - name: Unresolved view reference
+
