@@ -46,7 +46,7 @@ public class ProjectServiceTest {
         mockProject.setStartDate(LocalDate.of(2025, 5, 5)); // Monday
         mockProject.setEndDate(LocalDate.of(2025, 5, 9));   // Friday
 
-        when(projectRepository.findById(1Lgi)).thenReturn(Optional.of(mockProject));
+        when(projectRepository.findById(1L)).thenReturn(Optional.of(mockProject));
 
         // Act
         double result = projectService.calculateDailyRate(1L);
