@@ -5,7 +5,7 @@ Dette system er udviklet som en del af eksamensprojektet på KEA 2. semester. Fo
 
 🔗 **Live site**: [Åbn applikationen](https://betasolutions-afepfyanhcddcpau.westeurope-01.azurewebsites.net/)  
 🔗 **GitHub repository**: [Se kildekode](https://github.com/gabel1998/betasolutions.git)  
-🔗 **Eksamensrapport**: [Læs rapporten (PDF)](https://github.com/gabel1998/betasolutions/tree/master/docs/Rapport.pdf)
+🔗 **Eksamensrapport**: [Læs rapporten (PDF)](https://github.com/Gabel1998/BetaSolutions/blob/develop/docs/Report/Eksamensrapport%20-%20Projektkalkulationsv%C3%A6rkt%C3%B8j%20-%20Gruppe%204.pdf)
 
 ---
 
