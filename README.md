@@ -3,8 +3,8 @@
 
 Dette system er udviklet som en del af eksamensprojektet på KEA 2. semester. Formålet er at understøtte Alpha Solutions’ behov for bedre overblik og styring af projekter, medarbejdere, tid og ressourcer.
 
-🔗 **Live site**: [Åbn applikationen](betasolutions-afepfyanhcddcpau.westeurope-01.azurewebsites.net)  
-🔗 **GitHub repository**: [Se kildekode](https://github.com/gabel1998/betasolutions)  
+🔗 **Live site**: [Åbn applikationen](https://betasolutions-afepfyanhcddcpau.westeurope-01.azurewebsites.net/)  
+🔗 **GitHub repository**: [Se kildekode](https://github.com/gabel1998/betasolutions.git)  
 🔗 **Eksamensrapport**: [Læs rapporten (PDF)](https://github.com/gabel1998/betasolutions/tree/master/docs/Rapport.pdf)
 
 ---
